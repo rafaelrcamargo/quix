@@ -1,5 +1,4 @@
 use std::io::{Read, Write};
-
 use zip::write::FileOptions;
 
 pub fn zip() {

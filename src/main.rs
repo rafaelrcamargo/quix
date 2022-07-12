@@ -1,31 +1,21 @@
-// ? CLI
-mod args;
-mod auth;
-mod commands;
-mod tools;
+#[path = "./cli/mod.rs"]
+mod cli;
+#[path = "./auth/session/mod.rs"]
+mod session;
 
-// ? Home path
-use home;
+// ? Importing just the used functions from the mods.
+use cli::{args::matches, commands::link}; // CLI Argument + Commands
+use session::Session; // Session struct
 
 /// * Main function.
 fn main() {
-    tools::zip();
+    // ? Get user session data
+    let _session: Session = Session::new();
 
-    // ? Get the home directory
-    match home::home_dir() {
-        Some(path) => {
-            let _session = auth::session::get_session(path);
-        }
-        None => println!("No home directory found."),
-    }
-
-    // ? CLI Argument parser
-    let matches = args::arg_matches();
-
-    // ? CLI Commands handling
+    // ? CLI
+    let matches = matches(); // Argument parser
     match matches.subcommand() {
-        // ? Link command
-        Some(("link", link_matches)) => commands::link(link_matches),
-        _ => unreachable!(),
+        Some(("link", args)) => link(args), // Link command
+        _ => unreachable!(),                // Unreachable command
     }
 }

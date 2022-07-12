@@ -10,6 +10,26 @@ pub struct Session {
     pub token: String,   // Session token
 }
 
+impl Session {
+    pub fn new() -> Session {
+        let mut session: Session = Session {
+            account: String::new(),
+            login: String::new(),
+            token: String::new(),
+        };
+
+        // ? Get the home directory
+        match home::home_dir() {
+            Some(path) => {
+                session = get_session(path);
+            }
+            None => println!("No home directory found."),
+        }
+
+        return session;
+    }
+}
+
 /// Get the session from the session file.
 pub fn get_session(path: PathBuf) -> Session {
     // ? Join `home` path + `.vtex` path + `session.json` file

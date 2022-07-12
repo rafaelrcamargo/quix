@@ -1,8 +1,7 @@
-// ? Export CLI
 // ? CLI
 use clap::{Arg, ArgMatches, Command}; // CLI Argument parser
 
-pub fn arg_matches() -> ArgMatches {
+pub fn matches() -> ArgMatches {
     return Command::new("Quix")
     .version("0.0.1")
     .author("Rafael R. Camargo")
