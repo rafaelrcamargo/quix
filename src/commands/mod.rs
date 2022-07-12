@@ -1,13 +1,19 @@
-// ? CLI
+// * CLI
 use clap::ArgMatches; // CLI Argument parser
 
-// ? File watcher
+// * File watcher
 use notify::DebouncedEvent::{Create, NoticeWrite, Remove, Rename, Write}; // Notify crate
 use notify::{watcher, RecursiveMode, Watcher}; // Notify crate
 use std::sync::mpsc::channel; // Message channel queue
 use std::time::Duration; // STD Duration
 
-pub fn app(link_matches: &ArgMatches) {
+// * STD
+use std::path::Path; // STD Path
+
+pub fn link(link_matches: &ArgMatches) {
+    // ? Get the path to the actual folder where the app is located, to watch.
+    let path = Path::new("example\\"); // TODO: Get the path to the actual folder where the app is located, to watch.
+
     if link_matches.contains_id("clean") {
         println!("Cleaning project cache...");
     }
@@ -25,11 +31,9 @@ pub fn app(link_matches: &ArgMatches) {
 
     // ? Add a path to be watched.
     // * All files and directories at that path and below will be monitored for changes.
-    watcher
-        .watch("example\\", RecursiveMode::Recursive)
-        .unwrap();
+    watcher.watch(path, RecursiveMode::Recursive).unwrap();
 
-    println!("Linking app...");
+    println!("Watching {} for changes...", path.display());
 
     loop {
         match receiver.recv() {

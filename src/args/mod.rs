@@ -1,15 +1,9 @@
-// ? Export CLI commands
-pub mod commands {
-    pub mod link;
-}
-
 // ? Export CLI
-pub mod args {
-    // ? CLI
-    use clap::{Arg, ArgMatches, Command}; // CLI Argument parser
+// ? CLI
+use clap::{Arg, ArgMatches, Command}; // CLI Argument parser
 
-    pub fn arg_matches() -> ArgMatches {
-        return Command::new("Quix")
+pub fn arg_matches() -> ArgMatches {
+    return Command::new("Quix")
     .version("0.0.1")
     .author("Rafael R. Camargo")
     .about("Quix is a CLI created aiming for the best developer experience, lets make VTEX IO quick again.")
@@ -36,5 +30,4 @@ pub mod args {
       )
   )
   .get_matches();
-    }
 }
