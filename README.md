@@ -26,13 +26,13 @@ As we know, this CLI is under development, so we have implemented a few commands
 
 This command will synchronize the local project with the remote VTEX account you are logged in. (At the moment, the login and use commands are not implemented, use the [VTEX IO CLI](toolbelt) instead.)
 
-### 📝 Usage:
+### Usage:
 
 ```bash
 qx link <FLAGS>
 ```
 
-### 🎏 Flags:
+### Flags:
 
 | Flag | Description                                                |
 | :--: | :--------------------------------------------------------- |
@@ -42,10 +42,6 @@ qx link <FLAGS>
 ## 🥇 Contributing
 
 - Feel free to contribute to this project, if you have any suggestions or improvements, please open an issue or pull request.
-
-> ## Thanks! 😄
-
----
 
 ## ⚠️ License
 
