@@ -1,7 +1,8 @@
-/* #[path = "./utils/to/mod.rs"]
+// ? Zip
+#[path = "../../utils/to/mod.rs"]
 mod to;
 use to::zip; // Zip utils */
-
+             // ? CLI
 use clap::ArgMatches; // CLI Argument parser
 
 use notify::DebouncedEvent::{Create, NoticeWrite, Remove, Rename, Write}; // Notify crate
@@ -9,6 +10,7 @@ use notify::{watcher, RecursiveMode, Watcher}; // Notify crate
 use std::sync::mpsc::channel; // Message channel queue
 use std::time::Duration; // STD Duration
 
+use reqwest::header::{ACCEPT, ACCEPT_ENCODING, AUTHORIZATION, CONTENT_LENGTH, CONTENT_TYPE};
 use std::path::Path; // STD Path
 
 pub fn link(args: &ArgMatches) {
@@ -37,7 +39,36 @@ pub fn link(args: &ArgMatches) {
     loop {
         match receiver.recv() {
             Ok(NoticeWrite(path)) => println!("Notice Write: {:?}", path),
-            Ok(Write(path)) => println!("Write: {:?}", path),
+            Ok(Write(path)) => {
+                let file = zip(path.file_name().unwrap(), &path);
+
+                println!("Write: {:?}", file);
+
+                let client = reqwest::blocking::Client::new();
+                let res = client
+                    .post("https://app.io.vtex.com/vtex.builder-hub/v0/avantivtexio/cli/_v/builder/0/link/avantivtexio.store-theme@0.0.0?tsErrorsAsWarnings=false")
+                    .header(ACCEPT, "application/json, text/plain, */*")
+                    .header(ACCEPT_ENCODING, "gzip")
+                    .header(CONTENT_LENGTH, file.len())
+                    .header(CONTENT_TYPE, "application/octet-stream")
+                    .header("x-vtex-bh-link-id", "")
+                    .header("x-vtex-sticky-host", "")
+                    .header(AUTHORIZATION, "Bearer ")
+                    .body(file)
+                    .send();
+
+                match res {
+                    Ok(res) => {
+                        // print the response body text
+                        println!("{:?}", res.text());
+                    }
+                    Err(e) => {
+                        println!("{:?}", e);
+                    }
+                }
+
+                return println!("Write: {:?}", path);
+            }
             Ok(Create(path)) => println!("Create: {:?}", path),
             Ok(Remove(path)) => println!("Remove: {:?}", path),
             Ok(Rename(o_path, n_path)) => println!("Rename: {:?} to {:?}", o_path, n_path),
