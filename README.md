@@ -2,7 +2,7 @@
 
 ![logo.png](./assets/logo.png)
 
-# Quix - qx
+# Quix
 
 [![Built with rust][rust-badge]][rust] [![License][license-badge]][license]
 
