@@ -39,11 +39,11 @@ qx link <FLAGS>
 | `-c` | Clean the project cache before linking.                    |
 | `-q` | Link the project **quicker**. (By ignoring some steps. 👀) |
 
-## 🥇 Contributing
+# 🥇 Contributing
 
 - Feel free to contribute to this project, if you have any suggestions or improvements, please open an issue or pull request.
 
-## ⚠️ License
+# ⚠️ License
 
 _This code is licensed under the [MIT]("https://github.com/RafaelRCamargo/from-reddit-to-shorts/blob/master/LICENSE") license._
 
