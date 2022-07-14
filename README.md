@@ -20,19 +20,19 @@ First, to clarify the purpose of this project, as developers, we know the import
 
 As we know, this CLI is under development, so we have implemented a few commands to help you get started. The following are the available commands:
 
-## ⛓️ Link:
+## ⛓️ Link
 
 > Links the project to the current workspace.
 
-This command will synchronize the local project with the remote VTEX account you are logged in. (At the moment, the login and use commands are not implemented, use the [VTEX IO CLI](toolbelt) instead.)
+This command will synchronize the local project with the remote VTEX account you are logged in. _(At the moment, the login and use commands are not implemented, use the [VTEX IO CLI](toolbelt) instead.)_
 
-### Usage:
+### Usage
 
 ```bash
 qx link <FLAGS>
 ```
 
-### Flags:
+### Flags
 
 | Flag | Description                                                |
 | :--: | :--------------------------------------------------------- |
