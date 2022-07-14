@@ -1,21 +1,32 @@
-// ? Zip
-#[path = "../../utils/to/mod.rs"]
-mod to;
-use to::zip; // Zip utils */
-             // ? CLI
+// Zip
+#[path = "../../utils/send/mod.rs"]
+mod send;
+
+// CLI
 use clap::ArgMatches; // CLI Argument parser
 
-use notify::DebouncedEvent::{Create, NoticeWrite, Remove, Rename, Write}; // Notify crate
-use notify::{watcher, RecursiveMode, Watcher}; // Notify crate
-use std::sync::mpsc::channel; // Message channel queue
-use std::time::Duration; // STD Duration
+// Watch and notify
+use notify::DebouncedEvent; // Notify crate
+use notify::{watcher, RecursiveMode, Watcher};
 
+// Notify crate
+use std::sync::mpsc::channel; // Message channel queue
+use std::time::Duration; // Standard Duration
+
+// HTTP Client
 use reqwest::header::{ACCEPT, ACCEPT_ENCODING, AUTHORIZATION, CONTENT_LENGTH, CONTENT_TYPE};
-use std::path::Path; // STD Path
+
+// Misc
+use std::path::Path; // Standard path
 
 pub fn link(args: &ArgMatches) {
     // ? Get the path to the actual folder where the app is located, to watch.
     let path = Path::new("example\\"); // TODO: Get the path to the actual folder where the app is located, to watch.
+
+    match send::dir::zip("example\\") {
+        Ok(_) => println!("done writting zip file"),
+        Err(e) => println!("Error: {:?}", e),
+    }
 
     if args.is_present("clean") {
         println!("Cleaning project cache...");
@@ -38,22 +49,32 @@ pub fn link(args: &ArgMatches) {
 
     loop {
         match receiver.recv() {
-            Ok(NoticeWrite(path)) => println!("Notice Write: {:?}", path),
-            Ok(Write(path)) => {
-                let file = zip(path.file_name().unwrap(), &path);
+            // Ok(DebouncedEvent::NoticeWrite(path)) => println!("Notice Write: {:?}", path),
+            Ok(DebouncedEvent::Write(path)) => {
+                // ? Zip the file, using the zip utils.
+                let file = send::file::zip(&path);
 
-                println!("Write: {:?}", file);
+                /*
+                ? Debug zip file:
+                    {
+                        println!("Write: {:?}", file);
+                        let mut zip_file = File::create("test.zip").unwrap();
+                        // Write a slice of bytes to the zip_file
+                        match zip_file.write_all(&file) {
+                            Ok(_) => println!("File written to the zip archive."),
+                            Err(e) => panic!("Error: {:?}", e),
+                        }
+                    }
+                */
 
                 let client = reqwest::blocking::Client::new();
                 let res = client
-                    .post("https://app.io.vtex.com/vtex.builder-hub/v0/avantivtexio/cli/_v/builder/0/link/avantivtexio.store-theme@0.0.0?tsErrorsAsWarnings=false")
+                    .post("https://app.io.vtex.com/vtex.builder-hub/v0/avantivtexio/cli/_v/builder/0/link/avantivtexio.store-starter@0.0.0?tsErrorsAsWarnings=false")
                     .header(ACCEPT, "application/json, text/plain, */*")
                     .header(ACCEPT_ENCODING, "gzip")
                     .header(CONTENT_LENGTH, file.len())
                     .header(CONTENT_TYPE, "application/octet-stream")
-                    .header("x-vtex-bh-link-id", "")
-                    .header("x-vtex-sticky-host", "")
-                    .header(AUTHORIZATION, "Bearer ")
+                    .header(AUTHORIZATION, "Bearer eyJhbGciOiJFUzI1NiIsImtpZCI6IjM3ODFGRUY5NENBMkQ5MTI5QzI4NjRBNzdGMzI2OEYxMUY4M0Y4MzEiLCJ0eXAiOiJqd3QifQ.eyJzdWIiOiJyYWZhZWwuY2FtYXJnb0BwZW5zZWF2YW50aS5jb20uYnIiLCJhY2NvdW50IjoiYXZhbnRpdnRleGlvIiwiYXVkaWVuY2UiOiJhZG1pbiIsInNlc3MiOiJkMmQxM2MxYy00YTJiLTQ1N2ItODhmZC1kMzgzZWRmMTUyZDciLCJleHAiOjE2NTc4OTcwNTMsInVzZXJJZCI6IjkxM2I2NWFlLTNhZTEtNGY5YS1iOTg2LWI3ODE0OTRjNWJlNiIsImlhdCI6MTY1NzgxMDY1MywiaXNzIjoidG9rZW4tZW1pdHRlciIsImp0aSI6Ijc4YzUwODhiLTRiZDktNDdiZS1hZWYyLTA5MWE5ZWE3OGJiOSJ9.d2a9ejPptDULgBBv2Kg9xvvzfRfGEOyksoUzdT_uKhDE0-45H-4848UQCsk9JC8Ck0FERM5gVJjMnUP8R9MIRA")
                     .body(file)
                     .send();
 
@@ -66,12 +87,12 @@ pub fn link(args: &ArgMatches) {
                         println!("{:?}", e);
                     }
                 }
-
-                return println!("Write: {:?}", path);
             }
-            Ok(Create(path)) => println!("Create: {:?}", path),
-            Ok(Remove(path)) => println!("Remove: {:?}", path),
-            Ok(Rename(o_path, n_path)) => println!("Rename: {:?} to {:?}", o_path, n_path),
+            Ok(DebouncedEvent::Create(path)) => println!("Create: {:?}", path),
+            Ok(DebouncedEvent::Remove(path)) => println!("Remove: {:?}", path),
+            Ok(DebouncedEvent::Rename(o_path, n_path)) => {
+                println!("Rename: {:?} to {:?}", o_path, n_path)
+            }
             Err(e) => println!("Error: {:?}", e),
             _ => (),
         }

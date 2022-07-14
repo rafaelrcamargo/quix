@@ -41,7 +41,18 @@ qx link <FLAGS>
 
 # 🥇 Contributing
 
-- Feel free to contribute to this project, if you have any suggestions or improvements, please open an issue or pull request.
+Feel free to contribute to this project, if you have any suggestions or improvements, please open an issue or pull request.
+
+# 🧮 Improvements
+
+One of the biggest improvements we have made is the performance, and thats the foundation of this project.
+
+But no one ever knows for sure what is the best way to improve the performance of a project in every situation, so we have implemented and documented some benchmarks to help in our conclusions.
+
+This list of benchmarks is not exhaustive, but it is a good starting point to understand how to improve the performance of this project, and to this moment we've documented the following benchmarks:
+
+- [📈 Minifier](/benchmarks/minifier/results.md)
+  - The idea behind this benchmark is to compare the performance of the minifier crate, and the VTEX IO Link endpoint. Comparing the performance of the raw files, and the minified files in the first and subsequent `quix link` commands.
 
 # ⚠️ License
 

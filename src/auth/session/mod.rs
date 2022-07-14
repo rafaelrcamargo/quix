@@ -2,6 +2,7 @@
 use serde::Deserialize;
 use std::{fs::File, io::BufReader, path::PathBuf};
 
+/// Session struct.
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Session {
@@ -10,6 +11,7 @@ pub struct Session {
     pub token: String,   // Session token
 }
 
+/// Implements the `Session` and define the new method.
 impl Session {
     pub fn new() -> Session {
         let mut session: Session = Session {

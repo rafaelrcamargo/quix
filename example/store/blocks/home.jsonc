@@ -1,5 +1,13 @@
 {
   "store.home": {
-    "blocks": ["hello"]
+    "blocks": ["rich-text"]
+  },
+  "rich-text": {
+    "props": {
+      "textAlignment": "CENTER",
+      "textPosition": "CENTER",
+      "text": "Visit our [help](https://developers.vtex.com/vtex-developer-docs/docs/welcome) section.",
+      "blockClass": "home"
+    }
   }
 }

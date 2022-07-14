@@ -1,5 +1,5 @@
 {
-  "vendor": "____",
+  "vendor": "avantivtexio",
   "name": "store-starter",
   "version": "0.0.0",
   "builders": {
@@ -40,8 +40,7 @@
     "vtex.iframe": "0.x",
     "vtex.breadcrumb": "1.x",
     "vtex.sticky-layout": "0.x",
-    "vtex.add-to-cart-button": "0.x",
-    "____.react-starter": "0.x"
+    "vtex.add-to-cart-button": "0.x"
   },
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }
