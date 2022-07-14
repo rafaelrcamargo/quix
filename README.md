@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="./assets/logo.png" alt="logo" width="100" height="100">
+<img src="./assets/logo.png" alt="logo" width="150" height="150">
 
 # Quix - qx
 
