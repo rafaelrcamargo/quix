@@ -29,7 +29,7 @@ This is a comparison of the performance, using the [minifier](https://crates.io/
 | Mode     | Final bundle size | First time execution | Concurrent executions |
 | -------- | ----------------- | -------------------- | --------------------- |
 | Raw      | **0.0%**          | **0.0%**             | **0.0%**              |
-| Minified | **-29.91%**       | **+161.23%**         | **66.81%**            |
+| Minified | **-29.91%**       | **+161.23%**         | **+66.81%**           |
 
 ## Conclusion
 
