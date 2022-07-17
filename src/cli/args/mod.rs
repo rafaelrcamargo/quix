@@ -1,3 +1,20 @@
+//! # Mod to handle sending zipped files to the builder.
+//! Here we handle the zipping process, for later sending this packages to the builder.
+//!
+//! ## Modules
+//! - Clap: Handles the arg parsing.
+//!
+//! ## Examples
+//! ```bash
+//! quix link
+//! ```
+//! ```bash
+//! quix link --clean
+//! ```
+//!
+//! ## Panics
+//! This function will panic if the entered command does not follow any of the available.
+
 // ? CLI
 use clap::{Arg, ArgMatches, Command}; // CLI Argument parser
 

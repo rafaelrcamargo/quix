@@ -1,3 +1,17 @@
+//! # Retrieves the user session from the VTEX CLI.
+//! Here we set the `Session` struct, which is used for the authentication all over the app.
+//!
+//! ## Examples
+//! Session:
+//! ```rust
+//! let session = Session::new();
+//! ```
+//!
+//! ## Panics
+//! This function will panic if the VTEX CLI is not properly installed and if your login and authentication token are not set.
+//! This is because the CLI will not be able to authenticate with the VTEX API.
+//! With that further requests will not be able to be sent to the builder.
+
 // * Std
 use serde::Deserialize;
 use std::{fs::File, io::BufReader, path::PathBuf};

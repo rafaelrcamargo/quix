@@ -1,71 +1,88 @@
-// Zip
+//! # Mod to handle the CLI commands and subcommands.
+//! Here are defied the CLI commands and subcommands.
+//! - `link`: Handles the `link` subcommand.
+//!
+//! ## Examples
+//! ```bash
+//! quix link
+//! ```
+//! ```bash
+//! quix link --clean
+//! ```
+//!
+//! ## Panics
+//! This function will panic if the entered command does not follow any of the available.
+//! This is because the CLI will not be able to authenticate with the VTEX API.
+
 #[path = "../../utils/send/mod.rs"]
 mod send;
+#[path = "../../auth/session/mod.rs"]
+mod session;
+use session::Session;
 
-// CLI
-use clap::ArgMatches; // CLI Argument parser
+// CLI Argument parser
+use clap::ArgMatches;
 
-// Watch and notify
+// Watcher for the link.
 use notify::DebouncedEvent; // Notify crate
 use notify::{watcher, RecursiveMode, Watcher};
-
-// Notify crate
 use std::sync::mpsc::channel; // Message channel queue
-use std::time::Duration; // Standard Duration
+use std::time::Duration; // Standard Duration // Standard path
 
 // HTTP Client
 use reqwest::header::{ACCEPT, ACCEPT_ENCODING, AUTHORIZATION, CONTENT_LENGTH, CONTENT_TYPE};
 
 // Misc
-use std::path::Path; // Standard path
+use std::path::Path;
 
+/// # Link command.
+/// This command will send the bundle to the builder, and watch the directory for changes.
+/// - It will return the link to the builder.
+///
+/// # Examples
+/// ```
+/// quix link
+/// ```
+///
+/// # Panics
+/// If the session is not valid or the token is not set, this function will panic.
+/// This is because the CLI will not be able to authenticate with the VTEX API.
 pub fn link(args: &ArgMatches) {
     // ? Get the path to the actual folder where the app is located, to watch.
     let path = Path::new("example\\"); // TODO: Get the path to the actual folder where the app is located, to watch.
 
-    match send::dir::zip("example\\") {
-        Ok(_) => println!("done writting zip file"),
-        Err(e) => println!("Error: {:?}", e),
-    }
+    // ? Instantiate a user session.
+    let session = Session::new();
 
+    // ? For the first link command, we need to create a new zip file, with all the files in the folder.
+
+    ////
+
+    // ? Args parsing.
     if args.is_present("clean") {
         println!("Cleaning project cache...");
     } else if args.is_present("quicker") {
         println!("Linking app quicker...");
     }
 
+    // * * * Starts the watcher, in the current project folder. * * *
+
     // ? Create a channel to receive the events.
     let (sender, receiver) = channel();
-
     // ? Create a watcher object, delivering debounced events.
-    // * The notification back-end is selected based on the platform.
     let mut watcher = watcher(sender, Duration::from_secs(1)).unwrap();
-
-    // ? Add a path to be watched.
-    // * All files and directories at that path and below will be monitored for changes.
+    // ? All files and directories at that path and below will be monitored for changes.
     watcher.watch(path, RecursiveMode::Recursive).unwrap();
 
     println!("Watching {} for changes...", path.display());
 
     loop {
+        // ? The watcher loop will run until the CLI receives a user interruption.
         match receiver.recv() {
-            // Ok(DebouncedEvent::NoticeWrite(path)) => println!("Notice Write: {:?}", path),
+            Ok(DebouncedEvent::NoticeWrite(path)) => println!("Notice Write: {:?}", path),
             Ok(DebouncedEvent::Write(path)) => {
                 // ? Zip the file, using the zip utils.
                 let file = send::file::zip(&path);
-
-                /*
-                ? Debug zip file:
-                    {
-                        println!("Write: {:?}", file);
-                        let mut zip_file = File::create("test.zip").unwrap();
-                        // Write a slice of bytes to the zip_file
-                        match zip_file.write_all(&file) {
-                            Ok(_) => println!("File written to the zip archive."),
-                            Err(e) => panic!("Error: {:?}", e),
-                        }
-                    }
-                */
 
                 let client = reqwest::blocking::Client::new();
                 let res = client
@@ -74,7 +91,7 @@ pub fn link(args: &ArgMatches) {
                     .header(ACCEPT_ENCODING, "gzip")
                     .header(CONTENT_LENGTH, file.len())
                     .header(CONTENT_TYPE, "application/octet-stream")
-                    .header(AUTHORIZATION, "Bearer eyJhbGciOiJFUzI1NiIsImtpZCI6IjM3ODFGRUY5NENBMkQ5MTI5QzI4NjRBNzdGMzI2OEYxMUY4M0Y4MzEiLCJ0eXAiOiJqd3QifQ.eyJzdWIiOiJyYWZhZWwuY2FtYXJnb0BwZW5zZWF2YW50aS5jb20uYnIiLCJhY2NvdW50IjoiYXZhbnRpdnRleGlvIiwiYXVkaWVuY2UiOiJhZG1pbiIsInNlc3MiOiJkMmQxM2MxYy00YTJiLTQ1N2ItODhmZC1kMzgzZWRmMTUyZDciLCJleHAiOjE2NTc4OTcwNTMsInVzZXJJZCI6IjkxM2I2NWFlLTNhZTEtNGY5YS1iOTg2LWI3ODE0OTRjNWJlNiIsImlhdCI6MTY1NzgxMDY1MywiaXNzIjoidG9rZW4tZW1pdHRlciIsImp0aSI6Ijc4YzUwODhiLTRiZDktNDdiZS1hZWYyLTA5MWE5ZWE3OGJiOSJ9.d2a9ejPptDULgBBv2Kg9xvvzfRfGEOyksoUzdT_uKhDE0-45H-4848UQCsk9JC8Ck0FERM5gVJjMnUP8R9MIRA")
+                    .header(AUTHORIZATION, format!("Bearer {}", session.token))
                     .body(file)
                     .send();
 
