@@ -53,7 +53,7 @@ fn deep_search(it: &mut dyn Iterator<Item = DirEntry>, prefix: &Path) -> Vec<u8>
     // ? Create a new zip writer.
     let mut buf = Vec::new(); // Responsible for handling the buffer and the bytes in it.
     let mut cursor = Cursor::new(&mut buf); // Responsible for the cursor.
-    let mut zip = ZipWriter::new(&mut cursor);
+    let mut zip = ZipWriter::new(&mut cursor); // Responsible for the zip writer.
 
     // ? Options for the file to be added to the zip archive.
     let options = FileOptions::default()

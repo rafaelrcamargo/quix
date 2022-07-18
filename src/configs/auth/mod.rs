@@ -12,11 +12,15 @@
 //! This is because the CLI will not be able to authenticate with the VTEX API.
 //! With that further requests will not be able to be sent to the builder.
 
-// * Std
 use serde::Deserialize;
-use std::{fs::File, io::BufReader, path::PathBuf};
 
-/// Session struct.
+use std::{fs::File, path::PathBuf};
+
+use crate::json;
+
+/// # Session struct.
+/// Here we set the `Session` struct, which is used for the authentication all over the app.
+/// This struct is used to store the login and authentication token.
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Session {
@@ -25,7 +29,13 @@ pub struct Session {
     pub token: String,   // Session token
 }
 
-/// Implements the `Session` and define the new method.
+/// # Implements the `Session` and define the new method.
+/// This method will return the session struct.
+///
+/// # Examples
+/// ```rust
+/// let session = Session::new();
+/// ```
 impl Session {
     pub fn new() -> Session {
         let mut session: Session = Session {
@@ -46,7 +56,12 @@ impl Session {
     }
 }
 
-/// Get the session from the session file.
+/// # Get the session data from the session file.
+/// This function will get the session from the session file.
+///
+/// # Panics
+/// This function will panic if the session file is not found.
+/// This is because the CLI will not be able to authenticate with the VTEX API.
 pub fn get_session(path: PathBuf) -> Session {
     // ? Join `home` path + `.vtex` path + `session.json` file
     let path = path.join(".vtex/session/session.json");
@@ -54,22 +69,8 @@ pub fn get_session(path: PathBuf) -> Session {
     // ? Tries to open the file
     match File::open(path) {
         // * File exists
-        Ok(file) => read_json(file),
+        Ok(file) => json::read(file),
         // ! Wasn't able to open the file
         Err(_) => panic!("No session file found."),
-    }
-}
-
-/// Read the JSON file.
-fn read_json(file: File) -> Session {
-    // ? Create a buffer reader
-    let reader = BufReader::new(file);
-
-    // ? Deserializes the JSON
-    match serde_json::from_reader(reader) {
-        // * Deserialization successful
-        Ok(session) => session,
-        // ! Wasn't able to deserialize the JSON file
-        Err(e) => panic!("Failed to parse session file: {}", e),
     }
 }

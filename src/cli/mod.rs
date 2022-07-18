@@ -17,4 +17,3 @@
 //! This function will panic if the entered command does not follow any of the available.
 
 pub mod args;
-pub mod commands;
