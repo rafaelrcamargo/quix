@@ -1,11 +1,28 @@
+//! # Routes constants
+//! Used to facilitate the routing of the application.
+//! Connecting the client to the VTEX IO Builder via the API.
+//!
+//! # Routes
+//! - `link`: The link to the VTEX IO Builder.
+//!   - `"link/{}.{}@{}?tsErrorsAsWarnings=false"`
+//!
+//! # Panics
+//! This module panics if the `link` route is not found.
+
 use crate::configs::Environment;
 use crate::configs::Project;
 
+/// # Routes Struct
+/// This struct contains the routes to the VTEX IO Builder.
 pub enum Routes {
     Link,
 }
 
+/// # Routes implementation
+/// This implementation contains the routes to the Builder.
 impl Routes {
+    /// # Routes::assemble
+    /// This function assembles the routes.
     pub fn assemble(route: Routes) -> String {
         let project = Project::info();
         let env = Environment::info();

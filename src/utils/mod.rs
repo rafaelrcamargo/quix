@@ -1,3 +1,5 @@
+/// # Mod to handle JSON parsing
+/// This module contains functions to parse JSON files.
 pub mod json;
 
 pub mod gzip {

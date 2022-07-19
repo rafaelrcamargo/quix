@@ -80,8 +80,17 @@ fn deep_search(it: &mut dyn Iterator<Item = DirEntry>, prefix: &Path) -> Vec<u8>
         // Write file or directory explicitly
         // Some unzip tools unzip files with directory paths correctly, some do not!
         if path.is_file() {
+            // ? Thats definitely not the beauty way to do this, but it works.
+            // !!! The zip writer in windows devices, uses \\ to separate directories, but when handling it on linux, it uses /, this creates a problem, here we replace it.
+            let mut p = str::replace(&name.to_str().unwrap(), "\\", "/"); // Replace the backslashes with slashes.
+            if p.starts_with('/') {
+                p.remove(0);
+            } // Remove the first '/'
+
+            println!("Adding file: {}", p);
+
             // ? Write the file to the buffer.
-            zip.start_file(name.to_str().unwrap(), options).unwrap();
+            zip.start_file(p, options).unwrap();
             let mut f = File::open(path).unwrap();
 
             /* // ? Minify the file.
@@ -95,7 +104,18 @@ fn deep_search(it: &mut dyn Iterator<Item = DirEntry>, prefix: &Path) -> Vec<u8>
         } else if name.as_os_str().len() != 0 {
             // Only if not root! Avoids path spec / warning
             // and mapname conversion failed error on unzip
-            zip.add_directory(name.to_str().unwrap(), options).unwrap();
+
+            // * Thats definitely not the beauty way to do this, but it works.
+            // ? The zip writer in windows devices, uses \\ to separate directories, but when handling it on linux, it uses /, this creates a problem, here we replace it.
+            let mut p = str::replace(&name.to_str().unwrap(), "\\", "/"); // Replace the backslashes with slashes.
+            if p.starts_with('/') {
+                p.remove(0);
+            } // Remove the first '/' if exists.
+
+            println!("Adding directory: {}", p);
+
+            // ? Write the file to the buffer.
+            zip.add_directory(p, options).unwrap();
         }
     }
 
