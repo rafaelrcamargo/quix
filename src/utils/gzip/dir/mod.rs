@@ -87,8 +87,6 @@ fn deep_search(it: &mut dyn Iterator<Item = DirEntry>, prefix: &Path) -> Vec<u8>
                 p.remove(0);
             } // Remove the first '/'
 
-            println!("Adding file: {}", p);
-
             // ? Write the file to the buffer.
             zip.start_file(p, options).unwrap();
             let mut f = File::open(path).unwrap();
@@ -111,8 +109,6 @@ fn deep_search(it: &mut dyn Iterator<Item = DirEntry>, prefix: &Path) -> Vec<u8>
             if p.starts_with('/') {
                 p.remove(0);
             } // Remove the first '/' if exists.
-
-            println!("Adding directory: {}", p);
 
             // ? Write the file to the buffer.
             zip.add_directory(p, options).unwrap();

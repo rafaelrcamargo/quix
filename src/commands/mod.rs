@@ -19,10 +19,18 @@ use clap::ArgMatches;
 
 // Watcher for the link.
 use notify::{watcher, DebouncedEvent, RecursiveMode, Watcher};
-use std::{env, path::PathBuf, sync::mpsc::channel, time::Duration};
+use serde::Deserialize;
+use std::{env, path::PathBuf, process::exit, sync::mpsc::channel, time::Duration};
 
 // Project modules.
 use crate::{clients::vtex::builder, configs::auth::Session, utils::gzip};
+
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct VTEXErr {
+    code: String,
+    message: String,
+}
 
 /// # Link command.
 /// This command will send the bundle to the builder, and watch the directory for changes.
@@ -49,8 +57,21 @@ pub fn link(args: &ArgMatches) {
 
     // ? Send the file to the builder.
     match builder::link(file, &session.token) {
-        Ok(res) => {
-            println!("{:?}", res.text());
+        Ok(resp) => {
+            if resp.status().is_success() {
+                // => The link was sent to the builder.
+                println!("success!");
+            } else if resp.status().is_server_error() {
+                let error: VTEXErr = resp.json().unwrap();
+                // !!! Panic if the response is not a success.
+                println!("{:?}: {}", error.code, error.message);
+                exit(exitcode::TEMPFAIL);
+            } else {
+                let error: VTEXErr = resp.json().unwrap();
+                // !!! Panic if the response is not a success.
+                println!("{:?}: {}", error.code, error.message);
+                exit(exitcode::UNAVAILABLE);
+            }
         }
         Err(e) => {
             println!("{:?}", e);

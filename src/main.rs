@@ -34,11 +34,21 @@ mod utils; // Utility functions, like the JSON parser.
 mod json; // Exports the JSON parser, for an easier use.
 
 // * Import only the used functions.
-use cli::args; // CLI Argument + Commands
+use cli::args;
+
+// * General utils
+use human_panic::setup_panic; // CLI Argument + Commands
 
 /// # Main function.
 /// Here we start the CLI, and parse the arguments.
 fn main() {
+    setup_panic!(Metadata {
+        name: env!("CARGO_PKG_NAME").into(),
+        version: env!("CARGO_PKG_VERSION").into(),
+        authors: env!("CARGO_PKG_AUTHORS").into(),
+        homepage: "https://github.com/rafaelrcamargo/quix".into(),
+    });
+
     let matches = args::matches(); // Argument parser, returns a `ArgMatches` struct.
 
     match matches.subcommand() {
