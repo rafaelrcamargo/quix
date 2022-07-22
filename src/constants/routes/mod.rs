@@ -9,13 +9,14 @@
 //! # Panics
 //! This module panics if the `link` route is not found.
 
-use crate::configs::Environment;
 use crate::configs::Project;
+use crate::configs::VTEX;
 
 /// # Routes Struct
 /// This struct contains the routes to the VTEX IO Builder.
 pub enum Routes {
     Link,
+    Relink,
 }
 
 /// # Routes implementation
@@ -25,19 +26,26 @@ impl Routes {
     /// This function assembles the routes.
     pub fn assemble(route: Routes) -> String {
         let project = Project::info();
-        let env = Environment::info();
+        let env = VTEX::info();
 
         let base = format!(
             "https://app.io.vtex.com/vtex.builder-hub/v0/{}/{}/_v/builder/0/",
-            project.vendor, env.current_workspace,
+            project.vendor, env.workspace,
         );
-        let path = format!(
+
+        let link_path = format!(
             "link/{}.{}@{}?tsErrorsAsWarnings=false",
             project.vendor, project.name, project.version
         );
 
+        let relink_path = format!(
+            "relink/{}.{}@{}?tsErrorsAsWarnings=false",
+            project.vendor, project.name, project.version
+        );
+
         match route {
-            Routes::Link => return format!("{}{}", base, path),
+            Routes::Link => return format!("{}{}", base, link_path),
+            Routes::Relink => return format!("{}{}", base, relink_path),
         }
     }
 }

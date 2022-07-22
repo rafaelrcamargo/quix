@@ -37,11 +37,19 @@ mod json; // Exports the JSON parser, for an easier use.
 use cli::args;
 
 // * General utils
-use human_panic::setup_panic; // CLI Argument + Commands
+use human_panic::setup_panic; // Human panic, for a better error handling.
+
+// * Better logging.
+use log4rs;
+
+// * Extends log macros for all files.
+#[macro_use]
+extern crate log;
 
 /// # Main function.
 /// Here we start the CLI, and parse the arguments.
 fn main() {
+    // !!! Setup the panic handler.
     setup_panic!(Metadata {
         name: env!("CARGO_PKG_NAME").into(),
         version: env!("CARGO_PKG_VERSION").into(),
@@ -49,8 +57,13 @@ fn main() {
         homepage: "https://github.com/rafaelrcamargo/quix".into(),
     });
 
-    let matches = args::matches(); // Argument parser, returns a `ArgMatches` struct.
+    // ? Setup the logger.
+    log4rs::init_file("logger.yml", Default::default()).unwrap();
 
+    // ? Argument parser, returns a `ArgMatches` struct.
+    let matches = args::matches();
+
+    // * Parse the arguments.
     match matches.subcommand() {
         Some(("link", args)) => commands::link(args), // Link subcommand.
         _ => unreachable!("Invalid entry."), // Shouldn't happen, but just in case, who knows?

@@ -23,7 +23,11 @@ use serde::Deserialize;
 use std::{env, path::PathBuf, process::exit, sync::mpsc::channel, time::Duration};
 
 // Project modules.
-use crate::{clients::vtex::builder, configs::auth::Session, utils::gzip};
+use crate::{
+    clients::vtex::builder::{self, RelinkBody},
+    configs::VTEX,
+    utils::{b64, gzip},
+};
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -49,40 +53,42 @@ pub fn link(args: &ArgMatches) {
     let path = env::current_dir().unwrap(); // TODO: Get the path to the actual folder where the app is located, to watch.
 
     // ? Instantiate a user session.
-    let session = Session::new();
+    let session = VTEX::info();
 
     // For the first link command, we need to create a new zip file, with all the files in the folder.
     // ? Create a new zip file.
-    let file = gzip::dir::zip(&path).unwrap();
+    let file = gzip::zip(&path).unwrap();
 
     // ? Send the file to the builder.
     match builder::link(file, &session.token) {
         Ok(resp) => {
             if resp.status().is_success() {
                 // => The link was sent to the builder.
-                println!("success!");
+                info!("Successfully sent the bundle to the builder.");
             } else if resp.status().is_server_error() {
                 let error: VTEXErr = resp.json().unwrap();
                 // !!! Panic if the response is not a success.
-                println!("{:?}: {}", error.code, error.message);
+                error!("{:?}: {}", error.code, error.message);
                 exit(exitcode::TEMPFAIL);
             } else {
                 let error: VTEXErr = resp.json().unwrap();
                 // !!! Panic if the response is not a success.
-                println!("{:?}: {}", error.code, error.message);
+                error!("{:?}: {}", error.code, error.message);
                 exit(exitcode::UNAVAILABLE);
             }
         }
         Err(e) => {
-            println!("{:?}", e);
+            error!("{:?}", e);
         }
     }
 
     // ? Args parsing.
     if args.is_present("clean") {
-        println!("Cleaning project cache...");
+        info!("Cleaning project cache...");
+        warn!("This feature can cause the CLI to run slower, only use when really necessary.");
     } else if args.is_present("quicker") {
-        println!("Linking app quicker...");
+        info!("Linking your project quicker...");
+        warn!("This feature still under development, and can cause some issues. Use it carefully.");
     }
 
     // * * * Starts the watcher, in the current project folder. * * *
@@ -98,7 +104,7 @@ pub fn link(args: &ArgMatches) {
         // ? The watcher loop will run until the CLI receives a user interruption.
         match receiver.recv() {
             // ? Notify the user of the event.
-            Ok(DebouncedEvent::NoticeWrite(path)) => println!("Notice write: {:?}", path),
+            Ok(DebouncedEvent::NoticeWrite(path)) => info!("Notice write: {:?}", path),
 
             // ? Common handling for all events.
             Ok(DebouncedEvent::Write(path)) => event(&path, session.token.as_str()),
@@ -119,15 +125,51 @@ pub fn link(args: &ArgMatches) {
 
 fn event(path: &PathBuf, token: &str) {
     // ? Zip the file, using the zip utils.
-    let file = gzip::file::zip(path);
+    let file = b64::encode(path);
+    let size = file.len();
+
+    let final_path = path.to_str().unwrap().to_string();
+
+    let relative_path = final_path
+        .split(env::current_dir().unwrap().to_str().unwrap())
+        .collect::<Vec<&str>>()[1];
+
+    // * Thats definitely not the beauty way to do this, but it works.
+    // ? The zip writer in windows devices, uses \\ to separate directories, but when handling it on linux, it uses /, this creates a problem, here we replace it.
+    let mut p = str::replace(&relative_path, "\\", "/"); // Replace the backslashes with slashes.
+    if p.starts_with('/') {
+        p.remove(0);
+    } // Remove the first '/' if exists.
+
+    let body = RelinkBody {
+        content: file,
+        byte_size: size,
+        path: p,
+    };
 
     // ? Send the file to the builder.
-    match builder::link(file, token) {
-        Ok(res) => {
-            println!("{:?}", res.text());
+    match builder::relink(body, token) {
+        Ok(resp) => {
+            if resp.status().is_success() {
+                // => The link was sent to the builder.
+                println!("{:?}", resp);
+                println!("{:?}", resp.text());
+                info!("Successfully sent the bundle to the builder.");
+            } else if resp.status().is_server_error() {
+                let error: VTEXErr = resp.json().unwrap();
+                // !!! Panic if the response is not a success.
+                error!("{:?}: {}", error.code, error.message);
+                exit(exitcode::TEMPFAIL);
+            } else {
+                let error: VTEXErr = resp.json().unwrap();
+                // !!! Panic if the response is not a success.
+                error!("{:?}: {}", error.code, error.message);
+                exit(exitcode::UNAVAILABLE);
+            }
         }
         Err(e) => {
-            println!("{:?}", e);
+            error!("{:?}", e);
+            exit(exitcode::USAGE);
         }
     }
 }

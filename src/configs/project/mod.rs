@@ -46,7 +46,7 @@ impl Project {
             Ok(path) => {
                 project = get_project(path);
             }
-            Err(e) => println!("{}", e),
+            Err(e) => error!("{}", e),
         }
 
         return project;

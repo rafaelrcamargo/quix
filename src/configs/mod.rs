@@ -14,9 +14,5 @@ pub mod project;
 pub use project::Project;
 
 /// # Auth module, used to store authentication information.
-pub mod auth;
-pub use auth::Session;
-
-/// # Environment struct, used to store environment information.
-pub mod env;
-pub use env::Environment;
+pub mod vtex;
+pub use vtex::VTEX;

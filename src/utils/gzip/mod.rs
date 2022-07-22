@@ -122,7 +122,7 @@ fn deep_search(it: &mut dyn Iterator<Item = DirEntry>, prefix: &Path) -> Vec<u8>
     return buf; // * Return the buffer, witch has the bytes of the zip file.
 }
 
-/// # Minify the file.
+/* /// # Minify the file.
 /// This function will minify the file, and write it to the buffer.
 /// - It will return the buffer.
 ///
@@ -130,7 +130,6 @@ fn deep_search(it: &mut dyn Iterator<Item = DirEntry>, prefix: &Path) -> Vec<u8>
 /// ```
 /// let min = minify(path, &mut f, &mut buffer);
 /// ```
-#[allow(dead_code)] // While this is not implemented, dead_code suppresses the warning.
 fn minify(path: &Path, f: &mut File, buffer: &mut Vec<u8>) {
     let ext = path.extension().unwrap().to_str().unwrap();
 
@@ -166,8 +165,9 @@ fn minify(path: &Path, f: &mut File, buffer: &mut Vec<u8>) {
         }
     } else {
         match f.read_to_end(buffer) {
-            Ok(_) => println!("File skipped: {}", path.to_str().unwrap()),
+            Ok(_) => debug!("File skipped: {}", path.to_str().unwrap()),
             Err(e) => panic!("Minifier - ERROR: {:?}", e),
         }
     }
 }
+ */
