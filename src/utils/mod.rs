@@ -1,8 +1,7 @@
 /// # Mod to handle JSON parsing
 /// This module contains functions to parse JSON files.
-pub mod json;
-
 pub mod b64;
+pub mod json;
 
 pub mod gzip;
 // ? Debug zip file:

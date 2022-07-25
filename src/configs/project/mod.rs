@@ -14,16 +14,16 @@ use crate::json;
 
 use serde::Deserialize;
 
-use std::{env, fs::File, path::PathBuf};
+use std::{env, fs::File, path::PathBuf, process::exit};
 
 /// # Project struct.
 /// This struct will contain the project data.
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Project {
-    pub vendor: String,    // Vendor name
-    pub name: String,      // Project name
-    pub version: String,   // Project version
+    pub vendor: String,  // Vendor name
+    pub name: String,    // Project name
+    pub version: String, // Project version
 }
 
 /// # Implements the `Project` and define the **info** method.
@@ -35,7 +35,7 @@ pub struct Project {
 /// ```
 impl Project {
     pub fn info() -> Project {
-        let mut project: Project = Project {
+        let project: Project = Project {
             vendor: String::new(),
             name: String::new(),
             version: String::new(),
@@ -43,9 +43,15 @@ impl Project {
 
         // ? Get the project directory
         match env::current_dir() {
-            Ok(path) => {
-                project = get_project(path);
-            }
+            Ok(path) => match get_project(path) {
+                Ok(project) => {
+                    return project;
+                }
+                Err(e) => {
+                    error!("Project info failed: {:?}", e);
+                    exit(exitcode::CONFIG);
+                }
+            },
             Err(e) => error!("{}", e),
         }
 
@@ -59,14 +65,26 @@ impl Project {
 /// # Panics
 /// This function will panic if the manifest file is not found.
 /// If the file cannot be parsed correctly, this function will panic.
-pub fn get_project(path: PathBuf) -> Project {
+pub fn get_project(path: PathBuf) -> Result<Project, ()> {
     // ? Join current path + `manifest.json` file
     let path = path.join("manifest.json");
 
     // ? Tries to open the file
     match File::open(path) {
         // * File exists
-        Ok(file) => json::read(file),
+        Ok(file) => {
+            match json::read(file) {
+                // * File is properly formatted
+                Ok(manifest) => {
+                    return Ok(manifest);
+                }
+                // * File is not properly formatted
+                Err(e) => {
+                    error!("JSON Error during parsing: {:?}", e);
+                    exit(exitcode::UNAVAILABLE)
+                }
+            }
+        }
         // ! Wasn't able to open the file
         Err(_) => panic!("No manifest file found."),
     }

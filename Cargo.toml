@@ -1,20 +1,20 @@
 [package]
 edition = "2021"
 name = "quix"
-version = "0.1.0"
+version = "0.0.1"
 
 [dependencies]
 base64 = "0.13.0"
 clap = "3.2.8"
+eventsource = "0.5.0"
 exitcode = "1.1.2"
 home = "0.5.3"
 human-panic = "1.0.3"
-log = "0.4.17"
-log4rs = "1.1.1"
 # minifier = "0.2.1"
 notify = "4.0.17"
-reqwest = {version = "0.11.11", features = ["blocking", "json"]}
+reqwest = {version = "0.10.4", features = ["blocking", "json"]}
 serde = {version = "1.0.139", features = ["derive"]}
 serde_json = "1.0.82"
 walkdir = "2.3.2"
 zip = "0.6.2"
+loggy = { path = "./libs/loggy" }

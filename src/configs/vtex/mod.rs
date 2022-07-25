@@ -14,7 +14,7 @@
 
 use crate::json;
 use serde::Deserialize;
-use std::{fs::File, path::PathBuf};
+use std::{fs::File, path::PathBuf, process::exit};
 
 /// # VTEX struct.
 /// Here we set the `VTEX` struct, which is used for the authentication all over the app.
@@ -52,9 +52,19 @@ impl VTEX {
 
         // ? Get the home directory
         match home::home_dir() {
-            Some(path) => {
-                vtex = get_session(path);
-            }
+            Some(path) => match get_session(path) {
+                Ok(session) => {
+                    vtex = session;
+                }
+                Err(e) => {
+                    error!(
+                        "We ran into an error searching for the VTEX session: {:?}",
+                        e
+                    );
+                    help!("Check if the VTEX CLI is installed and if your login and authentication token are set.");
+                    exit(exitcode::UNAVAILABLE);
+                }
+            },
             None => error!("No home directory found."),
         }
 
@@ -68,15 +78,21 @@ impl VTEX {
 /// # Panics
 /// This function will panic if the vtex file is not found.
 /// This is because the CLI will not be able to authenticate with the VTEX API.
-pub fn get_session(path: PathBuf) -> VTEX {
+pub fn get_session(path: PathBuf) -> Result<VTEX, ()> {
     // ? Join `home` path + `.vtex` path + `vtex.json` file
     let path = path.join(".config/configstore/vtex.json");
 
     // ? Tries to open the file
     match File::open(path) {
         // * File exists
-        Ok(file) => json::read(file),
+        Ok(file) => {
+            return json::read(file);
+        }
         // ! Wasn't able to open the file
-        Err(_) => panic!("No vtex file found."),
+        Err(_) => {
+            error!("No VTEX session found.");
+            help!("Login to your account using the VETX CLI, then try again.");
+            exit(exitcode::UNAVAILABLE)
+        }
     }
 }
