@@ -1,0 +1,64 @@
+:global(.vtex-account){
+    max-width: 1250px;
+    margin: 0 auto;
+}
+
+.userName,
+ .userGreeting{
+    font-weight: bold;
+    color: #000000;
+}
+.userInfo{
+    flex-wrap: nowrap;
+}
+
+.menuLinks :global(.vtex-account_menu-link):focus,
+.menuLinks :global(.vtex-account_menu-link):hover{
+    font-weight: bold;
+    color: #000000;
+}
+
+@media(max-width: 991px) {
+  .addressBox {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
+.dataEntryLabel,.newsletterContainerTitle{
+    font-size: 12px;
+    font-weight: bold;
+    color: #000000;
+}
+.dataEntryChildren,
+.newsletterContainerMessage,
+.passwordBox
+{
+    font-size: 13px;
+    color: #707070;
+}
+
+.boxContainerFooter :global(.vtex-button__label){
+    color: #000000;
+    font-size: 11px;
+    font-weight: bold;
+    text-decoration: underline;
+}
+:global(.vtex-pageHeader__title){
+    font-size: 24px;
+    font-weight: bold;
+    color: #000000;
+}
+
+:global(.vtex-pageHeader__children .vtex-button){
+    background-color: #000000;
+    border: 1px solid #000000;
+    border-radius: 0px ;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+:global(.vtex-pageHeader-link__container .vtex-button){
+    color: #000000;
+
+}

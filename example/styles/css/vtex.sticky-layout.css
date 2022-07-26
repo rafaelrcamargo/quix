@@ -1,0 +1,4 @@
+.wrapper--search-header-mobile--stuck {
+  z-index: -1;
+  box-shadow: none !important;
+}

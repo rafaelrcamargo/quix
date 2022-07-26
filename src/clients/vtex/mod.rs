@@ -22,3 +22,14 @@ pub fn new(token: &str) -> Client {
         .build()
         .unwrap();
 }
+
+pub fn new_with_headers(token: &str, headers: &HeaderMap) -> Client {
+    let mut headers = headers.clone();
+    headers.insert(AUTHORIZATION, format!("Bearer {}", token).parse().unwrap());
+    headers.insert(ACCEPT, "application/json, text/plain, */*".parse().unwrap());
+
+    return reqwest::blocking::Client::builder()
+        .default_headers(headers)
+        .build()
+        .unwrap();
+}

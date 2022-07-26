@@ -1,0 +1,46 @@
+
+.flexRow--homeList {
+  max-width: 1252;
+  margin: 0 auto;
+  margin-top: 80px;
+}
+
+.flexCol--homeList,
+.stretchChildrenWidth--homeList {
+  background-color: #a79473;
+  padding: 130px 20px;
+}
+.flexRowContent--banner-full{
+  max-width: 1920px;
+  margin: 0 auto;
+}
+@media (max-width: 450px) {
+  .flexCol--homeList,
+  .stretchChildrenWidth--homeList {
+    padding: 60px 20px;
+  }
+  .flexRow--container-shelf {
+    margin-top: 90px !important;
+  }
+}
+
+.flexRow--home-banner-mini {
+  max-width: 1252px;
+  margin: 0 auto;
+  margin-top: 80px;
+}
+
+.flexRow--home-banner-mini
+  :global(.vtex-flex-layout-0-x-stretchChildrenWidth):first-child {
+  margin-right: 30px;
+}
+
+.flexColChild--homeListBanner {
+  position: relative;
+  overflow: hidden;
+}
+
+.flexRow--banner-full :global(.vtex-store-components-3-x-container) {
+  width: 100%;
+  max-width: unset;
+}

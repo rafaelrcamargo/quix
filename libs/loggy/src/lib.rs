@@ -22,7 +22,7 @@
 use colored::{ColoredString, Colorize};
 use colored_json::{Color, ColorMode, Styler, ToColoredJson};
 use serde_json::Value;
-use std::fmt;
+use std::{fmt, process::exit};
 
 /// # Level enum.
 /// This enum is used to define the level of the message.
@@ -61,7 +61,7 @@ impl fmt::Display for Level {
 }
 
 /// The standard logging function.
-pub fn log(level: Level, message: fmt::Arguments) {
+pub fn log(level: Level, message: fmt::Arguments) -> () {
     // ? Logging date and time.
     let date = chrono::offset::Local::now(); // Get the current date.
     let date = date.format("%H:%M:%S").to_string(); // Format the date.
@@ -71,6 +71,11 @@ pub fn log(level: Level, message: fmt::Arguments) {
     let message = normalize_message(message.to_string(), &level); // Normalize + format the message.
 
     println!("{} | {} | {}", date, level, message);
+
+    match level {
+        Level::Error => exit(exitcode::UNAVAILABLE),
+        _ => (),
+    }
 }
 
 /// The custom logging function.

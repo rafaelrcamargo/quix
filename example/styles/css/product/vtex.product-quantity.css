@@ -1,0 +1,58 @@
+.quantitySelectorContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 40px;
+    gap: 16px;
+    margin-bottom: 8px;
+
+  }
+  .quantitySelectorTitle {
+    margin: 0;
+    color: #25282a;
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+
+  .quantitySelectorTitle::after{
+    content: " :";
+  }
+
+  .quantitySelectorContainer :global(.vtex-numeric-stepper__minus-button),
+  .quantitySelectorContainer :global(.vtex-numeric-stepper__plus-button) {
+
+    font-size: 20px;
+    font-weight: bold;
+    color: #A79473;
+  }
+  .quantitySelectorContainer :global(.vtex-numeric-stepper__minus-button):hover,
+.quantitySelectorContainer :global(.vtex-numeric-stepper__plus-button):hover {
+  color: #A79473;
+}
+.quantitySelectorContainer :global(.vtex-numeric-stepper__minus-button):active,
+.quantitySelectorContainer :global(.vtex-numeric-stepper__plus-button):active {
+  color: #A79473;
+}
+
+.quantitySelectorContainer
+  :global(.vtex-numeric-stepper__minus-button):disabled {
+  background-color: #fff;
+  cursor: no-drop;
+}
+
+.quantitySelectorContainer :global(.vtex-numeric-stepper-wrapper){
+
+  border-radius: 3px;
+}
+
+.quantitySelectorContainer :global(.vtex-styleguide-9-x-hideDecorators){
+  border-right: none;
+  border-left: none;
+  width: 24px;
+  font-size: 11px;
+  text-align: center;
+}
+
+.quantitySelectorContainer :global(.vtex-styleguide-9-x-hideDecorators):focus{
+  border: none;
+}

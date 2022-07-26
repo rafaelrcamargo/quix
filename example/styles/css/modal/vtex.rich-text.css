@@ -1,0 +1,12 @@
+.wrapper--lgpdPopUpText :first-child {
+  margin-bottom: 29px;
+}
+
+.paragraph--lgpdPopUpText,
+.paragraph--lgpdPopUpText .link--lgpdPopUpText {
+  color: #000000;
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 1.85px;
+  line-height: 20px;
+}

@@ -1,0 +1,57 @@
+.installments--summary,
+.currencyContainer--summary {
+  text-align: center;
+  color: #787878;
+  font-size: 12px;
+  line-height: 16px;
+}
+.installments--summary {
+  margin: 0;
+}
+
+.installments--summary .installmentValue--summary .currencyContainer--summary {
+  text-align: center;
+  color: #787878;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  text-transform: uppercase;
+}
+.listPriceValue--summary {
+  width: 100%;
+  min-height: 16px;
+}
+
+.listPriceValue--summary .currencyContainer--summary {
+  font-size: 12px;
+  line-height: 16px;
+  color: #787878;
+  font-weight: 400;
+  margin: 0 auto;
+  display: inline-block;
+  text-decoration: line-through;
+  width: 100%;
+}
+
+:global(.vtex-flex-layout-0-x-flexRow--price-shelf) .savings--percent-discount {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #cc4f38;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: bold;
+  margin-top: 0;
+}
+.sellingPrice--summary .currencyContainer--summary {
+  font-size: 16px;
+  line-height: 21px;
+  font-weight: bold;
+  color: #141414;
+}
+.installments--summary {
+  margin-top: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

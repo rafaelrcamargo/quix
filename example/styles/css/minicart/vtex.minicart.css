@@ -1,0 +1,84 @@
+.minicartTitle::before {
+  content: "Minha Sacola";
+  margin-right: 4px;
+  font-size: 12px;
+}
+
+.minicartContainer :global(.vtex-button__label){
+  padding-left: 0px;
+  padding-right: 0px;
+}
+.minicartTitle {
+  font-weight: 700;
+  font-size: 0px;
+  letter-spacing: 0.1em;
+  text-align: left;
+  color: #141414;
+  text-transform: uppercase;
+}
+
+.minicartCheckoutButton :global(.vtex-button) {
+  background-color: #141414;
+  font-weight: normal;
+  font-size: 12px;
+  text-align: center;
+  color: #fff;
+  text-transform: uppercase;
+  border: 0;
+  border-radius: 0;
+}
+
+.cartIcon {
+  color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg id='shopping-bag_1_' data-name='shopping-bag (1)' xmlns='http://www.w3.org/2000/svg' width='27.938' height='30.752' viewBox='0 0 27.938 30.752'%3E%3Cg id='Grupo_4920' data-name='Grupo 4920' transform='translate(0)'%3E%3Cpath id='Caminho_21' data-name='Caminho 21' d='M42.624,29.986l-2.3-21.408a.7.7,0,0,0-.689-.613H35.386v-1.3a6.664,6.664,0,0,0-13.327,0v1.3H17.693A.7.7,0,0,0,17,8.578l-2.3,21.408a.686.686,0,0,0,.153.536.618.618,0,0,0,.5.23H41.973a.618.618,0,0,0,.5-.23A.686.686,0,0,0,42.624,29.986ZM34.7,11.834a.613.613,0,1,1-.613.613A.6.6,0,0,1,34.7,11.834ZM23.438,6.664a5.285,5.285,0,1,1,10.57,0v1.3H23.438Zm-.689,5.17a.613.613,0,1,1-.613.613A.6.6,0,0,1,22.748,11.834Zm-6.587,17.5L18.306,9.306h3.753V10.57a1.953,1.953,0,1,0,1.3,0V9.306h10.57V10.57a1.953,1.953,0,1,0,1.3,0V9.306h3.906l2.145,20.029Z' transform='translate(-14.696 0)' fill='%23141414'/%3E%3C/g%3E%3C/svg%3E%0A");
+  width: 27.94px;
+  height: 30.75px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: initial;
+
+}
+
+.minicartQuantityBadgeDefault {
+  top: 0;
+  right: -8px;
+  background: #000;
+}
+
+.openIconContainer {
+  padding: 0;
+}
+
+.minicartProductListContainer :global(.vtex-product-list-0-x-productPrice) {
+  font-weight: bold;
+}
+
+.minicartEmptyStateContainer :global(.vtex-rich-text-0-x-paragraph){
+  font-size: 0px;
+}
+.minicartEmptyStateContainer :global(.vtex-rich-text-0-x-paragraph)::after{
+  content: "Sua sacola está vazia";
+  font-size: 14px;
+  color: #a79473;
+}
+.minicartEmptyStateContainer :global(.vtex-store-icons-0-x-cartIcon--minicart-empty-state) :first-child{
+  display: none;
+}
+
+.minicartEmptyStateContainer :global(.vtex-store-icons-0-x-cartIcon--minicart-empty-state){
+  color: #a79473;
+  background-image: url("data:image/svg+xml,%3Csvg id='shopping-bag_1_' data-name='shopping-bag (1)' xmlns='http://www.w3.org/2000/svg' width='27.938' height='30.752' viewBox='0 0 27.938 30.752'%3E%3Cg id='Grupo_4920' data-name='Grupo 4920' transform='translate(0)'%3E%3Cpath id='Caminho_21' data-name='Caminho 21' d='M42.624,29.986l-2.3-21.408a.7.7,0,0,0-.689-.613H35.386v-1.3a6.664,6.664,0,0,0-13.327,0v1.3H17.693A.7.7,0,0,0,17,8.578l-2.3,21.408a.686.686,0,0,0,.153.536.618.618,0,0,0,.5.23H41.973a.618.618,0,0,0,.5-.23A.686.686,0,0,0,42.624,29.986ZM34.7,11.834a.613.613,0,1,1-.613.613A.6.6,0,0,1,34.7,11.834ZM23.438,6.664a5.285,5.285,0,1,1,10.57,0v1.3H23.438Zm-.689,5.17a.613.613,0,1,1-.613.613A.6.6,0,0,1,22.748,11.834Zm-6.587,17.5L18.306,9.306h3.753V10.57a1.953,1.953,0,1,0,1.3,0V9.306h10.57V10.57a1.953,1.953,0,1,0,1.3,0V9.306h3.906l2.145,20.029Z' transform='translate(-14.696 0)' fill='%23141414'/%3E%3C/g%3E%3C/svg%3E%0A");
+  width: 27.94px;
+  height: 30.75px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: initial;
+}
+.closeIcon{
+  color: #25282A;
+}
+@media(max-width: 639px){
+  .minicartWrapperContainer{
+    width: 43px;
+  }
+}

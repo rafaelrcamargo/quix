@@ -1,0 +1,49 @@
+.contentContainer--quickviewContent :global(.vtex-product-price-1-x-sellingPriceValue) {
+  color: #000000;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: bold;
+}
+
+.contentContainer--quickviewContent :global(.vtex-product-price-1-x-installments) {
+  color: #000000;
+  font-size: 13px;
+  line-height: 26px;
+  margin-bottom: 23px;
+  display: block;
+}
+.contentContainer--quickviewContent :global(.vtex-product-price-1-x-installmentsNumber) {
+  font-weight: bold;
+}
+.contentContainer--quickviewContent :global(.vtex-product-price-1-x-installmentValue) {
+  font-weight: bold;
+}
+
+:global(.vtex-numeric-stepper__plus-button),
+:global(.vtex-numeric-stepper__minus-button),
+:global(.vtex-numeric-stepper__input) {
+  border: 0px;
+  width: 29px !important;
+}
+:global(.vtex-numeric-stepper__minus-button),
+:global(.vtex-numeric-stepper__plus-button) {
+  color: #a79473;
+}
+:global(.vtex-numeric-stepper__minus-button):hover,
+:global(.vtex-numeric-stepper__plus-button):hover {
+  color: #a79473;
+}
+:global(.vtex-numeric-stepper__minus-button):active,
+:global(.vtex-numeric-stepper__plus-button):active {
+  color: #a79473;
+}
+
+:global(.vtex-numeric-stepper-container) {
+  border: 1px solid #eeeeee;
+  border-radius: 3px;
+  width: 89px;
+}
+
+:global(.vtex-numeric-stepper__input) {
+  padding: 0;
+}

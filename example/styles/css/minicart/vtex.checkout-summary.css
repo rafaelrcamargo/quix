@@ -1,0 +1,22 @@
+.summarySmallDisclaimer {
+  display: none;
+}
+.summaryItemLabel,
+.price {
+  font-weight: normal;
+  font-size: 12px;
+  color: #141414;
+}
+
+.drawerContent .closeIcon {
+  display: none;
+}
+
+.drawerContent .closeIconButton {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20.146' height='19.164' viewBox='0 0 20.146 19.164'%3E%3Cg transform='translate(-509.38 -1399.38)'%3E%3Cline x2='15.906' y2='14.924' transform='translate(511.5 1401.5)' fill='none' stroke='%23000' stroke-linecap='round' stroke-width='3'/%3E%3Cline x1='15.906' y2='14.924' transform='translate(511.5 1401.5)' fill='none' stroke='%23000' stroke-linecap='round' stroke-width='3'/%3E%3C/g%3E%3C/svg%3E");
+  width: 20px;
+  height: 20px;
+  background-size: 20px;
+  background-position: center;
+}
+

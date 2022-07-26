@@ -1,9 +1,15 @@
 /// # Mod to handle JSON parsing
 /// This module contains functions to parse JSON files.
-pub mod b64;
 pub mod json;
 
+/// # Mod to handle Base64 encoding/decoding
+/// This module contains functions to encode and decode Base64 strings.
+pub mod b64;
+
+/// # Mod to handle gzip compression to bytes
+/// This module contains functions to compress files into bytes.
 pub mod gzip;
+
 // ? Debug zip file:
 /* {
     debug!("Write: {:?}", file);

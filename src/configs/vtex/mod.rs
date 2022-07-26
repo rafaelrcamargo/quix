@@ -14,7 +14,16 @@
 
 use crate::json;
 use serde::Deserialize;
-use std::{fs::File, path::PathBuf, process::exit};
+use serde_json::Value;
+use std::{
+    fs::File,
+    io::{Read, Write},
+    path::PathBuf,
+};
+
+use super::Project;
+
+use serde_json::json;
 
 /// # VTEX struct.
 /// Here we set the `VTEX` struct, which is used for the authentication all over the app.
@@ -57,18 +66,95 @@ impl VTEX {
                     vtex = session;
                 }
                 Err(e) => {
+                    help!("Check if the VTEX CLI is installed and if your login and authentication token are set.");
                     error!(
                         "We ran into an error searching for the VTEX session: {:?}",
                         e
                     );
-                    help!("Check if the VTEX CLI is installed and if your login and authentication token are set.");
-                    exit(exitcode::UNAVAILABLE);
                 }
             },
             None => error!("No home directory found."),
         }
 
-        return vtex;
+        vtex
+    }
+
+    pub fn raw_info() -> Result<Value, ()> {
+        // ? Get the home directory
+        match home::home_dir() {
+            Some(path) => {
+                // ? Join `home` path + `.vtex` path + `vtex.json` file
+                let path = path.join(".config/configstore/vtex.json");
+                // ? Read the file to a string
+                let mut file = File::open(path).unwrap();
+                let mut contents = String::new();
+                file.read_to_string(&mut contents).unwrap();
+                let input = contents.as_str();
+
+                Ok(serde_json::from_str(input).unwrap())
+            }
+            None => Err(error!("No home directory found.")),
+        }
+    }
+
+    pub fn set_sticky_host(host: &str) {
+        // ? Create a new Project config.
+        let project = Project::info().unwrap();
+
+        // ? Get the home directory
+        match home::home_dir() {
+            Some(path) => {
+                // ? Join `home` path + `.vtex` path + `vtex.json` file
+                let path = path.join(".config/configstore/vtex.json");
+
+                // ? Read the file to a string
+                let mut file = File::open(&path).unwrap();
+                let mut contents = String::new();
+                file.read_to_string(&mut contents).unwrap();
+                let input = contents.as_str();
+
+                // ? Convert the string to a json object.
+                let mut vtex: Value = serde_json::from_str(input).unwrap();
+                let sticky_obj = vtex
+                    .get("apps")
+                    .and_then(|value| value.get(&project.vendor))
+                    .and_then(|value| value.get(&project.name))
+                    .and_then(|value| value.get("sticky-host"));
+
+                // ? Change the sticky host, to the new one.
+                if let Some(_sticky_host) = sticky_obj {
+                    vtex.get_mut("apps")
+                        .and_then(|value| value.get_mut(&project.vendor))
+                        .and_then(|value| value.get_mut(&project.name))
+                        .and_then(|value| value.get_mut("sticky-host"))
+                        .and_then(|value| Some(*value = host.into()));
+                    let vtex = serde_json::to_string(&vtex).unwrap();
+                    let mut file = File::create(&path).unwrap();
+                    file.write_all(vtex.as_bytes()).unwrap();
+                } else {
+                    vtex.get_mut("apps").and_then(|value| {
+                        Some(
+                            *value = json!({
+                                project.vendor: {
+                                    project.name: {
+                                        "sticky-host": {
+                                            "stickyHost": host,
+                                            "lastUpdated": 0,
+                                        }
+                                    }
+                                }
+                            }),
+                        )
+                    });
+
+                    // Write vtex to file.
+                    let vtex = serde_json::to_string(&vtex).unwrap();
+                    let mut file = File::create(&path).unwrap();
+                    file.write_all(vtex.as_bytes()).unwrap();
+                }
+            }
+            None => error!("No home directory found."),
+        }
     }
 }
 
@@ -85,14 +171,11 @@ pub fn get_session(path: PathBuf) -> Result<VTEX, ()> {
     // ? Tries to open the file
     match File::open(path) {
         // * File exists
-        Ok(file) => {
-            return json::read(file);
-        }
+        Ok(file) => json::read(file),
         // ! Wasn't able to open the file
         Err(_) => {
-            error!("No VTEX session found.");
             help!("Login to your account using the VETX CLI, then try again.");
-            exit(exitcode::UNAVAILABLE)
+            Err(error!("No VTEX session found."))
         }
     }
 }

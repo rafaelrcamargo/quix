@@ -1,0 +1,263 @@
+/* Header */
+
+.flexRowContent--menu-link,
+.flexRowContent--main-header {
+  padding: 0 0.5rem;
+}
+/* / Quickview / */
+.flexCol--quickviewDetails-styled{
+  max-width: 450px;
+}
+
+
+@media screen and (min-width: 40em) {
+  .flexRowContent--menu-link,
+  .flexRowContent--main-header {
+    padding: 0 1rem;
+  }
+}
+@media screen and (min-width: 80rem) {
+  .flexRowContent--menu-link,
+  .flexRowContent--main-header {
+    padding: 0 0.25rem;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .flexRow--header {
+    background-color: #fff;
+    padding-top: 0.3rem;
+  }
+
+  .flexRow--main-menu {
+    background-color: #fff;
+    width: 100%;
+  }
+
+  .flexRowContent--main-menu {
+    max-width: calc(1252px + 30px);
+    margin: 0 auto;
+    padding-right: 15px;
+    padding-left: 15px;
+    position: relative;
+  }
+
+  .submenuWrapper {
+    width: 100%;
+  }
+
+  .flexRowContent--bannerImgPrincipal {
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    right: 0;
+    top: 0;
+  }
+
+  .menuContainer--drop-category {
+    position: relative;
+  }
+
+  .menuContainerNav--drop-category {
+    position: absolute;
+    right: 0;
+    top: 49px;
+  }
+
+  .flexRowContent--drop-category {
+    flex-direction: column;
+    height: 210px;
+    flex-wrap: wrap;
+  }
+
+  .flexRowContent--menu-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .flexColChild--formContato
+    :global(.vtex-styleguide-9-x-dropdown)
+    :global(.vtex-dropdown__button) {
+    height: 100%;
+    width: 100%;
+  }
+
+  .flexRowContent--header {
+    position: relative;
+    background-color: #fff !important;
+    box-shadow: none !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    max-width: calc(1252px + 15px);
+    margin: 0 auto;
+    padding-right: 15px;
+    padding-left: 15px;
+    align-items: center;
+  }
+
+    .vtex-flex-layout-0-x-flexRowContent--main-header {
+    background-color: #fff;
+    box-shadow: none;
+  }
+}
+
+.flexRowContent--menu-link {
+  background-color: #03044e;
+  color: #fff;
+}
+
+.flexRowContent--header {
+  background-color: #fff;
+}
+
+.flexRowContent--main-header-mobile {
+  align-items: center;
+  padding: 0.625rem 0.5rem;
+  background-color: #f0f0f0;
+}
+
+.flexRowContent--menu-link :global(.vtex-menu-2-x-styledLink) {
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.flexRowContent--main-header :global(.vtex-menu-2-x-styledLink) {
+  color: #727273;
+  font-size: 14px;
+}
+.flexRow--deals {
+  background-color: #a79473;
+  padding: 7px 0;
+}
+
+.flexRow--deals .stretchChildrenWidth {
+  align-items: center;
+}
+
+.flexRow--deals .flexCol {
+  align-items: center;
+}
+
+.flexCol--filterCol {
+  max-width: 500px;
+  min-width: 230px;
+}
+
+.flexCol--productCountCol {
+  align-items: flex-start;
+}
+
+.flexCol--orderByCol {
+  align-items: flex-end;
+}
+
+.flexCol--orderByMobileCol {
+  width: 42%;
+}
+
+.flexCol--filterMobileCol {
+  width: 38%;
+}
+
+.flexColChild--quickviewDetails:first-child {
+  overflow-y: auto;
+  height: 66% !important;
+  overflow-x: hidden;
+}
+
+.flexColChild--quickviewDetails:last-child {
+  height: 34% !important;
+}
+
+.flexRow--addToCartRow {
+  padding-bottom: 1rem;
+}
+
+/* Search */
+
+.flexRow--orderByAndSwitcher {
+  padding-right: 1.5em;
+}
+
+.flexRowContent--savingsSummaryListDesktop {
+  justify-content: flex-start;
+}
+
+.flexCol--summaryRightListDesktop {
+  justify-content: space-around;
+}
+
+.flexRow--buyNowButton :global(.vtex-button) {
+  background: #eef3f7;
+  border-color: #eef3f7;
+  color: #0f3e99;
+}
+
+.flexRow--buyNowButton:hover :global(.vtex-button) {
+  background: #dbe9fd;
+  border-color: #dbe9fd;
+}
+
+.flexCol--productRating {
+  margin-bottom: 3rem;
+}
+
+.flexCol--summaryDetailsListMobile {
+  justify-content: space-between;
+}
+
+.flexCol--summaryUpDetailsListMobile {
+  margin-bottom: 0.25rem;
+}
+
+/* Product Specfications */
+
+.flexRow--productSpecificationGroup:not(:first-child) {
+  margin-top: 1.5rem;
+}
+
+.flexRow--productSpecificationGroupName {
+  background-color: transparent;
+  padding: 0rem 1rem;
+  margin-bottom: 39px;
+}
+
+.flexCol--productSpecificationName {
+  padding: 1rem;
+}
+
+.flexCol--productSpecificationValue {
+  padding: 1rem 1rem 1rem 0;
+}
+
+.flexRow--productSpecification:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+.flexRowContent--topbar-header-mobile {
+  background: #a79473;
+}
+
+.flexColChild :global(.vtex-button) {
+  background: #000;
+  color: #fff;
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+@media only screen and (max-width: 639px) {
+  .flexCol--especificacoes {
+    margin-top: 32px;
+  }
+  .flexRow--productSpecificationGroupName {
+    padding: 0;
+  }
+  .flexCol--productSpecificationName {
+    padding-left: 0;
+  }
+  .flexRow--productSpecification{
+    padding-left: 20px;
+  }
+}

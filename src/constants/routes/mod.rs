@@ -17,6 +17,7 @@ use crate::configs::VTEX;
 pub enum Routes {
     Link,
     Relink,
+    Availability,
 }
 
 /// # Routes implementation
@@ -25,7 +26,7 @@ impl Routes {
     /// # Routes::assemble
     /// This function assembles the routes.
     pub fn assemble(route: Routes) -> String {
-        let project = Project::info();
+        let project = Project::info().unwrap();
         let env = VTEX::info();
 
         let base = format!(
@@ -43,9 +44,15 @@ impl Routes {
             project.vendor, project.name, project.version
         );
 
+        let availability_path = format!(
+            "availability/{}.{}@{}",
+            project.vendor, project.name, project.version
+        );
+
         match route {
-            Routes::Link => return format!("{}{}", base, link_path),
-            Routes::Relink => return format!("{}{}", base, relink_path),
+            Routes::Link => format!("{}{}", base, link_path),
+            Routes::Relink => format!("{}{}", base, relink_path),
+            Routes::Availability => format!("{}{}", base, availability_path),
         }
     }
 }

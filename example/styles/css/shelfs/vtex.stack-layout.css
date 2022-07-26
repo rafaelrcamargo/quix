@@ -1,0 +1,10 @@
+.stackItem--novidade {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  top: auto;
+}
+.stackItem--container-image-shelf--novidade {
+  display: flex;
+  justify-content: center;
+}

@@ -14,7 +14,7 @@ use crate::json;
 
 use serde::Deserialize;
 
-use std::{env, fs::File, path::PathBuf, process::exit};
+use std::{env, fs::File, path::PathBuf};
 
 /// # Project struct.
 /// This struct will contain the project data.
@@ -34,28 +34,15 @@ pub struct Project {
 /// let project = Project::info();
 /// ```
 impl Project {
-    pub fn info() -> Project {
-        let project: Project = Project {
-            vendor: String::new(),
-            name: String::new(),
-            version: String::new(),
-        };
-
+    pub fn info() -> Result<Project, ()> {
         // ? Get the project directory
         match env::current_dir() {
             Ok(path) => match get_project(path) {
-                Ok(project) => {
-                    return project;
-                }
-                Err(e) => {
-                    error!("Project info failed: {:?}", e);
-                    exit(exitcode::CONFIG);
-                }
+                Ok(project) => Ok(project),
+                Err(e) => Err(error!("Project info failed: {:?}", e)),
             },
-            Err(e) => error!("{}", e),
+            Err(e) => Err(error!("{}", e)),
         }
-
-        return project;
     }
 }
 
@@ -75,14 +62,9 @@ pub fn get_project(path: PathBuf) -> Result<Project, ()> {
         Ok(file) => {
             match json::read(file) {
                 // * File is properly formatted
-                Ok(manifest) => {
-                    return Ok(manifest);
-                }
+                Ok(manifest) => Ok(manifest),
                 // * File is not properly formatted
-                Err(e) => {
-                    error!("JSON Error during parsing: {:?}", e);
-                    exit(exitcode::UNAVAILABLE)
-                }
+                Err(e) => Err(error!("JSON Error during parsing: {:?}", e)),
             }
         }
         // ! Wasn't able to open the file

@@ -1,0 +1,53 @@
+.flexColChild--homeListBanner {
+  position: relative;
+}
+
+.imageElement--homeListBanner {
+  height: auto;
+  left: 50%;
+  min-width: 100%;
+  position: absolute;
+  transform: translateX(-50%);
+  width: auto;
+}
+
+.imageElementLink--carousel{
+  width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+}
+
+@media (max-width: 450px) {
+  .imageElement--homeListBanner {
+    position: inherit;
+    max-height: 286px;
+  }
+
+  .flexColChild--homeListBanner {
+    height: 300px;
+  }
+
+  .imageElement--bannerRulerMobile {
+    margin-top: 40px;
+  }
+
+  .imageElement--bannerMini01 {
+    margin-bottom: 20px;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .imageElement--bannerRulerDesktop {
+    display: none;
+  }
+}
+
+.imageElement--bannerRulerDesktop {
+  margin-top: 70px;
+}
+
+@media (min-width: 460px){
+  .imageElement--bannerRulerMobile{
+    display: none;
+  }
+}

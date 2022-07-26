@@ -1,0 +1,4 @@
+.textInputValue :global(.vtex-input__label){
+    margin-bottom: 14px;
+    color: #000000;
+}

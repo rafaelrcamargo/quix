@@ -1,0 +1,64 @@
+/* Institutional - Submenu */
+.styledLinkContainer--institutionalMenuTitle,
+.styledLinkContent--menu-Title {
+    color: #25282A;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    text-transform: uppercase;
+    width: 200px;
+}
+
+.menuContainer--container-menu-links {
+    display: flex;
+    flex-direction: column;
+}
+
+.menuContainer--container-menu-links :global(.vtex-menu-2-x-styledLinkContainer) {
+    padding: 6px 2px;
+    width: 100px;
+}
+
+.styledLinkContainer--accordionTitle {
+    padding: 10px;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+   
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #25282A;
+    transition: 5s ease-in-out;
+}
+
+.submenuAccordion--container-submenu {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.accordionIcon--isClosed,
+.accordionIcon--isOpen {
+    width: 12px;
+    height: 12px;
+    color: #25282A;
+    font-size: 0;
+    margin-top: 4px;
+    display: inline-block;
+    background-repeat: no-repeat;
+    transition: 0.4s ease-in-out;
+}
+
+.accordionIcon--isClosed {
+    background-image: url(assets/img/icons/icon-arrow-down-thumbs.svg);
+    background-size: contain;
+    margin-top: -3px;
+    transform: rotate(270deg);
+}
+
+.accordionIcon--isOpen {
+    background-image: url(assets/img/icons/icon-arrow-top-thumbs.svg);
+    background-size: contain;
+    transform: rotate(90deg);
+}

@@ -1,0 +1,437 @@
+/* ----modal quickview--- */
+.containerSelectList .subTitle{
+  color: #000000;
+}
+
+.containerSelectList{
+  border-bottom: 1px solid #A3A3A3;
+  padding-bottom: 20px;
+}
+.titleMyLists {
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 24px;
+  text-transform: uppercase;
+  color: #000000;
+}
+
+.description .descriptionMyLists {
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  line-height: 18px;
+  color: #000000;
+  max-width: 300px;
+}
+
+.description .containerPagination {
+  color: #000000;
+}
+.lists {
+  color: #000000;
+}
+/* ----------Modais Remove - Copy - Compartilhar----------------- */
+.modalremove .modalremoveButton,
+.modaledit .modaleditButton {
+  background-color: #000000 !important;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: 18px;
+  max-width: 240px;
+  width: 100%;
+  height: 42px;
+}
+.modalremove .modalremoveTitle,
+.modaledit .modaleditTitle,
+.modalcopy .modalcopyTitle {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 18px;
+  text-transform: uppercase;
+  color: #000000;
+}
+.modalcopy .modalcopyLink {
+  border: none;
+  font-size: 12px;
+  font-weight: 400;
+  color: #000000;
+  text-decoration-line: underline;
+}
+.modalcopy .modalcopySubTitle {
+  font-size: 16px;
+  font-weight: 400;
+}
+.modalremove .modalremoveSubTitle {
+  font-size: 16px;
+  font-weight: bold;
+  color: #000000;
+}
+.modaleditForm .modaleditLabel {
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 18px;
+  color: #000000;
+}
+.modalcopy .modalcopyButton::after {
+  content: "";
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAASCAYAAACEnoQPAAAABHNCSVQICAgIfAhkiAAAAL1JREFUOE9jZEAFBkDueTQxdO4HoMACIC5kxKLQgYDmAKB8PhAnImsG2cqPR+NBJLkNQLYASDNI03ogViBg4wOgfCAQXwDiBiB2AGk+ADIFiAsIaJ4AlH8PxI7Imv8DOY1QAXz6QX4FuRBkIdxmYjU7ADXtH9XMwDC0AgwU5wagCCfW2ciJBJyYQJpBaRaUDUHpFh8AZQZQPlCAKQJphpkIMgSEsQGQBhBOBOIFyJpBbJCJIEPwgQNASRCGAwDLLjszymaBUgAAAABJRU5ErkJggg==');
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 15px;
+  height: 18px;
+  right: -35px;
+  top: -5px;
+  position: absolute;
+}
+
+/* ------ Extrato ------- */
+
+.titleExtractList {
+  font-size: 32px;
+  line-height: 24px;
+  text-transform: uppercase;
+  color: #000000;
+  margin-top: 40px;
+  margin-bottom: 60px;
+}
+.containerBlocks {
+  max-width: 1252px;
+  margin: 0 auto;
+}
+
+.containerBlocks .productList {
+  max-width: 940px;
+}
+
+.containerBlocks .tableLine {
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  line-height: 18px;
+  color: #303030;
+  padding-left: 20px;
+  margin-bottom: 15px;
+}
+
+.productList .cardExtract {
+  border: 1px solid #e2e2e2;
+  font-size: 13px;
+  color: #000000;
+  align-items: center;
+}
+.cardExtractItemStatus {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.cardExtractItemStatus .cardExtractItemAvailability {
+  max-width: 200px;
+  width: 100%;
+}
+
+.containerPagination :first-child {
+  color: #000000;
+  font-size: 12px;
+  font-weight: bold;
+  align-items: center;
+}
+.containerPagination .paginationButton,
+.containerPaginations .paginationButton {
+  width: 32px;
+  height: 32px;
+  background: #ededed;
+  border-radius: 0%;
+}
+
+.optionsBlocks .productBlock {
+  border: 1px solid #e2e2e2;
+}
+.productBlock .productBlockTitle {
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 18px;
+  color: #000000;
+}
+.productBlock .productBlockIconReceived {
+  background-image: url("data:image/svg+xml,%3Csvg id='Grupo_696' data-name='Grupo 696' xmlns='http://www.w3.org/2000/svg' width='17.435' height='20' viewBox='0 0 17.435 20'%3E%3Cpath id='Caminho_508' data-name='Caminho 508' d='M49.108,6.944l-1.96-.714a2.374,2.374,0,1,0-3.083-3.609l-1.354,1.2-.268-1.795a2.374,2.374,0,1,0-4.682.791l-1.848-.673a1.757,1.757,0,0,0-2.25,1.049l-.8,2.2a.585.585,0,0,0,.35.75l9.144,3.328H33.528a.585.585,0,0,0-.585.585v8.191A1.757,1.757,0,0,0,34.7,20H46.4a1.757,1.757,0,0,0,1.755-1.755V11.578l.453.165a.585.585,0,0,0,.75-.35l.8-2.2A1.757,1.757,0,0,0,49.108,6.944ZM38.793,18.829H34.7a.586.586,0,0,1-.585-.585V10.638h4.681Zm2.34,0h-1.17V10.638h1.17ZM44.84,3.5a1.2,1.2,0,1,1,.386,2.033l-1.9-.692ZM39.385,1.4a1.2,1.2,0,0,1,1.9.793l.3,2.01-1.9-.692A1.209,1.209,0,0,1,39.385,1.4Zm.276,5.837-5.5-2,.6-1.649a.586.586,0,0,1,.75-.35l4.948,1.8Zm2.2.8-1.1-.4.8-2.2,1.1.4Zm5.124,10.2a.586.586,0,0,1-.585.585H42.3V10.638h3.268l1.412.514v7.092Zm2.073-9.45-.6,1.649-5.5-2,.8-2.2,4.948,1.8A.586.586,0,0,1,49.057,8.794Z' transform='translate(-32.828 0.001)' fill='%23a79473'/%3E%3C/svg%3E%0A");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+}
+.productBlock .productBlockIconReceive {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='24' height='24' viewBox='0 0 24 24'%3E%3Cdefs%3E%3CclipPath id='clip-path'%3E%3Crect id='Retângulo_4251' data-name='Retângulo 4251' width='24' height='24' transform='translate(156)' fill='%23a79473'/%3E%3C/clipPath%3E%3C/defs%3E%3Cg id='Grupo_de_máscara_1' data-name='Grupo de máscara 1' transform='translate(-156)' clip-path='url(%23clip-path)'%3E%3Cg id='inbox' transform='translate(156)'%3E%3Cg id='Grupo_5101' data-name='Grupo 5101'%3E%3Cg id='Grupo_5100' data-name='Grupo 5100'%3E%3Cpath id='Caminho_17010' data-name='Caminho 17010' d='M14.455,11.11a.522.522,0,0,0-.738,0l-1.2,1.2V1.043a.522.522,0,1,0-1.044,0V13.565a.522.522,0,0,0,.322.482.514.514,0,0,0,.2.04.522.522,0,0,0,.368-.152l2.087-2.087A.522.522,0,0,0,14.455,11.11Z' fill='%23a79473'/%3E%3C/g%3E%3C/g%3E%3Cg id='Grupo_5103' data-name='Grupo 5103'%3E%3Cg id='Grupo_5102' data-name='Grupo 5102'%3E%3Cpath id='Caminho_17011' data-name='Caminho 17011' d='M12.368,13.2,10.281,11.11a.522.522,0,1,0-.738.738l2.087,2.087a.522.522,0,0,0,.738-.738Z' fill='%23a79473'/%3E%3C/g%3E%3C/g%3E%3Cg id='Grupo_5105' data-name='Grupo 5105'%3E%3Cg id='Grupo_5104' data-name='Grupo 5104'%3E%3Cpath id='Caminho_17012' data-name='Caminho 17012' d='M23.386,11.966,19.625,6.322A3.647,3.647,0,0,0,16.586,4.7h-2.5a.522.522,0,1,0,0,1.044h2.5A2.6,2.6,0,0,1,18.757,6.9l3.762,5.643a2.6,2.6,0,0,1,.438,1.447V20.87a1.567,1.567,0,0,1-1.565,1.565H2.609A1.567,1.567,0,0,1,1.043,20.87v-6.8a2.619,2.619,0,0,1,.52-1.564L4.938,7.383a3.642,3.642,0,0,1,3.05-1.643H9.913a.522.522,0,0,0,0-1.043H7.988A4.683,4.683,0,0,0,4.066,6.809l-3.36,5.1A3.63,3.63,0,0,0,0,14.068v6.8a2.612,2.612,0,0,0,2.609,2.609H21.391A2.612,2.612,0,0,0,24,20.87V13.991A3.637,3.637,0,0,0,23.386,11.966Z' fill='%23a79473'/%3E%3C/g%3E%3C/g%3E%3Cg id='Grupo_5107' data-name='Grupo 5107'%3E%3Cg id='Grupo_5106' data-name='Grupo 5106'%3E%3Cpath id='Caminho_17013' data-name='Caminho 17013' d='M22.957,13.044H20.348a2.612,2.612,0,0,0-2.609,2.609,1.567,1.567,0,0,1-1.565,1.565H7.826a1.567,1.567,0,0,1-1.565-1.565,2.612,2.612,0,0,0-2.609-2.609H1.043a.522.522,0,1,0,0,1.043H3.652a1.567,1.567,0,0,1,1.565,1.565,2.612,2.612,0,0,0,2.609,2.609h8.348a2.612,2.612,0,0,0,2.609-2.609,1.567,1.567,0,0,1,1.565-1.565h2.609a.522.522,0,1,0,0-1.043Z' fill='%23a79473'/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+}
+.optionsBlocksLink0,
+.optionsBlocksLink1,
+.optionsBlocksLink2,
+.optionsBlocksLink3 {
+  font-size: 12px;
+  font-weight: bold;
+  background-color: #f4f4f4 !important;
+}
+.optionsBlocksContainer .optionsBlocksItemDot0 {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15.168' height='15.167' viewBox='0 0 15.168 15.167'%3E%3Cg id='edit' transform='translate(-8.523 -0.027)'%3E%3Cpath id='Caminho_519' data-name='Caminho 519' d='M10.779,11.487a.5.5,0,0,0-.134.25L9.952,15.2a.49.49,0,0,0,.481.586.466.466,0,0,0,.1-.01l3.464-.693a.488.488,0,0,0,.251-.134L22,7.2,18.534,3.733Zm0,0' transform='translate(-1.42 -0.593)'/%3E%3Cpath id='Caminho_520' data-name='Caminho 520' d='M26.228.744a2.452,2.452,0,0,0-3.464,0L21.407,2.1l3.464,3.464,1.356-1.356a2.45,2.45,0,0,0,0-3.464Zm0,0' transform='translate(-3.255 0)'/%3E%3C/g%3E%3C/svg%3E%0A");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent !important;
+  border-radius: 0% !important;
+}
+.optionsBlocksContainer .optionsBlocksItemDot1 {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20.001' height='20' viewBox='0 0 20.001 20'%3E%3Cg id='edit' transform='translate(0 -0.027)'%3E%3Cpath id='Caminho_518' data-name='Caminho 518' d='M15.834,11.36a.833.833,0,0,0-.833.833V18.86a.834.834,0,0,1-.833.833H2.5a.834.834,0,0,1-.833-.833V7.193A.834.834,0,0,1,2.5,6.36H9.167a.833.833,0,0,0,0-1.667H2.5A2.5,2.5,0,0,0,0,7.193V18.86a2.5,2.5,0,0,0,2.5,2.5H14.167a2.5,2.5,0,0,0,2.5-2.5V12.193a.833.833,0,0,0-.833-.833Zm0,0' transform='translate(0 -1.333)'/%3E%3Cpath id='Caminho_519' data-name='Caminho 519' d='M10.654,10.327a.422.422,0,0,0-.114.212l-.589,2.947a.416.416,0,0,0,.409.5.4.4,0,0,0,.082-.008l2.946-.589a.415.415,0,0,0,.213-.114l6.594-6.594L17.249,3.733Zm0,0' transform='translate(-2.841 -1.059)'/%3E%3Cpath id='Caminho_520' data-name='Caminho 520' d='M25.506.637a2.085,2.085,0,0,0-2.946,0L21.407,1.79l2.946,2.946,1.153-1.153a2.083,2.083,0,0,0,0-2.946Zm0,0' transform='translate(-6.116 0)'/%3E%3C/g%3E%3C/svg%3E%0A");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent !important;
+  border-radius: 0% !important;
+}
+.optionsBlocksContainer .optionsBlocksItemDot2 {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14.458' height='16' viewBox='0 0 14.458 16'%3E%3Cpath id='Caminho_509' data-name='Caminho 509' d='M13.4,11.317a2.33,2.33,0,0,0-1.578.618L6.1,8.6a2.223,2.223,0,0,0,0-1.124l5.663-3.305a2.4,2.4,0,1,0-.771-1.759,2.371,2.371,0,0,0,.072.562L5.4,6.277A2.41,2.41,0,1,0,5.4,9.8l5.723,3.337a2.273,2.273,0,0,0-.064.526A2.341,2.341,0,1,0,13.4,11.317Z' transform='translate(-1.349 0)'/%3E%3C/svg%3E%0A");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent !important;
+  border-radius: 0% !important;
+}
+.optionsBlocksContainer .optionsBlocksItemDot3 {
+  background-image: url("data:image/svg+xml,%3Csvg id='list' xmlns='http://www.w3.org/2000/svg' width='18.874' height='18.874' viewBox='0 0 18.874 18.874'%3E%3Cg id='Grupo_701' data-name='Grupo 701'%3E%3Cg id='Grupo_700' data-name='Grupo 700'%3E%3Cpath id='Caminho_514' data-name='Caminho 514' d='M14.745,0H4.129A4.129,4.129,0,0,0,0,4.129V14.745a4.129,4.129,0,0,0,4.129,4.129H14.745a4.129,4.129,0,0,0,4.129-4.129V4.129A4.129,4.129,0,0,0,14.745,0Zm2.949,14.745a2.949,2.949,0,0,1-2.949,2.949H4.129A2.949,2.949,0,0,1,1.18,14.745V4.129A2.949,2.949,0,0,1,4.129,1.18H14.745a2.949,2.949,0,0,1,2.949,2.949Z'/%3E%3Cpath id='Caminho_515' data-name='Caminho 515' d='M7.894,6.125H6.715a.59.59,0,0,0-.59.59v1.18a.59.59,0,0,0,.59.59h1.18a.59.59,0,0,0,.59-.59V6.715A.59.59,0,0,0,7.894,6.125Z' transform='translate(-1.996 -1.996)'/%3E%3Cpath id='Caminho_516' data-name='Caminho 516' d='M7.894,12.25H6.715a.59.59,0,0,0-.59.59v1.18a.59.59,0,0,0,.59.59h1.18a.59.59,0,0,0,.59-.59V12.84A.59.59,0,0,0,7.894,12.25Z' transform='translate(-1.996 -3.993)'/%3E%3Cpath id='Caminho_517' data-name='Caminho 517' d='M7.894,18.375H6.715a.59.59,0,0,0-.59.59v1.18a.59.59,0,0,0,.59.59h1.18a.59.59,0,0,0,.59-.59v-1.18A.59.59,0,0,0,7.894,18.375Z' transform='translate(-1.996 -5.989)'/%3E%3Crect id='Retângulo_4292' data-name='Retângulo 4292' width='7.078' height='1.18' transform='translate(7.667 4.718)'/%3E%3Crect id='Retângulo_4293' data-name='Retângulo 4293' width='7.078' height='1.18' transform='translate(7.667 8.847)'/%3E%3Crect id='Retângulo_4294' data-name='Retângulo 4294' width='7.078' height='1.18' transform='translate(7.667 12.976)'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent !important;
+  border-radius: 0% !important;
+}
+/* -------------- List Found ------------- */
+.lists .descriptionTypeList{
+  padding-left: 18px;
+}
+.lists .descriptionNameList{
+  padding-left: 10px;
+}
+.lists .descriptionDateList{
+  padding-left: 10px;
+}
+.containerCardsListFound {
+  max-width: 1252px;
+  margin: 0 auto;
+  gap: 20px;
+}
+
+.containerListFound {
+  max-width: 1252px;
+  margin: 0 auto;
+}
+.blockCardListFound .cardListFound {
+  max-width: 404px;
+  width: 100%;
+  padding: 0;
+}
+
+.cardListFound .cardContentListFound {
+  background: #f3f3f3;
+}
+.cardContentListFound .cardContentTitleListFound {
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #000000;
+  line-height: 15px;
+  margin-top: 15px;
+}
+.cardContentListFound .cardContentSubTitleListFound {
+  font-size: 16px;
+  font-weight: 400;
+  text-transform: capitalize;
+  color: #000000;
+  line-height: 15px;
+}
+.cardContentListFound .cardContentDateListFound {
+  font-size: 13px;
+  font-weight: 400;
+  color: #000000;
+  line-height: 15px;
+}
+.titleListFound {
+  font-size: 24px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 24px;
+  margin: 45px auto;
+  max-width: 1252px;
+}
+.containerListFound .searchButtonListFound {
+  background-color: #000000;
+  border-color: #000000;
+}
+.containerListFound .description {
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 18px;
+  margin-bottom: 18px;
+}
+.containerPaginations {
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-end;
+  max-width: 1252px;
+  margin: 25px auto;
+  width: 100% !important;
+}
+
+/* ----- Media query ------- */
+@media (max-width: 1025px) {
+  .containerPagination {
+    width: 100%;
+    margin: 30px auto;
+  }
+  .titleExtractList {
+    font-size: 24px;
+    text-align: center;
+    max-width: 225px;
+    margin: 35px auto;
+  }
+  .containerBlocks .productList {
+    margin-top: 35px;
+  }
+  .cardExtract {
+    max-width: 372px;
+    margin: 10px auto;
+    flex-direction: column;
+  }
+  .cardExtract .cardExtractContainerItem {
+    width: 100%;
+  }
+  .cardExtractContainerItem .cardExtractItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .containerBlocks .optionsBlocks {
+    max-width: 298px;
+    margin: 0 auto;
+  }
+  .containerBlocks .productList {
+    max-width: 372px;
+    margin: 30px auto;
+    padding: 0;
+  }
+  .containerBlocks .tableLine {
+    display: none;
+  }
+
+  .cardExtractItemStatus .cardExtractItemAvailability {
+    max-width: max-content;
+  }
+  .cardExtractItemStatus {
+    display: flex !important;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 260px;
+    margin: 20px auto;
+    align-items: center;
+  }
+  /* ------- List Found ------ */
+  .blockCardListFound {
+    max-width: 176px;
+    width: 100%;
+  }
+  .containerCardsListFound {
+    gap: 20px;
+  }
+  .containerCardsListFound .cardListFound {
+    padding: 0;
+    border-radius: 0%;
+  }
+  .cardListFound .cardContentListFound {
+    background: #f3f3f3;
+  }
+  .cardContentListFound .cardContentTitleListFound {
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #000000;
+    line-height: 15px;
+    margin-top: 15px;
+  }
+  .cardContentListFound .cardContentSubTitleListFound {
+    font-size: 16px;
+    font-weight: 400;
+    text-transform: capitalize;
+    color: #000000;
+    line-height: 15px;
+  }
+  .cardContentListFound .cardContentDateListFound {
+    font-size: 13px;
+    font-weight: 400;
+    color: #000000;
+    line-height: 15px;
+  }
+  .titleListFound {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: 24px;
+    margin: 30px auto;
+  }
+  .containerListFound {
+    max-width: 372px;
+    margin: 50px auto;
+  }
+
+  .containerListFound .selectListFound {
+    width: 50%;
+  }
+
+  .containerPaginations {
+    justify-content: center;
+  }
+}
+
+.noResult {
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 18px;
+  color: #000000;
+  text-align: center;
+}
+
+.giftlistProductsTitle {
+  margin-top: 80px;
+  text-align: center;
+}
+
+
+.ListItem {
+  border: 1px solid #ccc;
+}
+
+.ListText {
+  font-size: 14px;
+}
+
+.Icons {
+  display: flex;
+}
+
+.IconList {
+  cursor: pointer;
+}
+
+.IconEdit {
+  cursor: pointer;
+}
+
+.IconRemove {
+  cursor: pointer;
+}
+
+.IconShare {
+  cursor: pointer;
+}

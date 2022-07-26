@@ -1,0 +1,36 @@
+.styledLinkContent--footerMenuTitle,
+.menuItem--footerMenuTitle {
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 6.5px;
+}
+
+.styledLinkContent--footerMenuItem,
+.menuItem--footerMenuItem {
+  font-size: 13px;
+}
+
+.styledLinkContent--fale-conosco {
+  cursor: default;
+}
+
+.styledLinkContent--footerMenuItem:hover,
+.menuItem--footerMenuItem:hover {
+  color: #a79473;
+}
+
+/* .menuContainerNav--footerMenu:first-child{
+   width: 16%;
+} */
+
+@media (max-width: 1030px) {
+  .menuContainer--footerMenu
+    :global(.vtex-menu-2-x-styledLinkContent--footerMenuTitle) {
+    font-size: 0px;
+  }
+  .styledLinkContainer--footerMenuItem {
+    margin-left: 10px;
+    padding-bottom: 6px;
+  }
+}

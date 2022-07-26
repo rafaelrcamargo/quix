@@ -36,7 +36,7 @@ pub fn zip(path: &Path) -> Result<Vec<u8>, ZipError> {
     let it = walkdir.into_iter();
 
     // ? Iterate through the files in the directory.
-    return Ok(deep_search(&mut it.filter_map(|e| e.ok()), path));
+    Ok(deep_search(&mut it.filter_map(|e| e.ok()), path))
 }
 
 /// # Deep search.
@@ -119,7 +119,7 @@ fn deep_search(it: &mut dyn Iterator<Item = DirEntry>, prefix: &Path) -> Vec<u8>
     zip.finish().unwrap(); // Close the file in the zip archive
     drop(zip); // ! We drop zip here to deallocate `buf`, so we can return the buffer without returning function lifeline values.
 
-    return buf; // * Return the buffer, witch has the bytes of the zip file.
+    buf // * Return the buffer, witch has the bytes of the zip file.
 }
 
 /* /// # Minify the file.

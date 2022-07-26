@@ -1,0 +1,7 @@
+.formSubmitContainer--submit :global(.vtex-button){
+    width: 200px;
+    height: 40px;
+    margin-top: 50px;
+    font-size: 12px;
+    color: #FFFFFF;
+}
