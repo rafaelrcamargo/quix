@@ -73,7 +73,10 @@ impl VTEX {
                     );
                 }
             },
-            None => error!("No home directory found."),
+            None => {
+                help!("Wait, HOW DID YOU GET HERE??");
+                error!("No home directory found.")
+            }
         }
 
         vtex
@@ -93,7 +96,10 @@ impl VTEX {
 
                 Ok(serde_json::from_str(input).unwrap())
             }
-            None => Err(error!("No home directory found.")),
+            None => {
+                help!("Wait, HOW DID YOU GET HERE??");
+                Err(error!("No home directory found."))
+            }
         }
     }
 
@@ -153,7 +159,10 @@ impl VTEX {
                     file.write_all(vtex.as_bytes()).unwrap();
                 }
             }
-            None => error!("No home directory found."),
+            None => {
+                help!("Wait, HOW DID YOU GET HERE??");
+                error!("No home directory found.")
+            }
         }
     }
 }
@@ -172,7 +181,7 @@ pub fn get_session(path: PathBuf) -> Result<VTEX, ()> {
     match File::open(path) {
         // * File exists
         Ok(file) => json::read(file),
-        // ! Wasn't able to open the file
+        // !!! Wasn't able to open the file
         Err(_) => {
             help!("Login to your account using the VETX CLI, then try again.");
             Err(error!("No VTEX session found."))
