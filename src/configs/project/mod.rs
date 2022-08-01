@@ -41,7 +41,7 @@ impl Project {
                 Ok(project) => Ok(project),
                 Err(e) => Err(error!("Project info failed: {:?}", e)),
             },
-            Err(e) => Err(error!("{}", e)),
+            Err(e) => Err(error!("Error: {}", e)),
         }
     }
 }
@@ -67,7 +67,10 @@ pub fn get_project(path: PathBuf) -> Result<Project, ()> {
                 Err(e) => Err(error!("JSON Error during parsing: {:?}", e)),
             }
         }
-        // ! Wasn't able to open the file
-        Err(_) => panic!("No manifest file found."),
+        // !!! Wasn't able to open the file
+        Err(_) => {
+            help!("Are you sure you are in a project directory?");
+            Err(error!("No manifest file found."))
+        }
     }
 }

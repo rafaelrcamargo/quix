@@ -24,7 +24,7 @@ where
     match serde_json::from_reader(reader) {
         // * Deserialization successful
         Ok(data) => Ok(data),
-        // ! Wasn't able to deserialize the JSON file
+        // !!! Wasn't able to deserialize the JSON file
         Err(e) => Err(error!("JSON Parsing failed during read: {:?}", e)),
     }
 }

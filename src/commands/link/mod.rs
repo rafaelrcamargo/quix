@@ -76,7 +76,7 @@ pub fn link(args: &ArgMatches) {
         .and_then(|value| value.get(&project.name))
         .and_then(|value| value.get("sticky-host"));
 
-    let sticky_host: String;
+    let mut sticky_host = String::from("");
 
     if let Some(sticky_obj) = sticky_obj {
         sticky_host = sticky_obj.get("stickyHost").unwrap().to_string()
@@ -113,44 +113,48 @@ pub fn link(args: &ArgMatches) {
                 sticky_host = host
             }
             None => {
-                panic!(
+                help!("Error during the availability check. Have you set the correct account and workspace?");
+                error!(
                     "Could not get the sticky host from the VTEX API. {:?}",
                     resp
-                );
+                )
             }
         }
     }
 
     // ? Create a new VTEX Client with the Sticky Host.
     let mut headers = HeaderMap::new();
-    headers.insert(
-        "x-vtex-sticky-host",
-        HeaderValue::from_str(&sticky_host).unwrap(),
-    );
+
+    if sticky_host.is_empty() {
+        help!("Error reading the sticky host. Have you set the correct account and workspace?");
+        error!("Could not get the sticky host from the VTEX API.");
+    } else {
+        headers.insert(
+            "x-vtex-sticky-host",
+            HeaderValue::from_str(&sticky_host).unwrap(),
+        );
+    }
+
     let client = clients::vtex::new_with_headers(&session.token, &headers);
 
     // ? Args parsing.
     if args.is_present("clean") {
-        warn!("This feature can cause the CLI to run slower, only use when really necessary.");
-        trace!("Cleaning project cache...");
+        warn!("This feature can cause the CLI to run slower ⌛️, only use when really necessary.");
+        trace!("🧹 Cleaning project cache...\n");
     } else if args.is_present("quicker") {
-        warn!("This feature still under development, and can cause some issues. Use it carefully.");
-        trace!("Linking your project quicker...");
+        warn!(
+            "This feature still under development, and can cause some issues 💣. Use it carefully."
+        );
+        trace!("⚗️  Linking your project quicker...\n");
     }
 
+    // ? Initialize the link from the builder.
     first_link(&path, &client);
 
-    // ? Create a new VTEX Client with the Sticky Host.
-    let mut headers = HeaderMap::new();
-    headers.insert(
-        "x-vtex-sticky-host",
-        HeaderValue::from_str(&sticky_host).unwrap(),
-    );
-    let client = clients::vtex::new_with_headers(&session.token, &headers);
-
+    // ? Clones the client and the path, for the Eventsource.
     let it_path = path.clone();
     let it_client = client.clone();
-    // create a thread for the event source.
+
     thread::spawn(move || {
         // ? Create a new VTEX Client.
         let t_client = clients::vtex::new(&session.token);
@@ -164,8 +168,9 @@ pub fn link(args: &ArgMatches) {
                     if event.data == "link_interrupted" {
                         error!("Link interrupted.");
                     } else if event.data != "ping\n" {
-                        // if string contans `initial_link_required``
+                        // if string contains `initial_link_required``
                         if event.data.contains("initial_link_required") {
+                            // println!("{}", event.data);
                             first_link(&it_path, &it_client);
                         } else {
                             // stringify!(&event.data);
@@ -188,13 +193,14 @@ pub fn link(args: &ArgMatches) {
     // ? All files and directories at that path and below will be monitored for changes.
     watcher.watch(path, RecursiveMode::Recursive).unwrap();
 
-    debug!("Waiting for events...");
+    debug!("⏱  Waiting for events...");
+    help!("You can use Ctrl+C to stop the watcher.\n");
 
     loop {
         // ? The watcher loop will run until the CLI receives a user interruption.
         match receiver.recv() {
             // ? Notify the user of the event.
-            Ok(DebouncedEvent::NoticeWrite(path)) => debug!("Notice write: {:?}", path),
+            Ok(DebouncedEvent::NoticeWrite(path)) => trace!("Notice write: {:?}", path),
 
             // ? Common handling for all events.
             Ok(DebouncedEvent::Write(path)) => event(&client, &path),
@@ -206,14 +212,16 @@ pub fn link(args: &ArgMatches) {
                 todo!("Renamed: {:?} to {:?}", o_path, n_path)
             }
 
-            // ! Unimplemented events.
+            // !!! Unimplemented events.
             Err(e) => unimplemented!("Error: {:?}", e),
-            _ => (), // ! Everything else is ignored.
+            _ => (), // !!! Everything else is ignored.
         }
     }
 }
 
 fn event(client: &Client, path: &PathBuf) {
+    debug!("Preparing to link: {:?}", path);
+
     // ? Zip the file, using the zip utils.
     let file = b64::encode(path);
     let size = file.len();
@@ -242,14 +250,18 @@ fn event(client: &Client, path: &PathBuf) {
         Ok(resp) => {
             if resp.status().is_success() {
                 // stringify!(resp.text().unwrap().as_str());
-                trace!("Successfully sent the file to the builder.");
+                success!("Successfully sent the 💫 file to the builder.");
             } else if resp.status().is_server_error() {
                 let error: VTEXError = resp.json().unwrap();
                 // !!! Panic if the resp is not a success.
+                help!("This looks like a Server Error (500ish). Please try again later.");
                 error!("{:?}: {}", error.code, error.message);
             } else {
                 let error: VTEXError = resp.json().unwrap();
                 // !!! Panic if the resp is not a success.
+                help!(
+                    "This looks like a error. Please check your internet connection and try again."
+                );
                 error!("{:?}: {}", error.code, error.message);
             }
         }
@@ -269,7 +281,7 @@ fn first_link(path: &PathBuf, client: &Client) {
         Ok(resp) => {
             if resp.status().is_success() {
                 // => The link was sent to the builder.
-                trace!("Successfully sent the bundle to the builder.");
+                success!("Successfully sent the ✨ bundle to the builder.");
             } else {
                 let error: VTEXError = resp.json().unwrap();
 
@@ -280,6 +292,7 @@ fn first_link(path: &PathBuf, client: &Client) {
                     }
                     _ => (),
                 }
+
                 error!("{:?}: {}", error.code, error.message);
             }
         }
