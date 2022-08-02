@@ -1,176 +1,46 @@
 {
   "vendor": "avantivtexio",
-  "name": "shopping-list",
-  "version": "0.4.0",
-  "title": "Shopping List",
-  "description": "The Shopping List App for VTEX IO made by Avanti.",
-  "dependencies": {
-    "vtex.styleguide": "9.x",
-    "vtex.css-handles": "0.x",
-    "vtex.session-client": "1.x",
-    "vtex.catalog-api-proxy": "0.x",
-    "vtex.catalog-graphql": "1.x",
-    "vtex.pixel-manager": "1.x",
-    "vtex.product-context": "0.x",
-    "vtex.order-items": "0.x",
-    "vtex.store-components": "3.x"
-  },
+  "name": "store-starter",
+  "version": "0.0.0",
   "builders": {
-    "messages": "1.x",
-    "react": "3.x",
-    "store": "0.x",
-    "node": "6.x",
-    "graphql": "1.x",
-    "admin": "0.x"
+    "styles": "2.x",
+    "store": "0.x"
   },
-  "credentialType": "absolute",
-  "policies": [
-    {
-      "name": "outbound-access",
-      "attrs": {
-        "host": "masterws.stg.hanzo.com.br",
-        "path": "*"
-      }
-    },
-    {
-      "name": "outbound-access",
-      "attrs": {
-        "host": "shoppinglist--avantivtexio.myvtex.com",
-        "path": "*"
-      }
-    },
-    {
-      "name": "outbound-access",
-      "attrs": {
-        "host": "portal.vtexcommercestable.com.br",
-        "path": "*"
-      }
-    },
-    {
-      "name": "colossus-fire-event"
-    },
-    {
-      "name": "colossus-write-logs"
-    },
-    {
-      "name": "ADMIN_DS"
-    },
-    {
-      "name": "outbound-access",
-      "attrs": {
-        "host": "api.vtex.com",
-        "path": "/dataentities/*"
-      }
-    },
-    {
-      "name": "outbound-access",
-      "attrs": {
-        "host": "portal.vtexcommercestable.com.br",
-        "path": "/api/segments/*"
-      }
-    },
-    {
-      "name": "outbound-access",
-      "attrs": {
-        "host": "portal.vtexcommercestable.com.br",
-        "path": "/api/tenant/tenants"
-      }
-    },
-    {
-      "name": "outbound-access",
-      "attrs": {
-        "host": "{{account}}.vtexcommercestable.com.br",
-        "path": "/api/catalog_system/*"
-      }
-    },
-    {
-      "name": "vtex.catalog-graphql:resolve-graphql"
-    }
-  ],
-  "billingOptions": {
-    "type": "free",
-    "support": {
-      "url": "https://penseavanti.com.br/"
-    }
-  },
-  "registries": [
-    "smartcheckout"
-  ],
-  "settingsSchema": {
-    "title": "Shopping List",
-    "description": "Use this configurations to enable or disable features of this App.",
-    "type": "object",
-    "bindingBounded": true,
-    "properties": {
-      "shopAllItems": {
-        "title": "Shopping All Items",
-        "description": "Show the button that allows to add all items.",
-        "type": "object",
-        "properties": {
-          "shopAllItems": {
-            "type": "boolean",
-            "title": "Visible",
-            "default": true
-          }
-        }
-      },
-      "shopIndividualItem": {
-        "title": "Shopping Individual Item",
-        "description": "Show the button beside the items that allows to add an individual product to the cart.",
-        "type": "object",
-        "properties": {
-          "shopIndividualItem": {
-            "type": "boolean",
-            "title": "Visible",
-            "default": true
-          }
-        }
-      },
-      "quantitySelectorUnitPosition": {
-        "title": "Quantity selector measurement unit on the side",
-        "description": "Changes the quantity selector measurement unit position from bottom to the side",
-        "type": "boolean",
-        "default": false
-      },
-      "showQuantitySelector": {
-        "title": "Show quantity selector on Add to Shopping List modal",
-        "description": "Show quantity selector on Add to Shopping List modal or not",
-        "type": "boolean",
-        "default": true
-      },
-      "lowProductAvailabilityAlert": {
-        "title": "Low product availability alert",
-        "description": "Show an alert at the bottom of the product when its availability is equal to or less than the minimum value to show alert",
-        "type": "object",
-        "properties": {
-          "isActive": {
-            "type": "boolean",
-            "title": "Activate the alert",
-            "default": false
-          },
-          "minimumValueToShowAlert": {
-            "type": "number",
-            "title": "Minimum value to show alert",
-            "default": 10
-          }
-        }
-      },
-      "showShareButton": {
-        "title": "Show share list button",
-        "description": "Allow to share a list",
-        "type": "boolean"
-      },
-      "shareActionRequiresLogin": {
-        "title": "Share list require logged user",
-        "description": "When active and the user click on share list button, it will redirect the user to login",
-        "type": "boolean"
-      },
-      "allowIndividualItem": {
-        "title": "Allow to add individual items",
-        "description": "An add to cart button will be in each product action section",
-        "type": "boolean"
-      }
-    }
+  "dependencies": {
+    "vtex.store": "2.x",
+    "vtex.store-header": "2.x",
+    "vtex.product-summary": "2.x",
+    "vtex.store-footer": "2.x",
+    "vtex.store-components": "3.x",
+    "vtex.styleguide": "9.x",
+    "vtex.slider": "0.x",
+    "vtex.carousel": "2.x",
+    "vtex.shelf": "1.x",
+    "vtex.menu": "2.x",
+    "vtex.minicart": "2.x",
+    "vtex.product-details": "1.x",
+    "vtex.product-kit": "1.x",
+    "vtex.search-result": "3.x",
+    "vtex.login": "2.x",
+    "vtex.my-account": "1.x",
+    "vtex.flex-layout": "0.x",
+    "vtex.rich-text": "0.x",
+    "vtex.store-drawer": "0.x",
+    "vtex.locale-switcher": "0.x",
+    "vtex.product-quantity": "1.x",
+    "vtex.product-identifier": "0.x",
+    "vtex.product-specification-badges": "0.x",
+    "vtex.product-review-interfaces": "1.x",
+    "vtex.telemarketing": "2.x",
+    "vtex.order-placed": "2.x",
+    "vtex.stack-layout": "0.x",
+    "vtex.tab-layout": "0.x",
+    "vtex.responsive-layout": "0.x",
+    "vtex.slider-layout": "0.x",
+    "vtex.iframe": "0.x",
+    "vtex.breadcrumb": "1.x",
+    "vtex.sticky-layout": "0.x",
+    "vtex.add-to-cart-button": "0.x"
   },
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }

@@ -114,10 +114,8 @@ pub fn link(args: &ArgMatches) {
             }
             None => {
                 help!("Error during the availability check. Have you set the correct account and workspace?");
-                error!(
-                    "Could not get the sticky host from the VTEX API. {:?}",
-                    resp
-                )
+                stringify!(&resp.text().unwrap());
+                error!("Could not get the sticky host from the VTEX API.");
             }
         }
     }
@@ -154,7 +152,6 @@ pub fn link(args: &ArgMatches) {
     // ? Clones the client and the path, for the Eventsource.
     let it_path = path.clone();
     let it_client = client.clone();
-
     thread::spawn(move || {
         // ? Create a new VTEX Client.
         let t_client = clients::vtex::new(&session.token);

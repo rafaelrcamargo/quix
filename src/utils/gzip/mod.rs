@@ -93,8 +93,7 @@ fn deep_search(it: &mut dyn Iterator<Item = DirEntry>, prefix: &Path) -> Vec<u8>
 
             /* // ? Minify the file.
             // TODO: Think about minification, size reduction x timing.
-            minify(path, &mut f, &mut buffer); // !!! Apparently its not working, for JSX & TSX files.
-            */
+            minify(path, &mut f, &mut buffer); // !!! Apparently its not working, for JSX & TSX files. */
 
             f.read_to_end(&mut buffer).unwrap();
             zip.write_all(&*buffer).unwrap();
@@ -120,4 +119,59 @@ fn deep_search(it: &mut dyn Iterator<Item = DirEntry>, prefix: &Path) -> Vec<u8>
     drop(zip); // !!! We drop zip here to deallocate `buf`, so we can return the buffer without returning function lifeline values.
 
     buf // * Return the buffer, witch has the bytes of the zip file.
+}
+
+/// # Minify the file.
+/// This function will minify the file, and write it to the buffer.
+/// - It will return the buffer.
+///
+/// # Examples
+/// ```
+/// let min = minify(path, &mut f, &mut buffer);
+/// ```
+#[allow(dead_code)] // While this is not implemented, dead_code suppresses the warning.
+fn minify(path: &Path, f: &mut File, buffer: &mut Vec<u8>) {
+    let mut ext: &str = "";
+
+    match path.extension() {
+        Some(e) => ext = e.to_str().unwrap(),
+        None => (),
+    }
+
+    if ext == "json" || ext == "jsonc" {
+        let mut json = String::new();
+        match f.read_to_string(&mut json) {
+            Ok(_) => {
+                let min_json = minifier::json::minify(&json.as_str());
+                min_json.write(buffer).unwrap();
+            }
+            Err(e) => error!("JSON Minifier - ERROR: {:?}", e),
+        }
+    } else if ext == "js" || ext == "jsx" || ext == "ts" || ext == "tsx" {
+        let mut js = String::new();
+        match f.read_to_string(&mut js) {
+            Ok(_) => {
+                let min_js = minifier::js::minify(&js.as_str());
+                min_js.write(buffer).unwrap();
+            }
+            Err(e) => error!("JS Minifier - ERROR: {:?}", e),
+        }
+    } else if ext == "css" || ext == "scss" {
+        let mut css = String::new();
+        match f.read_to_string(&mut css) {
+            Ok(_) => {
+                let min_css = minifier::css::minify(&css.as_str());
+                match min_css {
+                    Ok(min) => min.write(buffer).unwrap(),
+                    Err(e) => error!("CSS Minifier - ERROR: {:?}", e),
+                }
+            }
+            Err(e) => error!("CSS Minifier - ERROR: {:?}", e),
+        }
+    } else {
+        match f.read_to_end(buffer) {
+            Ok(_) => (),
+            Err(e) => error!("Minifier - ERROR: {:?}", e),
+        }
+    }
 }
