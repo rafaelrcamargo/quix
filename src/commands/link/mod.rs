@@ -23,17 +23,16 @@ use std::{env, path::PathBuf, sync::mpsc::channel, thread, time::Duration};
 
 // * Eventsource for the CLI.
 use eventsource::reqwest::Client as EventSourceClient;
-use reqwest::{
-    blocking::Client,
-    header::{HeaderMap, HeaderValue},
-};
+use reqwest::blocking::Client;
 
 // Project modules.
 use crate::{
     clients,
-    configs::{Project, VTEX},
-    connections::builder::{self, RelinkBody},
-    constants::routes::Routes,
+    configs::VTEX,
+    connections::{
+        self,
+        builder::{self, RelinkBody},
+    },
     utils::{b64, gzip},
 };
 
@@ -58,88 +57,21 @@ struct VTEXError {
 /// This is because the CLI will not be able to authenticate with the VTEX API.
 pub fn link(args: &ArgMatches) {
     // ? Get the path to the actual folder where the app is located, to watch.
-    let path = env::current_dir().unwrap(); // TODO: Get the path to the actual folder where the app is located, to watch.
+    let path = env::current_dir().unwrap();
 
-    // ? Instantiate a user session.
-    let session = VTEX::info();
-
-    // ? Create a new VTEX Client.
-    let client = clients::vtex::new(&session.token);
-
-    // ? Create a new Project config.
-    let project = Project::info().unwrap();
-
-    let binding = VTEX::raw_info().unwrap();
-    let sticky_obj = binding
-        .get("apps")
-        .and_then(|value| value.get(&project.vendor))
-        .and_then(|value| value.get(&project.name))
-        .and_then(|value| value.get("sticky-host"));
-
-    let mut sticky_host = String::from("");
-
-    if let Some(sticky_obj) = sticky_obj {
-        sticky_host = sticky_obj.get("stickyHost").unwrap().to_string()
-    } else {
-        // make a post request to `/0/availability/avantivtexio.shopping-list@0.0.0` to get the sticky host, and store it in the config, the sticky host comes in the resp headers as `x-vtex-sticky-host`
-        let mut headers = HeaderMap::new();
-        headers.insert(
-            "x-vtex-sticky-host",
-            HeaderValue::from_str(&format!(
-                "request:{}:{}:{}.{}@{}",
-                &session.account,
-                &session.workspace,
-                &project.vendor,
-                &project.name,
-                &project.version
-            ))
-            .unwrap(),
-        );
-        let resp = client
-            .post(&Routes::assemble(Routes::Availability))
-            .headers(headers)
-            .send()
-            .unwrap();
-
-        match resp.headers().get("x-vtex-sticky-host") {
-            Some(host) => {
-                let host = host.to_str().unwrap();
-                let host = host.split(':').collect::<Vec<&str>>();
-                let host = host[0];
-                let host = host.to_string();
-
-                VTEX::set_sticky_host(host.as_str());
-
-                sticky_host = host
-            }
-            None => {
-                help!("Error during the availability check. Have you set the correct account and workspace?");
-                stringify!(&resp.text().unwrap());
-                error!("Could not get the sticky host from the VTEX API.");
-            }
+    let client = match connections::builder::check_availability() {
+        Ok(client) => client,
+        Err(_) => {
+            help!("Error finding a available builder, try again later.");
+            panic!("Error finding a available builder, try again later.")
         }
-    }
-
-    // ? Create a new VTEX Client with the Sticky Host.
-    let mut headers = HeaderMap::new();
-
-    if sticky_host.is_empty() {
-        help!("Error reading the sticky host. Have you set the correct account and workspace?");
-        error!("Could not get the sticky host from the VTEX API.");
-    } else {
-        headers.insert(
-            "x-vtex-sticky-host",
-            HeaderValue::from_str(&sticky_host).unwrap(),
-        );
-    }
-
-    let client = clients::vtex::new_with_headers(&session.token, &headers);
+    };
 
     // ? Args parsing.
-    if args.is_present("clean") {
+    if args.contains_id("clean") {
         warn!("This feature can cause the CLI to run slower ⌛️, only use when really necessary.");
         trace!("🧹 Cleaning project cache...\n");
-    } else if args.is_present("quicker") {
+    } else if args.contains_id("quicker") {
         warn!(
             "This feature still under development, and can cause some issues 💣. Use it carefully."
         );
@@ -153,6 +85,9 @@ pub fn link(args: &ArgMatches) {
     let it_path = path.clone();
     let it_client = client.clone();
     thread::spawn(move || {
+        // ? Instantiate a user session.
+        let session = VTEX::info();
+
         // ? Create a new VTEX Client.
         let t_client = clients::vtex::new(&session.token);
 
@@ -165,9 +100,7 @@ pub fn link(args: &ArgMatches) {
                     if event.data == "link_interrupted" {
                         error!("Link interrupted.");
                     } else if event.data != "ping\n" {
-                        // if string contains `initial_link_required``
                         if event.data.contains("initial_link_required") {
-                            // println!("{}", event.data);
                             first_link(&it_path, &it_client);
                         } else {
                             // stringify!(&event.data);
@@ -290,10 +223,12 @@ fn first_link(path: &PathBuf, client: &Client) {
                     _ => (),
                 }
 
-                error!("{:?}: {}", error.code, error.message);
+                help!("Check your internet connection and VTEX credentials, try logging in again.");
+                error!("Error: {:?}: {}", error.code, error.message);
             }
         }
         Err(e) => {
+            help!("Error while sending the bundle to the builder.");
             error!("{:?}", e);
         }
     }
