@@ -17,10 +17,10 @@ pub fn new(token: &str) -> Client {
     headers.insert(AUTHORIZATION, format!("Bearer {}", token).parse().unwrap());
     headers.insert(ACCEPT, "application/json, text/plain, */*".parse().unwrap());
 
-    return reqwest::blocking::Client::builder()
+    reqwest::blocking::Client::builder()
         .default_headers(headers)
         .build()
-        .unwrap();
+        .unwrap()
 }
 
 pub fn new_with_headers(token: &str, headers: &HeaderMap) -> Client {
@@ -28,8 +28,8 @@ pub fn new_with_headers(token: &str, headers: &HeaderMap) -> Client {
     headers.insert(AUTHORIZATION, format!("Bearer {}", token).parse().unwrap());
     headers.insert(ACCEPT, "application/json, text/plain, */*".parse().unwrap());
 
-    return reqwest::blocking::Client::builder()
+    reqwest::blocking::Client::builder()
         .default_headers(headers)
         .build()
-        .unwrap();
+        .unwrap()
 }

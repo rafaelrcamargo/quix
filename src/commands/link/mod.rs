@@ -150,13 +150,21 @@ pub fn link(args: &ArgMatches) {
 }
 
 fn event(client: &Client, path: &PathBuf) {
+    let final_path = path.to_str().unwrap().to_string();
+
+    if final_path.contains(".git") {
+        return;
+    }
+
+    if final_path.contains("node_modules") {
+        return;
+    }
+
     debug!("Preparing to link: {:?}", path);
 
     // ? Zip the file, using the zip utils.
     let file = b64::encode(path);
     let size = file.len();
-
-    let final_path = path.to_str().unwrap().to_string();
 
     let relative_path = final_path
         .split(env::current_dir().unwrap().to_str().unwrap())
@@ -164,7 +172,7 @@ fn event(client: &Client, path: &PathBuf) {
 
     // * Thats definitely not the beauty way to do this, but it works.
     // ? The zip writer in windows devices, uses \\ to separate directories, but when handling it on linux, it uses /, this creates a problem, here we replace it.
-    let mut p = str::replace(&relative_path, "\\", "/"); // Replace the backslashes with slashes.
+    let mut p = str::replace(relative_path, "\\", "/"); // Replace the backslashes with slashes.
     if p.starts_with('/') {
         p.remove(0);
     } // Remove the first '/' if exists.
@@ -204,10 +212,10 @@ fn event(client: &Client, path: &PathBuf) {
 fn first_link(path: &PathBuf, client: &Client) {
     // For the first link command, we need to create a new zip file, with all the files in the folder.
     // ? Create a new zip bundle.
-    let bundle = gzip::zip(&path).unwrap();
+    let bundle = gzip::zip(path).unwrap();
 
     // ? Send the bundle to the builder.
-    match builder::link(&client, bundle) {
+    match builder::link(client, bundle) {
         Ok(resp) => {
             if resp.status().is_success() {
                 // => The link was sent to the builder.
@@ -216,11 +224,8 @@ fn first_link(path: &PathBuf, client: &Client) {
                 let error: VTEXError = resp.json().unwrap();
 
                 // !!! Panic if the resp is not a success.
-                match error.code.as_str() {
-                    "link_on_production" => {
-                        help!("Action not allowed on production, change to a development environment to link your project.");
-                    }
-                    _ => (),
+                if error.code.as_str() == "link_on_production" {
+                    help!("Action not allowed on production, change to a development environment to link your project.");
                 }
 
                 help!("Check your internet connection and VTEX credentials, try logging in again.");

@@ -98,13 +98,13 @@ fn deep_search(it: &mut dyn Iterator<Item = DirEntry>, prefix: &Path) -> Vec<u8>
             f.read_to_end(&mut buffer).unwrap();
             zip.write_all(&*buffer).unwrap();
             buffer.clear();
-        } else if name.as_os_str().len() != 0 {
+        } else if !name.as_os_str().is_empty() {
             // Only if not root! Avoids path spec / warning
             // and mapname conversion failed error on unzip
 
             // * Thats definitely not the beauty way to do this, but it works.
             // ? The zip writer in windows devices, uses \\ to separate directories, but when handling it on linux, it uses /, this creates a problem, here we replace it.
-            let mut p = str::replace(&name.to_str().unwrap(), "\\", "/"); // Replace the backslashes with slashes.
+            let mut p = str::replace(name.to_str().unwrap(), "\\", "/"); // Replace the backslashes with slashes.
             if p.starts_with('/') {
                 p.remove(0);
             } // Remove the first '/' if exists.
