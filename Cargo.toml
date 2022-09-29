@@ -1,13 +1,14 @@
 [package]
 edition = "2021"
-name = "quix"
-version = "0.0.1"
+keywords = ["vtex"]
 license = "Apache-2.0"
 license-file = "LICENSE"
+name = "quix"
+version = "0.0.1"
 
 [profile.release]
-lto = "fat"
 codegen-units = 1
+lto = "fat"
 
 [dependencies]
 base64 = "0.13.0"
