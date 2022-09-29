@@ -10,7 +10,7 @@
 //! This module panics if the `link` route is not found.
 
 use crate::configs::Project;
-use crate::configs::VTEX;
+use crate::configs::Vtex;
 
 /// # Routes Struct
 /// This struct contains the routes to the VTEX IO Builder.
@@ -27,7 +27,7 @@ impl Routes {
     /// This function assembles the routes.
     pub fn assemble(route: Routes) -> String {
         let project = Project::info().unwrap();
-        let env = VTEX::info();
+        let env = Vtex::info();
 
         let base = format!(
             "https://app.io.vtex.com/vtex.builder-hub/v0/{}/{}/_v/builder/0/",

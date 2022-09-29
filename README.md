@@ -51,7 +51,7 @@ But no one ever knows for sure what is the best way to improve the performance o
 
 This list of benchmarks is not exhaustive, but it is a good starting point to understand how to improve the performance of this project, and to this moment we've documented the following:
 
-## 📈 Benchmarks:
+## 📈 Benchmarks
 
 - [🛑 Minifier](/benchmarks/minifier/results.md)
   - The idea behind this benchmark is to compare the performance of the minifier crate, and the VTEX IO Link endpoint. Comparing the performance of the raw files, and the minified files in the first and subsequent `quix link` commands.
@@ -60,9 +60,7 @@ This list of benchmarks is not exhaustive, but it is a good starting point to un
 
 _This code is licensed under the [MIT]("https://github.com/RafaelRCamargo/from-reddit-to-shorts/blob/master/LICENSE") license._
 
-[toolbelt]: https://github.com/vtex/toolbelt
 [rust-badge]: https://img.shields.io/badge/builtwith-rust-B7410E?style=flat-square
 [rust]: https://www.rust-lang.org/pt-BR
 [license-badge]: https://img.shields.io/github/license/rafaelrcamargo/quix?color=lightgray&style=flat-square
 [license]: https://github.com/rafaelrcamargo/quix/blob/main/LICENSE
-[releases]: https://github.com/rafaelrcamargo/quix/releases

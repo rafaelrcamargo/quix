@@ -19,7 +19,13 @@ use clap::ArgMatches;
 // Watcher for the link.
 use notify::{watcher, DebouncedEvent, RecursiveMode, Watcher};
 use serde::Deserialize;
-use std::{env, path::PathBuf, sync::mpsc::channel, thread, time::Duration};
+use std::{
+    env,
+    path::{Path, PathBuf},
+    sync::mpsc::channel,
+    thread,
+    time::Duration,
+};
 
 // * Eventsource for the CLI.
 use eventsource::reqwest::Client as EventSourceClient;
@@ -28,7 +34,7 @@ use reqwest::blocking::Client;
 // Project modules.
 use crate::{
     clients,
-    configs::VTEX,
+    configs::Vtex,
     connections::{
         self,
         builder::{self, RelinkBody},
@@ -86,7 +92,7 @@ pub fn link(args: &ArgMatches) {
     let it_client = client.clone();
     thread::spawn(move || {
         // ? Instantiate a user session.
-        let session = VTEX::info();
+        let session = Vtex::info();
 
         // ? Create a new VTEX Client.
         let t_client = clients::vtex::new(&session.token);
@@ -164,7 +170,7 @@ fn event(client: &Client, path: &PathBuf) {
 
     // * Thats definitely not the beauty way to do this, but it works.
     // ? The zip writer in windows devices, uses \\ to separate directories, but when handling it on linux, it uses /, this creates a problem, here we replace it.
-    let mut p = str::replace(&relative_path, "\\", "/"); // Replace the backslashes with slashes.
+    let mut p = str::replace(relative_path, "\\", "/"); // Replace the backslashes with slashes.
     if p.starts_with('/') {
         p.remove(0);
     } // Remove the first '/' if exists.
@@ -201,30 +207,27 @@ fn event(client: &Client, path: &PathBuf) {
     }
 }
 
-fn first_link(path: &PathBuf, client: &Client) {
+fn first_link(path: &Path, client: &Client) {
     // For the first link command, we need to create a new zip file, with all the files in the folder.
     // ? Create a new zip bundle.
-    let bundle = gzip::zip(&path).unwrap();
+    let bundle = gzip::zip(path).unwrap();
 
     // ? Send the bundle to the builder.
-    match builder::link(&client, bundle) {
+    match builder::link(client, bundle) {
         Ok(resp) => {
             if resp.status().is_success() {
                 // => The link was sent to the builder.
-                success!("Successfully sent the ✨ bundle to the builder.");
+                success!("Successfully sent the bundle to the builder.");
             } else {
                 let error: VTEXError = resp.json().unwrap();
 
                 // !!! Panic if the resp is not a success.
-                match error.code.as_str() {
-                    "link_on_production" => {
-                        help!("Action not allowed on production, change to a development environment to link your project.");
-                    }
-                    _ => (),
+                if error.code.as_str() == "link_on_production" {
+                    help!("Action not allowed on production, change to a development environment to link your project.");
                 }
 
                 help!("Check your internet connection and VTEX credentials, try logging in again.");
-                error!("Error: {:?}: {}", error.code, error.message);
+                error!("{:?}: {}", error.code, error.message);
             }
         }
         Err(e) => {

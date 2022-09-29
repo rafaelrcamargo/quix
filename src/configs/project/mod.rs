@@ -10,7 +10,7 @@
 //! This function will panic if the JSON file is not properly formatted.
 //! If the JSON file is not found, this function will panic.
 
-use crate::json;
+use crate::utils::json;
 
 use serde::Deserialize;
 

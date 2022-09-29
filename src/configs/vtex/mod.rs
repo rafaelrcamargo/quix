@@ -1,10 +1,10 @@
 //! # Retrieves the user vtex from the VTEX CLI.
-//! Here we set the `VTEX` struct, which is used for the authentication all over the app.
+//! Here we set the `Vtex` struct, which is used for the authentication all over the app.
 //!
 //! ## Examples
-//! VTEX:
+//! Vtex:
 //! ```rust
-//! let vtex = VTEX::new();
+//! let vtex = Vtex::new();
 //! ```
 //!
 //! ## Panics
@@ -12,7 +12,7 @@
 //! This is because the CLI will not be able to authenticate with the VTEX API.
 //! With that further requests will not be able to be sent to the builder.
 
-use crate::json;
+use crate::utils::json;
 use serde::Deserialize;
 use serde_json::Value;
 use std::{
@@ -25,12 +25,12 @@ use super::Project;
 
 use serde_json::json;
 
-/// # VTEX struct.
-/// Here we set the `VTEX` struct, which is used for the authentication all over the app.
+/// # Vtex struct.
+/// Here we set the `Vtex` struct, which is used for the authentication all over the app.
 /// This struct is used to store the login and authentication token.
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct VTEX {
+pub struct Vtex {
     // * Session Data
     pub account: String,
     pub login: String,
@@ -42,16 +42,16 @@ pub struct VTEX {
     pub last_used_workspace: String,
 }
 
-/// # Implements the `VTEX` and define the info method.
+/// # Implements the `Vtex` and define the info method.
 /// This method will return the vtex struct.
 ///
 /// # Examples
 /// ```rust
-/// let vtex = VTEX::info();
+/// let vtex = Vtex::info();
 /// ```
-impl VTEX {
-    pub fn info() -> VTEX {
-        let mut vtex: VTEX = VTEX {
+impl Vtex {
+    pub fn info() -> Vtex {
+        let mut vtex: Vtex = Vtex {
             account: String::new(),
             login: String::new(),
             token: String::new(),
@@ -133,25 +133,24 @@ impl VTEX {
                         .and_then(|value| value.get_mut(&project.vendor))
                         .and_then(|value| value.get_mut(&project.name))
                         .and_then(|value| value.get_mut("sticky-host"))
-                        .and_then(|value| Some(*value = host.into()));
+                        .map(|value| Some(*value = host.into()));
+
                     let vtex = serde_json::to_string(&vtex).unwrap();
                     let mut file = File::create(&path).unwrap();
                     file.write_all(vtex.as_bytes()).unwrap();
                 } else {
-                    vtex.get_mut("apps").and_then(|value| {
-                        Some(
-                            *value = json!({
-                                project.vendor: {
-                                    project.name: {
-                                        "sticky-host": {
-                                            "stickyHost": host,
-                                            "lastUpdated": 0,
-                                        }
+                    if let Some(value) = vtex.get_mut("apps") {
+                        *value = json!({
+                            project.vendor: {
+                                project.name: {
+                                    "sticky-host": {
+                                        "stickyHost": host,
+                                        "lastUpdated": 0,
                                     }
                                 }
-                            }),
-                        )
-                    });
+                            }
+                        })
+                    }
 
                     // Write vtex to file.
                     let vtex = serde_json::to_string(&vtex).unwrap();
@@ -173,7 +172,7 @@ impl VTEX {
 /// # Panics
 /// This function will panic if the vtex file is not found.
 /// This is because the CLI will not be able to authenticate with the VTEX API.
-pub fn get_session(path: PathBuf) -> Result<VTEX, ()> {
+pub fn get_session(path: PathBuf) -> Result<Vtex, ()> {
     // ? Join `home` path + `.vtex` path + `vtex.json` file
     let path = path.join(".config/configstore/vtex.json");
 

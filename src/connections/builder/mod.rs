@@ -5,9 +5,11 @@
 //! ## Endpoints
 //! - `/link`: Link the app to the builder.
 
+use std::fmt;
+
 use crate::{
     clients,
-    configs::{Project, VTEX},
+    configs::{Project, Vtex},
     constants::routes,
 };
 use routes::{Routes, Routes::Link, Routes::Relink};
@@ -40,9 +42,10 @@ pub struct RelinkBody {
     pub path: String,
 }
 
-impl RelinkBody {
-    pub fn to_string(&self) -> String {
-        format!(
+impl fmt::Display for RelinkBody {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
             "[{{\"content\":\"{}\",\"byteSize\":{},\"path\":\"{}\"}}]",
             self.content, self.byte_size, self.path
         )
@@ -70,9 +73,9 @@ pub fn check_availability() -> Result<Client, Error> {
     let project = Project::info().unwrap();
 
     // ? Instantiate a user session.
-    let session = VTEX::info();
+    let session = Vtex::info();
 
-    let binding = VTEX::raw_info().unwrap();
+    let binding = Vtex::raw_info().unwrap();
     let sticky_obj = binding
         .get("apps")
         .and_then(|value| value.get(&project.vendor))
@@ -117,7 +120,7 @@ pub fn check_availability() -> Result<Client, Error> {
                 let host = host[0];
                 let host = host.to_string();
 
-                VTEX::set_sticky_host(host.as_str());
+                Vtex::set_sticky_host(host.as_str());
 
                 sticky_host = host
             }

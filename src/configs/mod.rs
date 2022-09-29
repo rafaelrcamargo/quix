@@ -15,4 +15,4 @@ pub use project::Project;
 
 /// # Auth module, used to store authentication information.
 pub mod vtex;
-pub use vtex::VTEX;
+pub use vtex::Vtex;

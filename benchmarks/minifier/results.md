@@ -4,14 +4,17 @@ This is a comparison of the performance, using the [minifier](https://crates.io/
 
 > Crate used: [minifier](https://crates.io/crates/minifier)
 
-## Tools used:
+## Tools used
 
 - On Windows:
+
   - ```powershell
     # Benchmark (Exec. Time) on Windows 11
     Measure-Command { .\quix.exe }
     ```
+
 - On Linux:
+
   - ```sh
     # Benchmark (Exec. Time) on Linux
     time .\quix.exe

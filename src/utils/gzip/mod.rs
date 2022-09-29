@@ -82,7 +82,7 @@ fn deep_search(it: &mut dyn Iterator<Item = DirEntry>, prefix: &Path) -> Vec<u8>
         if path.is_file() {
             // ? Thats definitely not the beauty way to do this, but it works.
             // !!! The zip writer in windows devices, uses \\ to separate directories, but when handling it on linux, it uses /, this creates a problem, here we replace it.
-            let mut p = str::replace(&name.to_str().unwrap(), "\\", "/"); // Replace the backslashes with slashes.
+            let mut p = str::replace(name.to_str().unwrap(), "\\", "/"); // Replace the backslashes with slashes.
             if p.starts_with('/') {
                 p.remove(0);
             } // Remove the first '/'
@@ -96,15 +96,15 @@ fn deep_search(it: &mut dyn Iterator<Item = DirEntry>, prefix: &Path) -> Vec<u8>
             minify(path, &mut f, &mut buffer); // !!! Apparently its not working, for JSX & TSX files. */
 
             f.read_to_end(&mut buffer).unwrap();
-            zip.write_all(&*buffer).unwrap();
+            zip.write_all(&buffer).unwrap();
             buffer.clear();
-        } else if name.as_os_str().len() != 0 {
+        } else if !name.as_os_str().is_empty() {
             // Only if not root! Avoids path spec / warning
             // and mapname conversion failed error on unzip
 
             // * Thats definitely not the beauty way to do this, but it works.
             // ? The zip writer in windows devices, uses \\ to separate directories, but when handling it on linux, it uses /, this creates a problem, here we replace it.
-            let mut p = str::replace(&name.to_str().unwrap(), "\\", "/"); // Replace the backslashes with slashes.
+            let mut p = str::replace(name.to_str().unwrap(), "\\", "/"); // Replace the backslashes with slashes.
             if p.starts_with('/') {
                 p.remove(0);
             } // Remove the first '/' if exists.
@@ -133,16 +133,15 @@ fn deep_search(it: &mut dyn Iterator<Item = DirEntry>, prefix: &Path) -> Vec<u8>
 fn minify(path: &Path, f: &mut File, buffer: &mut Vec<u8>) {
     let mut ext: &str = "";
 
-    match path.extension() {
-        Some(e) => ext = e.to_str().unwrap(),
-        None => (),
+    if let Some(e) = path.extension() {
+        ext = e.to_str().unwrap()
     }
 
     if ext == "json" || ext == "jsonc" {
         let mut json = String::new();
         match f.read_to_string(&mut json) {
             Ok(_) => {
-                let min_json = minifier::json::minify(&json.as_str());
+                let min_json = minifier::json::minify(json.as_str());
                 min_json.write(buffer).unwrap();
             }
             Err(e) => error!("JSON Minifier - ERROR: {:?}", e),
@@ -151,7 +150,7 @@ fn minify(path: &Path, f: &mut File, buffer: &mut Vec<u8>) {
         let mut js = String::new();
         match f.read_to_string(&mut js) {
             Ok(_) => {
-                let min_js = minifier::js::minify(&js.as_str());
+                let min_js = minifier::js::minify(js.as_str());
                 min_js.write(buffer).unwrap();
             }
             Err(e) => error!("JS Minifier - ERROR: {:?}", e),
@@ -160,7 +159,7 @@ fn minify(path: &Path, f: &mut File, buffer: &mut Vec<u8>) {
         let mut css = String::new();
         match f.read_to_string(&mut css) {
             Ok(_) => {
-                let min_css = minifier::css::minify(&css.as_str());
+                let min_css = minifier::css::minify(css.as_str());
                 match min_css {
                     Ok(min) => min.write(buffer).unwrap(),
                     Err(e) => error!("CSS Minifier - ERROR: {:?}", e),

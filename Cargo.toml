@@ -3,6 +3,10 @@ edition = "2021"
 name = "quix"
 version = "0.0.1"
 
+[profile.release]
+lto = "fat"
+codegen-units = 1
+
 [dependencies]
 base64 = "0.13.0"
 clap = "3.2.8"
