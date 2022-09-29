@@ -156,13 +156,21 @@ pub fn link(args: &ArgMatches) {
 }
 
 fn event(client: &Client, path: &PathBuf) {
+    let final_path = path.to_str().unwrap().to_string();
+
+    if final_path.contains(".git") {
+        return;
+    }
+
+    if final_path.contains("node_modules") {
+        return;
+    }
+
     debug!("Preparing to link: {:?}", path);
 
     // ? Zip the file, using the zip utils.
     let file = b64::encode(path);
     let size = file.len();
-
-    let final_path = path.to_str().unwrap().to_string();
 
     let relative_path = final_path
         .split(env::current_dir().unwrap().to_str().unwrap())
