@@ -2,7 +2,6 @@
 edition = "2021"
 keywords = ["vtex"]
 license = "Apache-2.0"
-license-file = "LICENSE"
 name = "quix"
 version = "0.0.1"
 

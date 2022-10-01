@@ -18,6 +18,7 @@ pub enum Routes {
     Link,
     Relink,
     Availability,
+    Clean,
 }
 
 /// # Routes implementation
@@ -49,10 +50,16 @@ impl Routes {
             project.vendor, project.name, project.version
         );
 
+        let clean_path = format!(
+            "clean/{}.{}@{}",
+            project.vendor, project.name, project.version
+        );
+
         match route {
             Routes::Link => format!("{}{}", base, link_path),
             Routes::Relink => format!("{}{}", base, relink_path),
             Routes::Availability => format!("{}{}", base, availability_path),
+            Routes::Clean => format!("{}{}", base, clean_path),
         }
     }
 }

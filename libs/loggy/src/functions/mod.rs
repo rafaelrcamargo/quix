@@ -43,22 +43,27 @@ pub fn json_log(message: &str) {
 
     let level = "📃 JSON".normal(); // Set the level to JSON.
 
-    let object: Value = serde_json::from_str(message).unwrap();
-    let json = serde_json::to_string_pretty(&object).unwrap(); // Convert to JSON.
-    let json = json // Pretty print the JSON.
-        .to_colored_json_with_styler(
-            ColorMode::default().eval(),
-            colored_json::Styler {
-                key: Color::Red.normal(),
-                string_value: Color::Green.normal(),
-                integer_value: Color::Yellow.normal(),
-                float_value: Color::Yellow.normal(),
-                object_brackets: Color::Purple.normal(),
-                array_brackets: Color::Cyan.normal(),
-                ..Default::default()
-            },
-        )
-        .unwrap();
+    // * Check if the message is a valid JSON.
+    let json = match serde_json::from_str::<Value>(message) {
+        Ok(message) => {
+            let json = serde_json::to_string_pretty(&message).unwrap();
+            json // Pretty print the JSON.
+                .to_colored_json_with_styler(
+                    ColorMode::default().eval(),
+                    colored_json::Styler {
+                        key: Color::Red.normal(),
+                        string_value: Color::Green.normal(),
+                        integer_value: Color::Yellow.normal(),
+                        float_value: Color::Yellow.normal(),
+                        object_brackets: Color::Purple.normal(),
+                        array_brackets: Color::Cyan.normal(),
+                        ..Default::default()
+                    },
+                )
+                .unwrap()
+        }
+        Err(_) => message.to_string(),
+    }; // Parse the message as JSON.
 
     // ? Final message.
     println!("{} | {} | Data: \n\n{}\n", date, level, json);

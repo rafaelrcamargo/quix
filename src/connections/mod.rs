@@ -7,3 +7,4 @@
 //! ## Builder
 //! - `link`: Link the app to the builder.
 pub mod builder;
+pub mod colossus;

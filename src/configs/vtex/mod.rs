@@ -28,7 +28,7 @@ use serde_json::json;
 /// # Vtex struct.
 /// Here we set the `Vtex` struct, which is used for the authentication all over the app.
 /// This struct is used to store the login and authentication token.
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Vtex {
     // * Session Data

@@ -3,7 +3,10 @@
 //! It allows you to create and manage projects, and to link your app to the builder.
 //!
 //! ## Endpoints
+//! - `/availability`: Check if the builder is available.
 //! - `/link`: Link the app to the builder.
+//! - `/relink`: Relink the app to the builder.
+//! - `/clean`: Clean the builder cache.
 
 use std::fmt;
 
@@ -12,7 +15,7 @@ use crate::{
     configs::{Project, Vtex},
     constants::routes,
 };
-use routes::{Routes, Routes::Link, Routes::Relink};
+use routes::{Routes, Routes::Availability, Routes::Clean, Routes::Link, Routes::Relink};
 
 // HTTP Client
 use reqwest::{blocking::Client, Error};
@@ -22,6 +25,17 @@ use reqwest::{
 };
 
 use reqwest::header::{ACCEPT_ENCODING, CONTENT_LENGTH, CONTENT_TYPE};
+
+/// # Clean the builder for the app.
+/// This function will clean the builder for the app.
+pub fn clean(client: &Client) -> Result<Response, Error> {
+    client // Setup the request.
+        .post(&Routes::assemble(Clean)) // Define the endpoint.
+        .header(ACCEPT_ENCODING, "gzip") // More headers.
+        .header(CONTENT_TYPE, "application/json") // Guess what.
+        .body(r#"{"headers": {"Content-Type": "application/json"},"metric": "bh-clean"}"#) // And finally the body.
+        .send() // Just wrap it up and send it.
+}
 
 /// # Link to the builder.
 /// This function will link the app to the builder.
@@ -41,7 +55,6 @@ pub struct RelinkBody {
     pub byte_size: usize,
     pub path: String,
 }
-
 impl fmt::Display for RelinkBody {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
@@ -108,7 +121,7 @@ pub fn check_availability() -> Result<Client, Error> {
         );
 
         let resp = client
-            .post(&Routes::assemble(Routes::Availability))
+            .post(&Routes::assemble(Availability))
             .headers(headers)
             .send()
             .unwrap();

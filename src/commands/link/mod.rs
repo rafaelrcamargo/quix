@@ -18,26 +18,21 @@ use clap::ArgMatches;
 
 // Watcher for the link.
 use notify::{watcher, DebouncedEvent, RecursiveMode, Watcher};
+use reqwest::blocking::Client;
 use serde::Deserialize;
 use std::{
     env,
     path::{Path, PathBuf},
     sync::mpsc::channel,
-    thread,
     time::Duration,
 };
 
-// * Eventsource for the CLI.
-use eventsource::reqwest::Client as EventSourceClient;
-use reqwest::blocking::Client;
-
 // Project modules.
 use crate::{
-    clients,
-    configs::Vtex,
     connections::{
         self,
         builder::{self, RelinkBody},
+        colossus,
     },
     utils::{b64, gzip},
 };
@@ -77,6 +72,15 @@ pub fn link(args: &ArgMatches) {
     if args.contains_id("clean") {
         warn!("This feature can cause the CLI to run slower ⌛️, only use when really necessary.");
         trace!("🧹 Cleaning project cache...\n");
+
+        match builder::clean(&client) {
+            Ok(_) => {
+                trace!("⛔ Project cache cleaned.");
+            }
+            Err(e) => {
+                error!("Error cleaning project cache: {}", e);
+            }
+        }
     } else if args.contains_id("quicker") {
         warn!(
             "This feature still under development, and can cause some issues 💣. Use it carefully."
@@ -90,35 +94,9 @@ pub fn link(args: &ArgMatches) {
     // ? Clones the client and the path, for the Eventsource.
     let it_path = path.clone();
     let it_client = client.clone();
-    thread::spawn(move || {
-        // ? Instantiate a user session.
-        let session = Vtex::info();
 
-        // ? Create a new VTEX Client.
-        let t_client = clients::vtex::new(&session.token);
-
-        let t_client =
-        EventSourceClient::new_with_client("https://infra.io.vtex.com/colossus/v0/avantivtexio/cli/events?onUnsubscribe=link_interrupted&sender=vtex.builder-hub&keys=build.status".parse().unwrap(), t_client);
-
-        for event in t_client {
-            match event {
-                Ok(event) => {
-                    if event.data == "link_interrupted" {
-                        error!("Link interrupted.");
-                    } else if event.data != "ping\n" {
-                        if event.data.contains("initial_link_required") {
-                            first_link(&it_path, &it_client);
-                        } else {
-                            // stringify!(&event.data);
-                        }
-                    }
-                }
-                Err(e) => {
-                    error!("Error: {}", e);
-                }
-            }
-        }
-    });
+    // ! Starts the EventSource client.
+    colossus::stream(it_path, it_client);
 
     // * * * Starts the watcher, in the current project folder. * * *
 
@@ -215,7 +193,7 @@ fn event(client: &Client, path: &PathBuf) {
     }
 }
 
-fn first_link(path: &Path, client: &Client) {
+pub fn first_link(path: &Path, client: &Client) {
     // For the first link command, we need to create a new zip file, with all the files in the folder.
     // ? Create a new zip bundle.
     let bundle = gzip::zip(path).unwrap();
@@ -225,7 +203,7 @@ fn first_link(path: &Path, client: &Client) {
         Ok(resp) => {
             if resp.status().is_success() {
                 // => The link was sent to the builder.
-                success!("Successfully sent the bundle to the builder.");
+                success!("Successfully sent the bundle to the builder.\n");
             } else {
                 let error: VTEXError = resp.json().unwrap();
 
