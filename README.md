@@ -8,15 +8,23 @@
 
 Quix is a **CLI**, created aiming for **the best developer experience**, _lets make VTEX IO quick again._
 
-[Getting started](#getting-started) • [Commands](#commands) • [Installation](#installation) • [Configuration](#configuration)
+[Getting started](#getting-started) • [Commands](#commands) • [Installation](#installation) • [Contributing](#contributing) • [Known issues](#known-issues) • [LICENSE](#license)
 
 </div>
 
+<a name="getting-started">
+
 # ⚡️ Getting started
+
+</a>
 
 First, to clarify the purpose of this project, as developers, we know the importance of a fast and reliable developer experience. Time to get started!
 
+<a name="commands">
+
 # ⚙️ Commands
+
+</a>
 
 As we know, this CLI is under development, so we have implemented a few commands to help you get started. The following are the available commands:
 
@@ -39,7 +47,11 @@ qx link <FLAGS>
 | `-c` | Clean the project cache before linking.                    |
 | `-q` | Link the project **quicker**. (By ignoring some steps. 👀) |
 
+<a name="installation">
+
 # 📦 Installation
+
+</a>
 
 First of all, check our [releases]("https://github.com/rafaelrcamargo/quix/releases") page to download the latest version of the CLI.
 
@@ -72,7 +84,11 @@ curl -s https://raw.githubusercontent.com/rafaelrcamargo/quix/main/release/add_t
 
 </details>
 
+<a name="known-issues">
+
 # 🕵️ Known issues
+
+</a>
 
 <details open>
 <summary>VSCode - Terminal not rendering properly?</summary>
@@ -92,8 +108,15 @@ This will enable the GPU acceleration for the terminal, and it will fix the rend
 
 </details>
 
+<details>
+
+<summary>
+
 # 🧮 Improvements
 
+</summary>
+
+<br>
 One of the biggest improvements we have made is the performance, and thats the foundation of this project.
 
 But no one ever knows for sure what is the best way to improve the performance of a project in every situation, so we have implemented and documented some benchmarks to help in our conclusions.
@@ -105,11 +128,21 @@ This list of benchmarks is not exhaustive, but it is a good starting point to un
 - [🛑 Minifier](/benchmarks/minifier/results.md)
   - The idea behind this benchmark is to compare the performance of the minifier crate, and the VTEX IO Link endpoint. Comparing the performance of the raw files, and the minified files in the first and subsequent `quix link` commands.
 
+</details>
+
+<a name="contributing">
+
 # 🥇 Contributing
+
+</a>
 
 Feel free to contribute to this project, if you have any suggestions or improvements, please open an issue or pull request.
 
+<a name="license">
+
 # ⚠️ License
+
+</a>
 
 _This code is licensed under the [MIT]("https://github.com/RafaelRCamargo/from-reddit-to-shorts/blob/master/LICENSE") license._
 
