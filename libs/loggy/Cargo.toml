@@ -1,6 +1,14 @@
 [package]
+authors = ["rafaelrcamargo"]
+categories = ["log", "cli", "utility"]
+description = "A modern, cool and nice lokkig logger"
 edition = "2021"
+homepage = "https://github.com/rafaelrcamargo/quix/tree/main/libs/loggy"
+keywords = ["cli", "search", "demo"]
+license = "Apache-2.0"
 name = "loggy"
+readme = "README.md"
+repository = "https://github.com/rafaelrcamargo/quix/tree/main/libs/loggy"
 version = "0.0.1"
 
 [dependencies]

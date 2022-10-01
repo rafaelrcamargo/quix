@@ -39,9 +39,58 @@ qx link <FLAGS>
 | `-c` | Clean the project cache before linking.                    |
 | `-q` | Link the project **quicker**. (By ignoring some steps. 👀) |
 
-# 🥇 Contributing
+# 📦 Installation
 
-Feel free to contribute to this project, if you have any suggestions or improvements, please open an issue or pull request.
+First of all, check our [releases]("https://github.com/rafaelrcamargo/quix/releases") page to download the latest version of the CLI.
+
+Then we need to setup the CLI, for an easy process, we have created a script to do this for you. Just run the following command:
+
+<details>
+<summary>🖥️ Windows</summary>
+
+```powershell
+Invoke-WebRequest -Uri https://raw.githubusercontent.com/rafaelrcamargo/quix/main/release/add_to_path.ps1 -OutFile install.ps1; .\install.ps1
+```
+
+</details>
+
+<details>
+<summary>🐧 Linux (Not tested)</summary>
+
+```bash
+curl -s https://raw.githubusercontent.com/rafaelrcamargo/quix/main/release/add_to_path.sh | bash
+```
+
+</details>
+
+<details>
+<summary>🍎 MacOS (Not tested)</summary>
+
+```bash
+curl -s https://raw.githubusercontent.com/rafaelrcamargo/quix/main/release/add_to_path.sh | bash
+```
+
+</details>
+
+# 🕵️ Known issues
+
+<details open>
+<summary>VSCode - Terminal not rendering properly?</summary>
+<br>
+That's a known issue, and it's related to the way VSCode handles the terminal. To fix this, just open the vscode settings and add the following line:
+
+```json
+{
+  ...
+  "terminal.integrated.gpuAcceleration": "on"
+}
+```
+
+This will enable the GPU acceleration for the terminal, and it will fix the rendering issue.
+
+> For now this solves the issue, but can get kinda weird with some appearance settings.
+
+</details>
 
 # 🧮 Improvements
 
@@ -55,6 +104,10 @@ This list of benchmarks is not exhaustive, but it is a good starting point to un
 
 - [🛑 Minifier](/benchmarks/minifier/results.md)
   - The idea behind this benchmark is to compare the performance of the minifier crate, and the VTEX IO Link endpoint. Comparing the performance of the raw files, and the minified files in the first and subsequent `quix link` commands.
+
+# 🥇 Contributing
+
+Feel free to contribute to this project, if you have any suggestions or improvements, please open an issue or pull request.
 
 # ⚠️ License
 
