@@ -14,15 +14,15 @@ strip = true # Strip symbols from binary*
 
 [dependencies]
 base64 = "0.13.0"
-clap = "3.2.8"
+clap = "4.0.7"
 eventsource = "0.5.0"
 home = "0.5.3"
 human-panic = "1.0.3"
 loggy = {path = "./libs/loggy"}
 minifier = "0.2.1"
-notify = "4.0.17"
-reqwest = {version = "0.10.4", features = ["blocking", "json"]}
-serde = {version = "1.0.139", features = ["derive"]}
-serde_json = "1.0.82"
+notify = "5.0.0"
+reqwest = {version = "0.11.12", features = ["blocking", "json"]}
+serde = {version = "1.0.145", features = ["derive"]}
+serde_json = "1.0.85"
 walkdir = "2.3.2"
 zip = "0.6.2"
