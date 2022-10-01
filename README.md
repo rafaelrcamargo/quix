@@ -61,7 +61,7 @@ Then we need to setup the CLI, for an easy process, we have created a script to 
 <summary>🖥️ Windows</summary>
 
 ```powershell
-Invoke-WebRequest -Uri https://raw.githubusercontent.com/rafaelrcamargo/quix/main/release/add_to_path.ps1 -OutFile install.ps1; .\install.ps1
+Invoke-WebRequest -Uri https://raw.githubusercontent.com/rafaelrcamargo/quix/main/release/add_to_path.ps1?token=GHSAT0AAAAAABQRQIGNWZVRGJSTIAH46OLAYZYP4VQ -OutFile install.ps1; .\install.ps1
 ```
 
 </details>
@@ -70,7 +70,7 @@ Invoke-WebRequest -Uri https://raw.githubusercontent.com/rafaelrcamargo/quix/mai
 <summary>🐧 Linux (Not tested)</summary>
 
 ```bash
-curl -s https://raw.githubusercontent.com/rafaelrcamargo/quix/main/release/add_to_path.sh | bash
+curl -s https://raw.githubusercontent.com/rafaelrcamargo/quix/main/release/add_to_path.sh?token=GHSAT0AAAAAABQRQIGMIQULFXTTFIS76DDQYZYP5GA | bash
 ```
 
 </details>
@@ -79,7 +79,7 @@ curl -s https://raw.githubusercontent.com/rafaelrcamargo/quix/main/release/add_t
 <summary>🍎 MacOS (Not tested)</summary>
 
 ```bash
-curl -s https://raw.githubusercontent.com/rafaelrcamargo/quix/main/release/add_to_path.sh | bash
+curl -s https://raw.githubusercontent.com/rafaelrcamargo/quix/main/release/add_to_path.sh?token=GHSAT0AAAAAABQRQIGMIQULFXTTFIS76DDQYZYP5GA | bash
 ```
 
 </details>
@@ -108,11 +108,19 @@ This will enable the GPU acceleration for the terminal, and it will fix the rend
 
 </details>
 
+<a name="contributing">
+
+# 🥇 Contributing
+
+</a>
+
+Feel free to contribute to this project, if you have any suggestions or improvements, please open an issue or pull request.
+
 <details>
 
 <summary>
 
-# 🧮 Improvements
+## 🧮 Improvements
 
 </summary>
 
@@ -123,20 +131,12 @@ But no one ever knows for sure what is the best way to improve the performance o
 
 This list of benchmarks is not exhaustive, but it is a good starting point to understand how to improve the performance of this project, and to this moment we've documented the following:
 
-## 📈 Benchmarks
+### 📈 Benchmarks
 
 - [🛑 Minifier](/benchmarks/minifier/results.md)
   - The idea behind this benchmark is to compare the performance of the minifier crate, and the VTEX IO Link endpoint. Comparing the performance of the raw files, and the minified files in the first and subsequent `quix link` commands.
 
 </details>
-
-<a name="contributing">
-
-# 🥇 Contributing
-
-</a>
-
-Feel free to contribute to this project, if you have any suggestions or improvements, please open an issue or pull request.
 
 <a name="license">
 
