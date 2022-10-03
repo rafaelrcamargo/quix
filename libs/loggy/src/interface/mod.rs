@@ -15,6 +15,7 @@ pub enum Level {
     Warn,
     Help,
     Debug,
+    Info,
     Error,
     Trace,
     Success,
@@ -24,6 +25,7 @@ impl fmt::Display for Level {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             Level::Debug => write!(f, "{}", "🔮 DBUG".bright_blue()),
+            Level::Info => write!(f, "{}", "📰 INFO".normal()),
             Level::Warn => write!(f, "{}", "💡 WARN".bright_yellow()),
             Level::Success => write!(f, "{}", "🎉 YEEE".blink().bright_green()),
             Level::Trace => write!(f, "{}", "🔧 TRCE".bright_black()),

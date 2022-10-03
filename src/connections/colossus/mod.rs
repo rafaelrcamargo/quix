@@ -13,17 +13,19 @@ use eventsource::{
     event::Event,
     reqwest::{Client as EventSourceClient, Error},
 };
+
 use reqwest::blocking::Client;
 use serde::Deserialize;
 
-use crate::{clients, commands::link::first_link, configs::Vtex};
+use crate::{clients, commands::link::send_package, configs::Vtex};
 
 #[derive(Deserialize)]
 struct ColossusEvent {
     body: ColossusBody,
+    level: Option<String>,
 }
 
-#[derive(Debug, PartialEq, Deserialize)]
+#[derive(Deserialize)]
 struct ColossusBody {
     level: Option<String>,
     msg: Option<String>,
@@ -42,7 +44,7 @@ fn build(account: &str, workspace: &str, t_client: Client, it_path: PathBuf, it_
                     error!("Link interrupted.");
                 } else if event.data != "ping\n" {
                     if event.data.contains("initial_link_required") {
-                        first_link(&it_path, &it_client);
+                        send_package(&it_path, &it_client);
                     } else if event.data.contains("generic_error") {
                         let message = serde_json::from_str::<ColossusEvent>(&event.data)
                             .unwrap()
@@ -54,7 +56,7 @@ fn build(account: &str, workspace: &str, t_client: Client, it_path: PathBuf, it_
 
                         drop(message)
                     } else {
-                        stringify!(&event.data);
+                        match_event(Ok(event));
                     }
                 }
             }
@@ -124,8 +126,7 @@ pub fn stream(it_path: PathBuf, it_client: Client) {
     }));
 
     for child in children {
-        // Wait for the thread to finish. Returns a result.
-        let _ = child.join();
+        child.join().unwrap()
     }
 }
 
@@ -133,21 +134,24 @@ fn match_event(event: Result<Event, Error>) {
     match event {
         Ok(event) => {
             if event.data != "ping\n" {
-                let body = serde_json::from_str::<ColossusEvent>(&event.data)
-                    .unwrap()
-                    .body;
+                let data = serde_json::from_str::<ColossusEvent>(&event.data).unwrap();
 
-                let level = match body.level {
+                let body = data.body;
+
+                let level = match data.level {
                     Some(level) => level,
-                    None => "".to_string(),
+                    None => match body.level {
+                        Some(level) => level,
+                        None => "info".to_string(),
+                    },
                 };
 
                 if level == "info" {
                     match body.message {
-                        Some(message) => debug!("{}", message),
+                        Some(message) => info!("{}", message),
                         None => {
                             if let Some(message) = body.msg {
-                                debug!("{}", message)
+                                info!("{}", message)
                             }
                         }
                     }
@@ -165,16 +169,16 @@ fn match_event(event: Result<Event, Error>) {
                         Some(message) => error!("{}", message),
                         None => {
                             if let Some(message) = body.msg {
-                                warn!("{}", message)
+                                error!("{}", message)
                             }
                         }
                     }
                 } else if level == "debug" || level == "trace" {
                     match body.message {
-                        Some(message) => trace!("{}", message),
+                        Some(message) => categorize_debug_level(message),
                         None => {
                             if let Some(message) = body.msg {
-                                trace!("{}", message)
+                                categorize_debug_level(message)
                             }
                         }
                     }
@@ -186,5 +190,13 @@ fn match_event(event: Result<Event, Error>) {
         Err(e) => {
             error!("Error: {}", e);
         }
+    }
+}
+
+fn categorize_debug_level(message: String) {
+    if message.starts_with('[') {
+        trace!("{}", message);
+    } else {
+        debug!("{}", message);
     }
 }

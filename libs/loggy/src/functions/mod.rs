@@ -14,7 +14,11 @@ pub fn log(level: Level, message: Arguments) -> () {
     let date = date.dimmed();
 
     // ? Logging message.
-    let message = normalize_message(message.to_string(), &level); // Normalize + format the message.
+    let message = if message.to_string().starts_with('\n') {
+        normalize_message(format!("\n{}", message), &level)
+    } else {
+        normalize_message(message.to_string(), &level)
+    };
 
     println!("{} | {} | {}", date, level, message);
 
@@ -71,7 +75,8 @@ pub fn json_log(message: &str) {
 
 fn normalize_message(message: String, level: &Level) -> ColoredString {
     match level {
-        Level::Debug => message.bright_blue(),
+        Level::Debug => message.normal(),
+        Level::Info => message.normal(),
         Level::Warn => message.bright_yellow().underline(),
         Level::Error => message.bright_red().bold(),
         Level::Trace => message.dimmed(),

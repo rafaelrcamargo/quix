@@ -62,6 +62,13 @@ macro_rules! debug {
     ($($arg:tt)+) => ($crate::log($crate::Level::Debug, format_args!($($arg)+)))
 }
 
+/// 📰 - Logs a message at the info level.
+#[macro_export]
+macro_rules! info {
+    // info!("a {} event", "log")
+    ($($arg:tt)+) => ($crate::log($crate::Level::Info, format_args!($($arg)+)))
+}
+
 /// 🎉 - Logs a message at the success level.
 #[macro_export]
 macro_rules! success {

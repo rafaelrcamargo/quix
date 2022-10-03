@@ -16,14 +16,19 @@
 // CLI Argument parser
 use clap::ArgMatches;
 
+// FSWatcher
+use notify::{event, Config, Event, RecommendedWatcher, RecursiveMode, Watcher};
+
+// Debouncer
+use debounce::EventDebouncer;
+
 // Watcher for the link.
-use notify::{watcher, DebouncedEvent, RecursiveMode, Watcher};
 use reqwest::blocking::Client;
 use serde::Deserialize;
 use std::{
     env,
     path::{Path, PathBuf},
-    sync::mpsc::channel,
+    thread,
     time::Duration,
 };
 
@@ -75,7 +80,7 @@ pub fn link(args: &ArgMatches) {
 
         match builder::clean(&client) {
             Ok(_) => {
-                trace!("⛔ Project cache cleaned.");
+                debug!("⛔ Project cache cleaned.");
             }
             Err(e) => {
                 error!("Error cleaning project cache: {}", e);
@@ -89,62 +94,85 @@ pub fn link(args: &ArgMatches) {
     }
 
     // ? Initialize the link from the builder.
-    first_link(&path, &client);
-
-    // ? Clones the client and the path, for the Eventsource.
-    let it_path = path.clone();
-    let it_client = client.clone();
+    send_package(&path, &client);
 
     // ! Starts the EventSource client.
-    colossus::stream(it_path, it_client);
+    let c_path = path.clone();
+    let c_client = client.clone();
+    let logs = thread::spawn(|| {
+        colossus::stream(c_path, c_client);
+    });
 
     // * * * Starts the watcher, in the current project folder. * * *
+    let (tx, rx) = std::sync::mpsc::channel();
 
-    // ? Create a channel to receive the events.
-    let (sender, receiver) = channel();
-    // ? Create a watcher object, delivering debounced events.
-    let mut watcher = watcher(sender, Duration::from_secs(1)).unwrap();
-    // ? All files and directories at that path and below will be monitored for changes.
-    watcher.watch(path, RecursiveMode::Recursive).unwrap();
+    // This example is a little bit misleading as you can just create one Config and use it for all watchers.
+    // That way the pollwatcher specific stuff is still configured, if it should be used.
+    let mut watcher = RecommendedWatcher::new(
+        tx,
+        Config::default()
+            .with_poll_interval(Duration::from_secs(1))
+            .with_compare_contents(true),
+    )
+    .unwrap();
 
-    debug!("⏱  Waiting for events...");
-    help!("You can use Ctrl+C to stop the watcher.\n");
+    // watch some stuff
+    watcher.watch(&path, RecursiveMode::Recursive).unwrap();
 
-    loop {
-        // ? The watcher loop will run until the CLI receives a user interruption.
-        match receiver.recv() {
-            // ? Notify the user of the event.
-            Ok(DebouncedEvent::NoticeWrite(path)) => trace!("Notice write: {:?}", path),
+    let delay = Duration::from_millis(500);
+    let debouncer = EventDebouncer::new(delay, move |event: Event| {
+        handle_event(event, &client, &path)
+    });
 
-            // ? Common handling for all events.
-            Ok(DebouncedEvent::Write(path)) => event(&client, &path),
-            Ok(DebouncedEvent::Create(path)) => event(&client, &path),
-
-            // TODO: Remove & Rename events.
-            Ok(DebouncedEvent::Remove(path)) => todo!("Removed: {:?}", path),
-            Ok(DebouncedEvent::Rename(o_path, n_path)) => {
-                todo!("Renamed: {:?} to {:?}", o_path, n_path)
+    thread::spawn(move || {
+        for e in rx {
+            match e {
+                Ok(event) => {
+                    debouncer.put(event);
+                }
+                Err(e) => error!("🛑 Watcher error: {:?}", e),
             }
-
-            // !!! Unimplemented events.
-            Err(e) => unimplemented!("Error: {:?}", e),
-            _ => (), // !!! Everything else is ignored.
         }
+    })
+    .join()
+    .unwrap();
+
+    // * Waits for the logs thread to finish.
+    logs.join().unwrap();
+}
+
+fn choose_action(paths: Vec<PathBuf>, client: &Client, path: &Path) {
+    if !paths.is_empty() {
+        send_package(path, client)
+    } else {
+        send_file(&paths[0], client)
     }
 }
 
-fn event(client: &Client, path: &PathBuf) {
+fn handle_event(event: Event, client: &Client, path: &Path) {
+    match event.kind {
+        event::EventKind::Create(_) => {
+            debug!("📂 File created: {:?}", event.paths);
+            choose_action(event.paths, client, path)
+        }
+        event::EventKind::Modify(_) => {
+            debug!("📝 File modified: {:?}", event.paths);
+            choose_action(event.paths, client, path)
+        }
+        event::EventKind::Remove(_) => {
+            debug!("🗑️ File removed: {:?}", event.paths);
+            choose_action(event.paths, client, path)
+        }
+        _ => {}
+    }
+}
+
+fn send_file(path: &PathBuf, client: &Client) {
     let final_path = path.to_str().unwrap().to_string();
 
-    if final_path.contains(".git") {
+    if final_path.contains(".git") || final_path.contains("node_modules") {
         return;
     }
-
-    if final_path.contains("node_modules") {
-        return;
-    }
-
-    debug!("Preparing to link: {:?}", path);
 
     // ? Zip the file, using the zip utils.
     let file = b64::encode(path);
@@ -182,7 +210,7 @@ fn event(client: &Client, path: &PathBuf) {
                 let error: VTEXError = resp.json().unwrap();
                 // !!! Panic if the resp is not a success.
                 help!(
-                    "This looks like a error. Please check your internet connection and try again."
+                    "This looks like an Error. Please check your internet connection and try again."
                 );
                 error!("{:?}: {}", error.code, error.message);
             }
@@ -193,7 +221,7 @@ fn event(client: &Client, path: &PathBuf) {
     }
 }
 
-pub fn first_link(path: &Path, client: &Client) {
+pub fn send_package(path: &Path, client: &Client) {
     // For the first link command, we need to create a new zip file, with all the files in the folder.
     // ? Create a new zip bundle.
     let bundle = gzip::zip(path).unwrap();
@@ -203,7 +231,7 @@ pub fn first_link(path: &Path, client: &Client) {
         Ok(resp) => {
             if resp.status().is_success() {
                 // => The link was sent to the builder.
-                success!("Successfully sent the bundle to the builder.\n");
+                success!("Successfully sent the bundle to the builder.");
             } else {
                 let error: VTEXError = resp.json().unwrap();
 

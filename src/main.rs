@@ -52,6 +52,9 @@ fn main() {
         homepage: "https://github.com/rafaelrcamargo/quix".into(),
     }); // !!! Setup the panic handler.
 
+    // * Main task (Arguments, Parsing, ...)
+    let matches = args::matches();
+
     // * Dialogs (Greetings, warnings, ...)
     let dialogs = [
         (
@@ -76,8 +79,6 @@ fn main() {
     warn!("This is a beta version of the CLI, and may not be stable. 😬\n");
     trace!("We're about to go fast, fasten your seat belts. 🚀\n");
 
-    // * Main task (Arguments, Parsing, ...)
-    let matches = args::matches();
     match matches.subcommand() {
         Some(("link", args)) => commands::link(args),
         _ => unreachable!("Invalid entry."), // !!! Shouldn't happen, but just in case, who knows?
