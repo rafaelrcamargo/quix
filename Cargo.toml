@@ -19,7 +19,7 @@ eventsource = "0.5.0"
 home = "0.5.3"
 human-panic = "1.0.3"
 loggy = {path = "./libs/loggy"}
-minifier = "0.2.1"
+minifier = "0.2.2"
 notify = "5.0.0"
 reqwest = {version = "0.11.12", features = ["blocking", "json"]}
 serde = {version = "1.0.145", features = ["derive"]}
