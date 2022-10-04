@@ -14,7 +14,7 @@ strip = true # Strip symbols from binary*
 
 [dependencies]
 base64 = "0.13.0"
-clap = "4.0.7"
+clap = "4.0.9"
 eventsource = "0.5.0"
 home = "0.5.3"
 human-panic = "1.0.3"
