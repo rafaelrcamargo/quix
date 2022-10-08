@@ -142,7 +142,15 @@ pub fn link(args: &ArgMatches) {
 }
 
 fn choose_action(paths: Vec<PathBuf>, client: &Client, path: &Path) {
-    if !paths.is_empty() {
+    let filter_paths = paths.clone();
+    for path in filter_paths {
+        let path = path.to_str().unwrap();
+        if path.contains(".git") || path.contains("node_modules") {
+            return;
+        }
+    }
+
+    if paths.len() > 1 {
         send_package(path, client)
     } else {
         send_file(&paths[0], client)
@@ -169,10 +177,6 @@ fn handle_event(event: Event, client: &Client, path: &Path) {
 
 fn send_file(path: &PathBuf, client: &Client) {
     let final_path = path.to_str().unwrap().to_string();
-
-    if final_path.contains(".git") || final_path.contains("node_modules") {
-        return;
-    }
 
     // ? Zip the file, using the zip utils.
     let file = b64::encode(path);

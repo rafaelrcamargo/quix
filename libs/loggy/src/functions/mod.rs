@@ -1,4 +1,4 @@
-use std::{fmt::Arguments, process::exit};
+use std::fmt::Arguments;
 
 use colored::{ColoredString, Colorize};
 use colored_json::{Color, ColorMode, ToColoredJson};
@@ -14,18 +14,19 @@ pub fn log(level: Level, message: Arguments) -> () {
     let date = date.dimmed();
 
     // ? Logging message.
-    let message = if message.to_string().starts_with('\n') {
+    let message = message.to_string();
+    let message = if message.starts_with("\n") {
         normalize_message(format!("\n{}", message), &level)
     } else {
-        normalize_message(message.to_string(), &level)
+        normalize_message(message, &level)
     };
 
     println!("{} | {} | {}", date, level, message);
 
-    match level {
+    /* match level {
         Level::Error => exit(exitcode::UNAVAILABLE),
         _ => (),
-    }
+    } */
 }
 
 /// The custom logging function.
@@ -77,8 +78,8 @@ fn normalize_message(message: String, level: &Level) -> ColoredString {
     match level {
         Level::Debug => message.normal(),
         Level::Info => message.normal(),
-        Level::Warn => message.bright_yellow().underline(),
-        Level::Error => message.bright_red().bold(),
+        Level::Warn => message.bright_yellow().bold(),
+        Level::Error => message.bright_red().underline(),
         Level::Trace => message.dimmed(),
         Level::Help => message.italic(),
         Level::Success => message.bright_green(),

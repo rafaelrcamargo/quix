@@ -155,7 +155,7 @@ fn match_event(event: Result<Event, Error>) {
                             }
                         }
                     }
-                } else if level == "warn" {
+                } else if level == "warning" {
                     match body.message {
                         Some(message) => warn!("{}", message),
                         None => {
