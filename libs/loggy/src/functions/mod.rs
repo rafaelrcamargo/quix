@@ -23,10 +23,12 @@ pub fn log(level: Level, message: Arguments) -> () {
 
     println!("{} | {} | {}", date, level, message);
 
-    /* match level {
-        Level::Error => exit(exitcode::UNAVAILABLE),
+    match level {
+        Level::Fatal => {
+            panic!("{}", exitcode::UNAVAILABLE)
+        }
         _ => (),
-    } */
+    }
 }
 
 /// The custom logging function.
@@ -79,9 +81,62 @@ fn normalize_message(message: String, level: &Level) -> ColoredString {
         Level::Debug => message.normal(),
         Level::Info => message.normal(),
         Level::Warn => message.bright_yellow().bold(),
-        Level::Error => message.bright_red().underline(),
+        Level::Error => message.bright_red().bold(),
         Level::Trace => message.dimmed(),
         Level::Help => message.italic(),
         Level::Success => message.bright_green(),
+        Level::Fatal => message.black(),
+    }
+}
+
+extern crate onig;
+use onig::*;
+
+// ! Instantiate the tests.
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    // ? Test the log function.
+    #[test]
+    fn test_log() {
+        let level = Level::Debug;
+        let message = format_args!("Hello, world!");
+        log(level, message)
+    }
+
+    #[test]
+    fn test_regex() {
+        let text: &str = r#""Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco {
+            "glossary": {
+                "title": "example glossary",
+                "GlossDiv": {
+                    "title": "S",
+                    "GlossList": {
+                        "GlossEntry": {
+                            "ID": "SGML",
+                            "SortAs": "SGML",
+                            "GlossTerm": "Standard Generalized Markup Language",
+                            "Acronym": "SGML",
+                            "Abbrev": "ISO 8879:1986",
+                            "GlossDef": {
+                                "para": "A meta-markup language, used to create markup languages such as DocBook.",
+                                "GlossSeeAlso": ["GML", "XML"]
+                            },
+                            "GlossSee": "markup"
+                        }
+                    }
+                }
+            }
+        } laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.""#;
+
+        let regex = Regex::new(r"/\{([^{}]|(?R))*\}/").unwrap();
+        println!("aaa: {:?}", regex.find(text));
+        for (i, pos) in regex.captures(text).unwrap().iter_pos().enumerate() {
+            match pos {
+                Some((beg, end)) => println!("Group {} captured in position {}:{}", i, beg, end),
+                None => println!("Group {} is not captured", i),
+            }
+        }
     }
 }

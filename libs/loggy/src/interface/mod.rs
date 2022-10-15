@@ -12,13 +12,14 @@ use std::fmt;
 /// - `Trace`: Used to log trace messages.
 #[derive(Debug)]
 pub enum Level {
-    Warn,
-    Help,
+    Success,
+    Trace,
     Debug,
     Info,
+    Help,
+    Warn,
     Error,
-    Trace,
-    Success,
+    Fatal,
 }
 
 impl fmt::Display for Level {
@@ -35,6 +36,7 @@ impl fmt::Display for Level {
                 "{}",
                 format!("💥 {}", "F#CK".strikethrough()).bright_red()
             ),
+            Level::Fatal => write!(f, "{}", "😵 FATL".on_black()),
         }
     }
 }
