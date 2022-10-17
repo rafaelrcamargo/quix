@@ -92,7 +92,7 @@ fn normalize_message(message: String, level: &Level) -> ColoredString {
         Level::Trace => message.dimmed(),
         Level::Help => message.italic(),
         Level::Success => message.bright_green(),
-        Level::Fatal => message.black(),
+        Level::Fatal => message.bold(),
     }
 }
 

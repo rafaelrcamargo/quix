@@ -36,7 +36,7 @@ impl fmt::Display for Level {
                 "{}",
                 format!("💥 {}", "F#CK".strikethrough()).bright_red()
             ),
-            Level::Fatal => write!(f, "{}", "😵 FATL".on_black()),
+            Level::Fatal => write!(f, "{}", "😵 FATL".on_red()),
         }
     }
 }

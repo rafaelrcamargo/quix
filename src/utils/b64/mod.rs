@@ -18,10 +18,20 @@ use base64;
 /// # Encode into a Base64.
 /// This function will encode a file into a Base64 string.
 pub fn encode(path: &PathBuf) -> String {
-    let file = File::open(path).unwrap();
-    let mut reader = BufReader::new(file);
-    let mut contents = String::new();
-    reader.read_to_string(&mut contents).unwrap();
+    // Check if the path is a file.
+    if path.is_file() {
+        // Open the file.
+        let file = File::open(path).unwrap();
+        let mut reader = BufReader::new(file);
 
-    base64::encode(&contents)
+        // Read the file.
+        let mut buffer = Vec::new();
+        reader.read_to_end(&mut buffer).unwrap();
+
+        // Encode the file.
+        base64::encode(&buffer)
+    } else {
+        // Return an empty string.
+        String::new()
+    }
 }

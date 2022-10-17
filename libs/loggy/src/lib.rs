@@ -99,6 +99,13 @@ macro_rules! custom {
     };
 }
 
+/// 😵 - Logs a message at the Fatal level.
+#[macro_export]
+macro_rules! fatal {
+    // fatal!("a {} event", "log")
+    ($($arg:tt)+) => ($crate::log($crate::Flag::Level($crate::Level::Fatal), format!($($arg)+)))
+}
+
 ////// ! Test Section ! //////
 
 #[cfg(test)]

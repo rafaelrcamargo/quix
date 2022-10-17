@@ -119,7 +119,7 @@ pub fn link(args: &ArgMatches) {
     // watch some stuff
     watcher.watch(&path, RecursiveMode::Recursive).unwrap();
 
-    let delay = Duration::from_millis(500);
+    let delay = Duration::from_millis(1000);
     let debouncer = EventDebouncer::new(delay, move |event: Event| {
         handle_event(event, &client, &path)
     });
@@ -164,8 +164,13 @@ fn handle_event(event: Event, client: &Client, path: &Path) {
             choose_action(event.paths, client, path)
         }
         event::EventKind::Modify(_) => {
-            debug!("📝 File modified: {:?}", event.paths);
-            choose_action(event.paths, client, path)
+            // Checks if the path is a directory.
+            if event.paths[0].is_dir() {
+                debug!("📂 Directory modified: {:?}", event.paths);
+            } else {
+                debug!("📄 File modified: {:?}", event.paths);
+                choose_action(event.paths, client, path)
+            }
         }
         event::EventKind::Remove(_) => {
             debug!("🗑️ File removed: {:?}", event.paths);
@@ -216,7 +221,7 @@ fn send_file(path: &PathBuf, client: &Client) {
                 help!(
                     "This looks like an Error. Please check your internet connection and try again."
                 );
-                error!("{:?}: {}", error.code, error.message);
+                fatal!("{:?}: {}", error.code, error.message);
             }
         }
         Err(e) => {
@@ -245,7 +250,7 @@ pub fn send_package(path: &Path, client: &Client) {
                 }
 
                 help!("Check your internet connection and VTEX credentials, try logging in again.");
-                error!("{:?}: {}", error.code, error.message);
+                fatal!("{:?}: {}", error.code, error.message);
             }
         }
         Err(e) => {
