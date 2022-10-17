@@ -10,7 +10,7 @@ use std::fmt;
 /// - `Error`: Used to log error messages.
 /// - `Success`: Used to log success messages.
 /// - `Trace`: Used to log trace messages.
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Level {
     Success,
     Trace,
@@ -38,5 +38,44 @@ impl fmt::Display for Level {
             ),
             Level::Fatal => write!(f, "{}", "😵 FATL".on_black()),
         }
+    }
+}
+
+////// ! Test Section ! //////
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn level() {
+        assert_eq!(
+            format!("{}", Level::Debug),
+            "🔮 DBUG".bright_blue().to_string()
+        );
+        assert_eq!(format!("{}", Level::Info), "📰 INFO".normal().to_string());
+        assert_eq!(
+            format!("{}", Level::Warn),
+            "💡 WARN".bright_yellow().to_string()
+        );
+        assert_eq!(
+            format!("{}", Level::Success),
+            "🎉 YEEE".blink().bright_green().to_string()
+        );
+        assert_eq!(
+            format!("{}", Level::Trace),
+            "🔧 TRCE".bright_black().to_string()
+        );
+        assert_eq!(format!("{}", Level::Help), "💭 HELP".normal().to_string());
+        assert_eq!(
+            format!("{}", Level::Error),
+            format!("💥 {}", "F#CK".strikethrough())
+                .bright_red()
+                .to_string()
+        );
+        assert_eq!(
+            format!("{}", Level::Fatal),
+            "😵 FATL".on_black().to_string()
+        );
     }
 }

@@ -1,4 +1,4 @@
-use std::fmt::Arguments;
+use pcre2::bytes::Regex;
 
 use colored::{ColoredString, Colorize};
 use colored_json::{Color, ColorMode, ToColoredJson};
@@ -6,52 +6,9 @@ use serde_json::Value;
 
 use crate::Level;
 
-/// The standard logging function.
-pub fn log(level: Level, message: Arguments) -> () {
-    // ? Logging date and time.
-    let date = chrono::offset::Local::now(); // Get the current date.
-    let date = date.format("%H:%M:%S").to_string(); // Format the date.
-    let date = date.dimmed();
-
-    // ? Logging message.
-    let message = message.to_string();
-    let message = if message.starts_with("\n") {
-        normalize_message(format!("\n{}", message), &level)
-    } else {
-        normalize_message(message, &level)
-    };
-
-    println!("{} | {} | {}", date, level, message);
-
-    match level {
-        Level::Fatal => {
-            panic!("{}", exitcode::UNAVAILABLE)
-        }
-        _ => (),
-    }
-}
-
-/// The custom logging function.
-pub fn custom_log(level: String, message: String) {
-    // ? Logging date and time.
-    let date = chrono::offset::Local::now(); // Get the current date.
-    let date = date.format("%H:%M:%S").to_string(); // Format the date.
-    let date = date.dimmed();
-
-    println!("{} | {} | {}", date, level, message);
-}
-
-/// The standard logging function.
-pub fn json_log(message: &str) {
-    // ? Logging date and time.
-    let date = chrono::offset::Local::now(); // Get the current date.
-    let date = date.format("%H:%M:%S").to_string(); // Format the date.
-    let date = date.dimmed();
-
-    let level = "📃 JSON".normal(); // Set the level to JSON.
-
-    // * Check if the message is a valid JSON.
-    let json = match serde_json::from_str::<Value>(message) {
+/// Parse JSON & pretty print.
+fn json_prettifier(message: &str) -> String {
+    match serde_json::from_str::<Value>(message) {
         Ok(message) => {
             let json = serde_json::to_string_pretty(&message).unwrap();
             json // Pretty print the JSON.
@@ -70,12 +27,62 @@ pub fn json_log(message: &str) {
                 .unwrap()
         }
         Err(_) => message.to_string(),
-    }; // Parse the message as JSON.
-
-    // ? Final message.
-    println!("{} | {} | Data: \n\n{}\n", date, level, json);
+    } // Parse the message as JSON.
 }
 
+/// Syntax parser, extract JSON from messages and parse it.
+fn syntax_parser(message: &str) -> String {
+    let mut out: String = message.to_string();
+    for m in Regex::new(r"{([^{}]|(?R))*}")
+        .unwrap()
+        .find_iter(message.as_bytes())
+    {
+        let m = m.unwrap();
+        let b = &message.as_bytes()[m.start()..m.end()];
+        let json = json_prettifier(std::str::from_utf8(b).unwrap());
+        out = out.replace(std::str::from_utf8(b).unwrap(), json.as_str());
+    }
+    out
+}
+
+/// Flag either a Level or a String.
+#[derive(Debug, Clone)]
+pub enum Flag {
+    Level(Level),
+    String(String),
+}
+
+/// The standard logging function.
+pub fn log(level: Flag, message: String) {
+    // ? Logging date and time.
+    let date = chrono::offset::Local::now(); // Get the current date.
+    let date = date.format("%H:%M:%S").to_string(); // Format the date.
+    let date = date.dimmed();
+
+    // ? Logging message.
+    let message = syntax_parser(message.as_str()); // Parse the message.
+
+    match level {
+        Flag::Level(level) => {
+            let message = if message.starts_with('\n') {
+                normalize_message(format!("\n{}", message), &level)
+            } else {
+                normalize_message(message, &level)
+            };
+
+            println!("{} | {} | {}", date, level, message);
+
+            if let Level::Fatal = level {
+                panic!();
+            }
+        }
+        Flag::String(level) => {
+            println!("{} | {} | {}", date, level.normal(), message.normal())
+        }
+    }
+}
+
+/// Normalize the message level.
 fn normalize_message(message: String, level: &Level) -> ColoredString {
     match level {
         Level::Debug => message.normal(),
@@ -89,54 +96,53 @@ fn normalize_message(message: String, level: &Level) -> ColoredString {
     }
 }
 
-extern crate onig;
-use onig::*;
+//////// ! Test Section ! ////////
 
-// ! Instantiate the tests.
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use super::{json_prettifier, normalize_message, syntax_parser};
 
-    // ? Test the log function.
-    #[test]
-    fn test_log() {
-        let level = Level::Debug;
-        let message = format_args!("Hello, world!");
-        log(level, message)
+    use crate::Level;
+    use colored::Styles;
+
+    // Grab the return type.
+    fn type_of<T>(_: T) -> &'static str {
+        std::any::type_name::<T>()
     }
 
-    #[test]
-    fn test_regex() {
-        let text: &str = r#""Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco {
-            "glossary": {
-                "title": "example glossary",
-                "GlossDiv": {
-                    "title": "S",
-                    "GlossList": {
-                        "GlossEntry": {
-                            "ID": "SGML",
-                            "SortAs": "SGML",
-                            "GlossTerm": "Standard Generalized Markup Language",
-                            "Acronym": "SGML",
-                            "Abbrev": "ISO 8879:1986",
-                            "GlossDef": {
-                                "para": "A meta-markup language, used to create markup languages such as DocBook.",
-                                "GlossSeeAlso": ["GML", "XML"]
-                            },
-                            "GlossSee": "markup"
-                        }
-                    }
-                }
-            }
-        } laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.""#;
+    #[test] // Test the json_prettifier returned content.
+    fn json() {
+        let json = "{\"message\":\"Hello, world!\"}";
 
-        let regex = Regex::new(r"/\{([^{}]|(?R))*\}/").unwrap();
-        println!("aaa: {:?}", regex.find(text));
-        for (i, pos) in regex.captures(text).unwrap().iter_pos().enumerate() {
-            match pos {
-                Some((beg, end)) => println!("Group {} captured in position {}:{}", i, beg, end),
-                None => println!("Group {} is not captured", i),
-            }
-        }
+        let pretty_json = json_prettifier(json);
+        println!("JSON: {}", pretty_json); // Send capture.
+
+        // ! Check if the returned content is different from the original.
+        assert_ne!(json, pretty_json);
+    }
+
+    #[test] // Check the returned type of the syntax_parser.
+    fn syntax() {
+        let message = "Lorem ipsum dolor sit amet consectetur adipiscing elit:\n{\"foo\":{\"bar\":\"\",\"baz\":0}}\nSunt in culpa qui officia deserunt mollit anim id est laborum.";
+
+        let parsed_message = syntax_parser(message);
+        println!("Message: {}", parsed_message); // Send capture.
+
+        // ! Assert the final type of the returned value.
+        assert!(type_of(parsed_message).contains("String"));
+    }
+
+    #[test] // Affirm the returned flag from normalize_message.
+    fn normalize() {
+        let help = normalize_message("Help".to_string(), &Level::Help);
+        let warn = normalize_message("Warn".to_string(), &Level::Warn);
+        let trace = normalize_message("Trace".to_string(), &Level::Trace);
+
+        println!("{} | {} | {}", help, warn, trace); // Send capture.
+
+        // ! Assert the final type of the returned value.
+        assert!(help.style().contains(Styles::Italic));
+        assert!(warn.style().contains(Styles::Bold));
+        assert!(trace.style().contains(Styles::Dimmed));
     }
 }
