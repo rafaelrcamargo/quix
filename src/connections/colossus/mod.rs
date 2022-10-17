@@ -183,7 +183,7 @@ fn match_event(event: Result<Event, Error>) {
                         }
                     }
                 } else {
-                    stringify!(&event.data)
+                    trace!("{}", &event.data)
                 }
             }
         }

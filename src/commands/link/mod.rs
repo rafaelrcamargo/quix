@@ -203,7 +203,7 @@ fn send_file(path: &PathBuf, client: &Client) {
     match builder::relink(client, body) {
         Ok(resp) => {
             if resp.status().is_success() {
-                // stringify!(resp.text().unwrap().as_str());
+                // trace!(resp.text().unwrap().as_str());
                 success!("Successfully sent the 💫 file to the builder.");
             } else if resp.status().is_server_error() {
                 let error: VTEXError = resp.json().unwrap();

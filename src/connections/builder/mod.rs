@@ -139,7 +139,7 @@ pub fn check_availability() -> Result<Client, Error> {
             }
             None => {
                 help!("Error during the availability check. Have you set the correct account and workspace?");
-                stringify!(&resp.text().unwrap());
+                trace!("{}", &resp.text().unwrap());
                 error!("Could not get the sticky host from the VTEX API.");
             }
         }
