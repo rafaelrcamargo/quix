@@ -14,7 +14,7 @@ strip = true # Strip symbols from binary
 
 [dependencies]
 base64 = "0.13.1"
-clap = "4.0.22"
+clap = "4.0.27"
 debounce = "0.2.1"
 eventsource = "0.5.0"
 home = "0.5.4"
