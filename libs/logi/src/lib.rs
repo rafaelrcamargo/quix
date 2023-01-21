@@ -1,4 +1,4 @@
-//! # Loggy library
+//! # Logi library
 //! This library is used to log messages in a structured and beautiful way.
 //!
 //! ## About
@@ -14,8 +14,8 @@
 //!
 //! ## Examples
 //! ```rust
-//! #[macro_use] // We only need to import some macros to use `Loggy`.
-//! extern crate loggy;
+//! #[macro_use] // We only need to import some macros to use `Logi`.
+//! extern crate logi;
 //!
 //! // Let's start logging!
 //! fn main() {

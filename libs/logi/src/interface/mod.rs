@@ -75,7 +75,7 @@ mod tests {
         );
         assert_eq!(
             format!("{}", Level::Fatal),
-            "😵 FATL".on_black().to_string()
+            "😵 FATL".on_red().to_string()
         );
     }
 }

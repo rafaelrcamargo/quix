@@ -39,7 +39,7 @@ use human_panic::setup_panic; // Human panic, for a better error handling.
 
 // * Macros
 #[macro_use]
-extern crate loggy;
+extern crate logi;
 
 /// # Main function.
 /// Here we start the CLI, and parse the arguments.
@@ -73,7 +73,7 @@ fn main() {
 
     for dialog in dialogs {
         let (title, text) = dialog;
-        custom!(title, text); // Some greetings from loggy! :D
+        custom!(title, text); // Some greetings from logi! :D
     }
 
     warn!("This is a beta version of the CLI, and may not be stable. 😬\n");

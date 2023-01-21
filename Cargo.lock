@@ -1036,7 +1036,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "loggy"
+name = "logi"
 version = "0.0.1"
 dependencies = [
  "chrono",
@@ -1407,7 +1407,7 @@ dependencies = [
  "eventsource",
  "home",
  "human-panic",
- "loggy",
+ "logi",
  "minifier",
  "notify",
  "reqwest 0.11.13",
