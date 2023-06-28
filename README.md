@@ -62,7 +62,7 @@ qx link <FLAGS>
 <details>
 <summary>🖥️ Windows</summary>
 
-> **Warn**: Tested on version `0.0.0`, newer versions are expected to work, but not covered.
+> **Warning**: Tested on version `0.0.0`, newer versions are expected to work, but not covered.
 
 ```powershell
 git clone https://github.com/rafaelrcamargo/quix
@@ -88,7 +88,7 @@ cargo run # OR cargo build --release
 <details>
 <summary>🐧 Linux</summary>
 
-> **Warn**: Tested on version `0.0.0`, newer versions are expected to work, but not covered.
+> **Warning**: Tested on version `0.0.0`, newer versions are expected to work, but not covered.
 
 ```bash
 git clone https://github.com/rafaelrcamargo/quix
@@ -186,7 +186,7 @@ This will enable the GPU acceleration for the terminal, and it will fix the rend
 
 Contributions to this project are welcome! If you have any suggestions or improvements, please open an issue or pull request.
 
-> **Warn**: The `/release` & `/scripts` are now deprecated, and will be removed in the future.
+> **Warning**: The `/release` & `/scripts` are now deprecated, and will be removed in the future.
 
 <a name="license">
 
