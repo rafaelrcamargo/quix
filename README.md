@@ -111,8 +111,6 @@ One of the main focuses of this project is performance. We have implemented and 
 
 </summary>
 
-<br>
-
 - [🛑 Minifier](/benchmarks/minifier/results.md)
   - Compares the performance of the minifier crate and the VTEX IO Link endpoint, analyzing the performance of raw files and minified files in the initial and subsequent `quix link` commands.
 - ⚖️ Release + Compression
