@@ -6,7 +6,7 @@
 //! use b64::encode(path); // Encode a file into a Base64 string.
 //! ```
 
-use base64::{Engine as _, engine::{general_purpose}};
+use base64::{engine::general_purpose, Engine as _};
 
 use std::{
     fs::File,

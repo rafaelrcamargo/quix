@@ -62,10 +62,13 @@ qx link <FLAGS>
 <details>
 <summary>🖥️ Windows</summary>
 
-> **Warn**: Tested on version `0`.0.0`, newer versions are expected to work, but not covered.
+> **Warn**: Tested on version `0.0.0`, newer versions are expected to work, but not covered.
 
 ```powershell
-Invoke-WebRequest -Uri https://raw.githubusercontent.com/rafaelrcamargo/quix/main/release/add_to_path.ps1?token=GHSAT0AAAAAABQRQIGNWZVRGJSTIAH46OLAYZYP4VQ -OutFile install.ps1; .\install.ps1
+git clone https://github.com/rafaelrcamargo/quix
+cd quix
+
+cargo run # OR cargo build --release
 ```
 
 </details>
@@ -74,7 +77,10 @@ Invoke-WebRequest -Uri https://raw.githubusercontent.com/rafaelrcamargo/quix/mai
 <summary>🍎 MacOS</summary>
 
 ```bash
-curl -s https://raw.githubusercontent.com/rafaelrcamargo/quix/main/release/add_to_path.sh?token=GHSAT0AAAAAABQRQIGMIQULFXTTFIS76DDQYZYP5GA | bash
+git clone https://github.com/rafaelrcamargo/quix
+cd quix
+
+cargo run # OR cargo build --release
 ```
 
 </details>
@@ -82,10 +88,13 @@ curl -s https://raw.githubusercontent.com/rafaelrcamargo/quix/main/release/add_t
 <details>
 <summary>🐧 Linux</summary>
 
-> **Warn**: Tested on version `0`.0.0`, newer versions are expected to work, but not covered.
+> **Warn**: Tested on version `0.0.0`, newer versions are expected to work, but not covered.
 
 ```bash
-curl -s https://raw.githubusercontent.com/rafaelrcamargo/quix/main/release/add_to_path.sh?token=GHSAT0AAAAAABQRQIGMIQULFXTTFIS76DDQYZYP5GA | bash
+git clone https://github.com/rafaelrcamargo/quix
+cd quix
+
+cargo run # OR cargo build --release
 ```
 
 </details>
@@ -108,6 +117,48 @@ One of the main focuses of this project is performance. We have implemented and 
   - Compares the performance of the minifier crate and the VTEX IO Link endpoint, analyzing the performance of raw files and minified files in the initial and subsequent `quix link` commands.
 
 </details>
+
+<summary>
+
+### ⚖️ Release + Compression
+
+</summary>
+
+<br>
+
+With the search for a small and efficient binary, we have implemented a release script that uses the common `cargo` commands to build the binary, and then compress it using the [UPX](https://upx.github.io/) tool with reduced the final binary size by **~40%** (On Mac).
+
+```sh
+      File size        Ratio      Format      Name
+--------------------   ------   -----------   -----------
+1990232 ->    786448   39.52%   macho/arm64   quix
+```
+
+With this we finish with a binary that weights **~750K**, wich is a great improvement from the original **~1.2M**, it's a known fact that the Rust compiler generates binaries with a bigger size, but with this we can reduce the size of the binary to a more reasonable size.
+
+```sh
+-rwxr-xr-x@ 1 ....  staff   768K ... .. ..:.. ./quix
+```
+
+<a name="results">
+
+## 📊 Results
+
+</a>
+
+The following results were obtained using the `time` utils on Mac OS on a MacBook Air M1.
+
+> Time can sound as a weird choice based on the modern standards, but as both of the CLI's keep running in watch mode, the test's were made based on the first sight of the `Linked successfully` message.
+
+![banner.png](./assets/banner.png)
+
+<div align="center">
+  On the left, the original VTEX CLI, and on the right, the Quix CLI. <i>(Between tests, the cache was cleared and all apps we're unlinked)</i>
+</div>
+
+<br />
+
+> **Note**: The results may vary depending on the machine and the project.
 
 <a name="known-issues">
 
@@ -140,6 +191,8 @@ This will enable the GPU acceleration for the terminal, and it will fix the rend
 </a>
 
 Contributions to this project are welcome! If you have any suggestions or improvements, please open an issue or pull request.
+
+> **Warn**: The `/release` & `/scripts` are now deprecated, and will be removed in the future.
 
 <a name="license">
 

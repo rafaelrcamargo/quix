@@ -18,3 +18,6 @@ Cargo.lock
 **/Cargo.lock
 
 *-lock.yaml
+
+example/
+.DS_Store

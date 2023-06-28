@@ -73,8 +73,12 @@ pub fn link(args: &ArgMatches) {
         }
     };
 
+    fn has_arg(args: &ArgMatches, id: &str) -> bool {
+        args.get_one::<bool>(id).is_some_and(|x| *x == true)
+    }
+
     // ? Args parsing.
-    if args.contains_id("clean") {
+    if has_arg(args, "clean") {
         warn!("This feature can cause the CLI to run slower ⌛️, only use when really necessary.");
         trace!("🧹 Cleaning project cache...\n");
 
@@ -86,10 +90,8 @@ pub fn link(args: &ArgMatches) {
                 error!("Error cleaning project cache: {}", e);
             }
         }
-    } else if args.contains_id("quicker") {
-        warn!(
-            "This feature still under development, and can cause some issues 💣. Use it carefully."
-        );
+    } else if has_arg(args, "quicker") {
+        warn!("This feature still under development, and can cause some issues 💣.");
         trace!("⚗️  Linking your project quicker...\n");
     }
 

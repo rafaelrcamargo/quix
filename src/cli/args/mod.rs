@@ -16,7 +16,7 @@
 //! This function will panic if the entered command does not follow any of the available.
 
 // ? CLI
-use clap::{Arg, ArgAction, ArgMatches, ColorChoice, Command}; // CLI Argument parser
+use clap::{arg, Arg, ArgAction, ArgMatches, ColorChoice, Command}; // CLI Argument parser
 
 pub fn matches() -> ArgMatches {
     // ? CLI Setup
@@ -47,21 +47,19 @@ pub fn matches() -> ArgMatches {
           Command::new("link")
               .about("Link a app or store to a project.")
               .arg(
-                  Arg::new("clean")
-                      .conflicts_with("quicker")
-                      .short('c')
-                      .long("clean")
-                      .required(false)
-                      .action(ArgAction::SetTrue)
-                      .help("Clean the project before linking."),
+                  arg!(--clean "Clean the project before linking.")
+                  .short('c')
+                  .long("clean")
+                  .required(false)
+                  .conflicts_with("quicker")
+                  .help("Clean the project before linking."),
               )
               .arg(
-                  Arg::new("quicker")
+                arg!(--quicker "Ignores some validations and links the app faster.")
+                .short('q')
+                .long("quicker")
+                .required(false)
                       .conflicts_with("clean")
-                      .short('q')
-                      .long("quicker")
-                      .required(false)
-                      .action(ArgAction::SetTrue)
                       .help("Ignores some validations and links the app faster."),
               ),
       )
