@@ -150,7 +150,7 @@ The following results were obtained using the `time` utils on Mac OS on a MacBoo
 
 > Time can sound as a weird choice based on the modern standards, but as both of the CLI's keep running in watch mode, the test's were made based on the first sight of the `Linked successfully` message.
 
-![banner.png](./assets/banner.png)
+![banner.png](./assets/time.png)
 
 <div align="center">
   On the left, the original VTEX CLI, and on the right, the Quix CLI. <i>(Between tests, the cache was cleared and all apps we're unlinked)</i>

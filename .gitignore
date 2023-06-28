@@ -23,3 +23,6 @@ example/
 .DS_Store
 
 libs/
+
+scripts/
+release/

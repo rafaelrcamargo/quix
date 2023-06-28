@@ -1,1 +1,0 @@
-[Environment]::SetEnvironmentVariable("Path", [Environment]::GetEnvironmentVariable("Path", [EnvironmentVariableTarget]::Machine) + ";" + [System.Environment]::CurrentDirectory, "Machine"); "`n✓ Quix successfully added to PATH :D`n";
