@@ -100,7 +100,7 @@ pub fn check_availability() -> Result<Client, Error> {
     if let Some(sticky_obj) = sticky_obj {
         sticky_host = sticky_obj.get("stickyHost").unwrap().to_string()
     } else {
-        // make a post request to `/0/availability/avantivtexio.shopping-list@0.0.0` to get the sticky host, and store it in the config, the sticky host comes in the resp headers as `x-vtex-sticky-host`
+        // make a post request to `/0/availability/vendor.app@version` to get the sticky host, and store it in the config, the sticky host comes in the resp headers as `x-vtex-sticky-host`
 
         // ? Create a new VTEX Client.
         let client = clients::vtex::new(&session.token);

@@ -6,6 +6,8 @@
 //! use b64::encode(path); // Encode a file into a Base64 string.
 //! ```
 
+use base64::{Engine as _, engine::{general_purpose}};
+
 use std::{
     fs::File,
     io::{BufReader, Read},
@@ -29,7 +31,7 @@ pub fn encode(path: &PathBuf) -> String {
         reader.read_to_end(&mut buffer).unwrap();
 
         // Encode the file.
-        base64::encode(&buffer)
+        general_purpose::STANDARD.encode(&buffer)
     } else {
         // Return an empty string.
         String::new()
