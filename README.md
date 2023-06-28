@@ -60,7 +60,9 @@ qx link <FLAGS>
 2. Then we need to setup the CLI, for an easier setup we have created a script to add the CLI to your `PATH` environment variable. The setup process goes as follows:
 
 <details>
-<summary>🖥️ Windows</summary>
+<summary> 🖥️ Windows</summary>
+
+<br />
 
 > **Warning**: Tested on version `0.0.0`, newer versions are expected to work, but not covered.
 
@@ -74,7 +76,9 @@ cargo run # OR cargo build --release
 </details>
 
 <details>
-<summary>🍎 MacOS</summary>
+<summary> 🍎 MacOS</summary>
+
+<br />
 
 ```bash
 git clone https://github.com/rafaelrcamargo/quix
@@ -86,7 +90,9 @@ cargo run # OR cargo build --release
 </details>
 
 <details>
-<summary>🐧 Linux</summary>
+<summary> 🐧 Linux</summary>
+
+<br />
 
 > **Warning**: Tested on version `0.0.0`, newer versions are expected to work, but not covered.
 
@@ -150,10 +156,6 @@ The following results were obtained using the `time` utils on Mac OS on a MacBoo
   On the left, the original VTEX CLI, and on the right, the Quix CLI. <i>(Between tests, the cache was cleared and all apps we're unlinked)</i>
 </div>
 
-<br />
-
-> **Note**: The results may vary depending on the machine and the project.
-
 <a name="known-issues">
 
 # 🕵️ Known issues
@@ -173,8 +175,7 @@ That's a known issue, and it's related to the way VS Code handles the terminal. 
 ```
 
 This will enable the GPU acceleration for the terminal, and it will fix the rendering issue.
-
-> For now this solves the issue, but can get kinda weird with some appearance settings.
+For now this solves the issue, but can get kinda weird with some appearance settings.
 
 </details>
 
