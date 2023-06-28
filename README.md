@@ -115,30 +115,22 @@ One of the main focuses of this project is performance. We have implemented and 
 
 - [🛑 Minifier](/benchmarks/minifier/results.md)
   - Compares the performance of the minifier crate and the VTEX IO Link endpoint, analyzing the performance of raw files and minified files in the initial and subsequent `quix link` commands.
+- ⚖️ Release + Compression
+  - With the search for a small and efficient binary, we have implemented a release script that uses the common `cargo` commands to build the binary, and then compress it using the [UPX](https://upx.github.io/) tool with reduced the final binary size by **~40%** (On Mac).
+
+  ```sh
+        File size        Ratio      Format      Name
+  --------------------   ------   -----------   -----------
+  1990232 ->    786448   39.52%   macho/arm64   quix
+  ```
+
+  - With this we finish with a binary that weights **~750K**, wich is a great improvement from the original **~1.2M**, it's a known fact that the Rust compiler generates binaries with a bigger size, but with this we can reduce the size of the binary to a more reasonable size.
+
+  ```sh
+  -rwxr-xr-x@ 1 ....  staff   768K ... .. ..:.. ./quix
+  ```
 
 </details>
-
-<summary>
-
-### ⚖️ Release + Compression
-
-</summary>
-
-<br>
-
-With the search for a small and efficient binary, we have implemented a release script that uses the common `cargo` commands to build the binary, and then compress it using the [UPX](https://upx.github.io/) tool with reduced the final binary size by **~40%** (On Mac).
-
-```sh
-      File size        Ratio      Format      Name
---------------------   ------   -----------   -----------
-1990232 ->    786448   39.52%   macho/arm64   quix
-```
-
-With this we finish with a binary that weights **~750K**, wich is a great improvement from the original **~1.2M**, it's a known fact that the Rust compiler generates binaries with a bigger size, but with this we can reduce the size of the binary to a more reasonable size.
-
-```sh
--rwxr-xr-x@ 1 ....  staff   768K ... .. ..:.. ./quix
-```
 
 <a name="results">
 
