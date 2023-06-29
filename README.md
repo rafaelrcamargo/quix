@@ -187,8 +187,6 @@ For now this solves the issue, but can get kinda weird with some appearance sett
 
 Contributions to this project are welcome! If you have any suggestions or improvements, please open an issue or pull request.
 
-> **Warning**: The `/release` & `/scripts` are now deprecated, and will be removed in the future.
-
 <a name="license">
 
 # ⚠️ License
