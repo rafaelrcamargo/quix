@@ -12,6 +12,9 @@ Quix is a **CLI**, created aiming for **the best developer experience** with the
 
 </div>
 
+> **Note**
+> **Quix is on the lookout for new project maintainers**. I'm not currently working with VTEX, which makes developing and testing the project a bit tricky. 😅
+
 <a name="getting-started">
 
 # ⚡️ Getting started
