@@ -12,7 +12,7 @@ Quix is a **CLI**, created aiming for **the best developer experience** with the
 
 </div>
 
-> **Note**
+> [!IMPORTANT]
 > **Quix is on the lookout for new project maintainers**. I'm not currently working with VTEX, which makes developing and testing the project a bit tricky. 😅
 
 <a name="getting-started">
@@ -29,7 +29,8 @@ First, to clarify the purpose of this project. As developers, we know the import
 
 </a>
 
-> **Note**: This CLI is a work in progress, and only a few commands are currently available.
+> [!NOTE]
+> This CLI is a work in progress, and only a few commands are currently available.
 
 The following commands are available:
 
@@ -67,7 +68,8 @@ qx link <FLAGS>
 
 <br />
 
-> **Warning**: Tested on version `0.0.0`, newer versions are expected to work, but not covered.
+> [!WARNING]
+> Tested on version `0.0.0`, newer versions are expected to work, but not covered.
 
 ```powershell
 git clone https://github.com/rafaelrcamargo/quix
@@ -97,7 +99,8 @@ cargo run # OR cargo build --release
 
 <br />
 
-> **Warning**: Tested on version `0.0.0`, newer versions are expected to work, but not covered.
+> [!WARNING]
+> Tested on version `0.0.0`, newer versions are expected to work, but not covered.
 
 ```bash
 git clone https://github.com/rafaelrcamargo/quix
